@@ -113,3 +113,15 @@ enum ReportStatus {
   RESOLVED
   DISMISSED
 }
+model Notification {
+  id        String   @id @default(uuid())
+  userId    String   // A quién va dirigida
+  user      User     @relation(fields: [userId], references: [id])
+  
+  title     String   // Ej: "¡Venta Exitosa!"
+  message   String   // Ej: "Has recibido 5M de Silver (Comisión aplicada)"
+  type      String   // "TRADE", "SECURITY", "RATING"
+  isRead    Boolean  @default(false)
+  
+  createdAt DateTime @default(now())
+}
