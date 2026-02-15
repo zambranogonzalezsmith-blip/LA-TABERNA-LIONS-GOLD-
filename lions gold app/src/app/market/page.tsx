@@ -74,3 +74,8 @@ export default function Register() {
     </div>
   );
 }
+
+const playSaleSound = () => {
+  const audio = new Audio('/sounds/kaching.mp3');
+  audio.play();
+}
