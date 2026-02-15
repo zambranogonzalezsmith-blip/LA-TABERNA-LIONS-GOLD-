@@ -1,0 +1,46 @@
+services:
+  # 1. EL CORAZÓN: Tu aplicación Next.js (Lions-Gold App)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: lions-gold-web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgresql://admin:lions_gold_2026@db:5432/taberna_db
+      - DISCORD_WEBHOOK_URL=${DISCORD_WEBHOOK_URL}
+    depends_on:
+      - db
+
+  # 2. EL DEPÓSITO: La Base de Datos (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: lions-gold-db
+    restart: always
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=lions_gold_2026
+      - POSTGRES_DB=taberna_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  # 3. EL ARCHIVO: Forgejo (Tu propio servidor de código privado)
+  forgejo:
+    image: codeberg.org/forgejo/forgejo:latest
+    container_name: lions-gold-git
+    restart: always
+    environment:
+      - USER_UID=1000
+      - USER_GID=1000
+    volumes:
+      - ./forgejo_data:/data
+    ports:
+      - "8080:3000" # Accedes a tu propio GitHub en el puerto 8080
+      - "2222:22"
+
+volumes:
+  postgres_data:
