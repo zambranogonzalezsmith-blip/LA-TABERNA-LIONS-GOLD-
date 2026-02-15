@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LA TABERNA LIONS-GOLD | Mercado P2P</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        body { background-color: #0f172a; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
+        .gold-text { color: #f59e0b; }
+        .gold-border { border-color: #f59e0b; }
+        .tab-active { border-bottom: 2px solid #f59e0b; color: #f59e0b; }
+        .glass-panel { background: rgba(30, 41, 59, 0.7); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Animación de carga */
+        @keyframes pulse-gold {
+            0%, 100% { box-shadow: 0 0 5px #f59e0b; }
+            50% { box-shadow: 0 0 20px #f59e0b; }
+        }
+        .btn-gold { background: linear-gradient(45deg, #b45309, #f59e0b); color: white; font-weight: bold; }
+        .btn-gold:hover { animation: pulse-gold 1.5s infinite; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <nav class="bg-slate-900 border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-dragon text-3xl gold-text"></i>
+                    <span class="font-bold text-xl tracking-wider">LIONS-GOLD <span class="text-xs text-slate-500">P2P</span></span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button onclick="switchTab('market')" id="btn-market" class="px-3 py-2 tab-active transition-colors"><i class="fa-solid fa-shop"></i> Mercado</button>
+                    <button onclick="switchTab('admin')" id="btn-admin" class="px-3 py-2 hover:text-yellow-500 transition-colors"><i class="fa-solid fa-chart-line"></i> Admin Panel</button>
+                    <button onclick="switchTab('rules')" id="btn-rules" class="px-3 py-2 hover:text-yellow-500 transition-colors"><i class="fa-solid fa-scroll"></i> Reglas</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow p-6">
+        
+        <div id="view-market" class="max-w-4xl mx-auto space-y-8">
+            
+            <div class="glass-panel p-8 rounded-2xl text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-500 to-transparent"></div>
+                <h1 class="text-4xl font-black mb-2 italic">COMERCIA SEGURO EN EL PANTANO</h1>
+                <p class="text-slate-400">Sistema de Escrow Automatizado • Fee 0.06% • Anti-Scam</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="glass-panel p-6 rounded-xl">
+                    <h3 class="text-xl font-bold mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-coins gold-text"></i> Nuevo Intercambio
+                    </h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="text-xs text-slate-400 uppercase font-bold">Vendedor (Tu IGN)</label>
+                            <input type="text" id="sellerName" placeholder="Ej: PlayerOne" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:border-yellow-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="text-xs text-slate-400 uppercase font-bold">Comprador (IGN)</label>
+                            <input type="text" id="buyerName" placeholder="Ej: PlayerTwo" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white focus:border-yellow-500 outline-none">
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="text-xs text-slate-400 uppercase font-bold">Monto</label>
+                                <input type="number" id="amount" oninput="calculatePreview()" placeholder="0" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white outline-none">
+                            </div>
+                            <div>
+                                <label class="text-xs text-slate-400 uppercase font-bold">Moneda</label>
+                                <select id="currency" class="w-full bg-slate-800 border border-slate-600 rounded p-2 text-white outline-none">
+                                    <option value="SILVER">Silver (Albion)</option>
+                                    <option value="USDT">USDT (Cripto)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-900/50 p-3 rounded border border-slate-700 text-sm">
+                            <div class="flex justify-between mb-1">
+                                <span class="text-slate-400">Comisión Lions-Gold (0.06%):</span>
+                                <span class="gold-text font-bold" id="previewFee">0</span>
+                            </div>
+                            <div class="flex justify-between border-t border-slate-700 pt-1">
+                                <span class="text-slate-300">Recibirás Neto:</span>
+                                <span class="text-green-400 font-bold" id="previewNet">0</span>
+                            </div>
+                        </div>
+
+                        <button onclick="createTrade()" class="w-full btn-gold py-3 rounded shadow-lg transform active:scale-95 transition-transform">
+                            INICIAR TRANSACCIÓN SEGURA
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-xl border-dashed border-2 border-slate-600 flex flex-col items-center justify-center text-center">
+                    <div id="upload-area">
+                        <i class="fa-solid fa-camera text-4xl text-slate-500 mb-4"></i>
+                        <h3 class="text-lg font-bold">Bóveda de Evidencia</h3>
+                        <p class="text-sm text-slate-400 mb-4">Sube la captura del trade in-game para liberar los fondos.</p>
+                        <button onclick="document.getElementById('fileInput').click()" class="bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded text-sm transition-colors">
+                            Seleccionar Captura
+                        </button>
+                        <input type="file" id="fileInput" class="hidden" onchange="handleFileUpload(this)">
+                    </div>
+                    <div id="preview-area" class="hidden w-full">
+                        <img id="img-preview" src="" class="max-h-40 mx-auto rounded border border-slate-500 mb-2">
+                        <p class="text-xs text-green-400 font-bold mb-2">✓ Imagen cargada lista para revisión</p>
+                        <button onclick="resetUpload()" class="text-red-400 text-xs hover:underline">Eliminar</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8">
+                <h3 class="text-xl font-bold mb-4">📊 Trades en Curso</h3>
+                <div class="overflow-x-auto rounded-xl border border-slate-700">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-800 text-slate-400 uppercase">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Vendedor</th>
+                                <th class="p-4">Monto</th>
+                                <th class="p-4">Comisión (LG)</th>
+                                <th class="p-4">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tradesTable" class="divide-y divide-slate-700 bg-slate-900/50">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-admin" class="max-w-4xl mx-auto hidden space-y-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-yellow-500">
+                    <h4 class="text-slate-400 text-sm uppercase">Ganancias Totales (0.06%)</h4>
+                    <p class="text-3xl font-bold text-white mt-1" id="totalEarnings">0</p>
+                    <p class="text-xs text-slate-500">Silver Acumulado</p>
+                </div>
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-red-500">
+                    <h4 class="text-slate-400 text-sm uppercase">Scammers Baneados</h4>
+                    <p class="text-3xl font-bold text-white mt-1" id="totalBanned">0</p>
+                </div>
+                <div class="glass-panel p-6 rounded-xl border-l-4 border-blue-500">
+                    <h4 class="text-slate-400 text-sm uppercase">Trades Exitosos</h4>
+                    <p class="text-3xl font-bold text-white mt-1" id="totalTrades">0</p>
+                </div>
+            </div>
+
+            <div class="glass-panel p-6 rounded-xl border border-red-900/50">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-red-500"><i class="fa-solid fa-ban"></i> Gestión de Blacklist</h3>
+                    <button onclick="clearData()" class="text-xs text-slate-500 hover:text-red-500">Borrar Todo (Reset)</button>
+                </div>
+                <div class="flex gap-2 mb-4">
+                    <input type="text" id="banInput" placeholder="Nombre del personaje a banear..." class="flex-1 bg-slate-800 border border-slate-600 rounded p-2 text-white">
+                    <button onclick="banUser()" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded font-bold">BANEAR</button>
+                </div>
+                <ul id="blacklistList" class="space-y-2">
+                    </ul>
+            </div>
+        </div>
+
+        <div id="view-rules" class="max-w-3xl mx-auto hidden">
+            <div class="glass-panel p-8 rounded-2xl">
+                <h1 class="text-2xl font-bold gold-text mb-6">Reglamento Oficial de La Taberna</h1>
+                <div class="space-y-4 text-slate-300 text-sm leading-relaxed">
+                    <p><strong class="text-white">1. Comisión:</strong> La Taberna Lions-Gold cobra automáticamente un 0.06% por transacción para mantenimiento y seguridad.</p>
+                    <p><strong class="text-white">2. Evidencia:</strong> Ningún pago se libera sin una captura de pantalla clara del registro de comercio in-game.</p>
+                    <p><strong class="text-white">3. Muro de la Vergüenza:</strong> Los intentos de estafa resultarán en la publicación permanente del IGN en nuestra Blacklist pública.</p>
+                    <p><strong class="text-white">4. Legalidad:</strong> Este entorno digital opera bajo el principio de acuerdo mutuo entre partes privadas. El documento digital es vinculante.</p>
+                </div>
+                <div class="mt-8 text-center">
+                    <p class="text-xs text-slate-500">© 2026 Lions-Gold App. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // --- BASE DE DATOS LOCAL (LocalStorage) ---
+        let db = {
+            trades: JSON.parse(localStorage.getItem('lg_trades')) || [],
+            blacklist: JSON.parse(localStorage.getItem('lg_blacklist')) || ['RataDePantano99', 'Scammer_01'],
+            earnings: parseFloat(localStorage.getItem('lg_earnings')) || 0
+        };
+
+        // --- NAVEGACIÓN ---
+        function switchTab(tabId) {
+            // Ocultar todo
+            ['market', 'admin', 'rules'].forEach(t => {
+                document.getElementById('view-' + t).classList.add('hidden');
+                document.getElementById('btn-' + t).classList.remove('tab-active', 'text-yellow-500');
+                document.getElementById('btn-' + t).classList.add('text-slate-400');
+            });
+            // Mostrar seleccionado
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('tab-active');
+            document.getElementById('btn-' + tabId).classList.remove('text-slate-400');
+            
+            if(tabId === 'admin') updateAdminPanel();
+        }
+
+        // --- MOTOR DE CÁLCULO 0.06% ---
+        function calculatePreview() {
+            const amount = parseFloat(document.getElementById('amount').value) || 0;
+            const fee = amount * 0.0006;
+            const net = amount - fee;
+
+            document.getElementById('previewFee').innerText = fee.toLocaleString(undefined, {maximumFractionDigits: 2});
+            document.getElementById('previewNet').innerText = net.toLocaleString(undefined, {maximumFractionDigits: 2});
+        }
+
+        // --- CREAR TRADE ---
+        function createTrade() {
+            const seller = document.getElementById('sellerName').value;
+            const buyer = document.getElementById('buyerName').value;
+            const amount = parseFloat(document.getElementById('amount').value);
+            const currency = document.getElementById('currency').value;
+
+            // Validaciones
+            if(!seller || !buyer || !amount) return alert("Por favor completa todos los campos.");
+            if(db.blacklist.includes(seller) || db.blacklist.includes(buyer)) {
+                return alert("⚠️ ALERTA DE SEGURIDAD: Uno de los usuarios está en la Lista Negra. Trade cancelado.");
+            }
+
+            const fee = amount * 0.0006;
+            
+            // Crear objeto Trade
+            const newTrade = {
+                id: 'LG-' + Math.floor(Math.random() * 10000),
+                seller,
+                amount,
+                fee,
+                currency,
+                status: 'Pendiente Evidencia',
+                date: new Date().toLocaleTimeString()
+            };
+
+            // Guardar
+            db.trades.unshift(newTrade); // Poner al principio
+            db.earnings += fee;
+            saveDB();
+            
+            // Actualizar UI
+            renderTrades();
+            updateAdminPanel();
+            
+            // Limpiar formulario
+            document.getElementById('amount').value = '';
+            calculatePreview();
+            alert(`✅ Trade ${newTrade.id} creado. La comisión de ${fee.toFixed(2)} ha sido calculada.`);
+        }
+
+        // --- RENDERIZAR TABLA DE TRADES ---
+        function renderTrades() {
+            const tbody = document.getElementById('tradesTable');
+            tbody.innerHTML = '';
+
+            db.trades.forEach(trade => {
+                const row = `
+                    <tr class="hover:bg-slate-800 transition-colors">
+                        <td class="p-4 font-mono text-xs text-slate-500">${trade.id}</td>
+                        <td class="p-4 font-bold text-white">${trade.seller}</td>
+                        <td class="p-4">${trade.amount.toLocaleString()} ${trade.currency}</td>
+                        <td class="p-4 text-yellow-500 font-mono">+${trade.fee.toFixed(2)}</td>
+                        <td class="p-4">
+                            <span class="px-2 py-1 rounded text-[10px] font-bold ${trade.status === 'Completado' ? 'bg-green-900 text-green-400' : 'bg-yellow-900 text-yellow-500'}">
+                                ${trade.status}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // --- GESTIÓN DE EVIDENCIA ---
+        function handleFileUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('img-preview').src = e.target.result;
+                    document.getElementById('upload-area').classList.add('hidden');
+                    document.getElementById('preview-area').classList.remove('hidden');
+                    
+                    // Simular actualización del último trade a "Completado"
+                    if(db.trades.length > 0 && db.trades[0].status !== 'Completado') {
+                        db.trades[0].status = 'Completado';
+                        saveDB();
+                        renderTrades();
+                        alert("📸 Evidencia recibida. El trade se ha marcado como COMPLETADO.");
+                    }
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function resetUpload() {
+            document.getElementById('fileInput').value = "";
+            document.getElementById('upload-area').classList.remove('hidden');
+            document.getElementById('preview-area').classList.add('hidden');
+        }
+
+        // --- ADMIN PANEL ---
+        function updateAdminPanel() {
+            document.getElementById('totalEarnings').innerText = db.earnings.toLocaleString(undefined, {maximumFractionDigits: 0});
+            document.getElementById('totalTrades').innerText = db.trades.length;
+            document.getElementById('totalBanned').innerText = db.blacklist.length;
+
+            const list = document.getElementById('blacklistList');
+            list.innerHTML = '';
+            db.blacklist.forEach(name => {
+                list.innerHTML += `
+                    <li class="flex justify-between bg-slate-800 p-2 rounded border border-red-900/30 text-sm">
+                        <span class="text-red-400 font-bold">🚫 ${name}</span>
+                        <button onclick="unbanUser('${name}')" class="text-slate-500 hover:text-white"><i class="fa-solid fa-trash"></i></button>
+                    </li>
+                `;
+            });
+        }
+
+        function banUser() {
+            const name = document.getElementById('banInput').value;
+            if(name && !db.blacklist.includes(name)) {
+                db.blacklist.push(name);
+                document.getElementById('banInput').value = '';
+                saveDB();
+                updateAdminPanel();
+            }
+        }
+
+        function unbanUser(name) {
+            db.blacklist = db.blacklist.filter(n => n !== name);
+            saveDB();
+            updateAdminPanel();
+        }
+
+        // --- SISTEMA ---
+        function saveDB() {
+            localStorage.setItem('lg_trades', JSON.stringify(db.trades));
+            localStorage.setItem('lg_blacklist', JSON.stringify(db.blacklist));
+            localStorage.setItem('lg_earnings', db.earnings);
+        }
+
+        function clearData() {
+            if(confirm("¿Seguro que quieres borrar todo el historial?")) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Inicializar
+        renderTrades();
+        updateAdminPanel();
+    </script>
+</body>
+</html>
