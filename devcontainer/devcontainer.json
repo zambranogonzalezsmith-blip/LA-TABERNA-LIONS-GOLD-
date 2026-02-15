@@ -1,0 +1,7 @@
+{
+  "name": "Lions Gold Dev Env",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "postCreateCommand": "npm install && npx prisma generate"
+}
