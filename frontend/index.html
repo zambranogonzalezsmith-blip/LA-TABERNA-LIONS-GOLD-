@@ -10,7 +10,7 @@
     <header>
         <div class="header-content">
             <h1>Mercatus Uniti: Albion P2P</h1>
-            <div id="status-network">Red Segura: TRX/USDT/SILVER</div>
+            <div id="status-network">🟢 Red Segura Activa: TRX/USDT/SILVER</div>
         </div>
     </header>
 
@@ -18,16 +18,16 @@
         <section id="trade-form" class="panel">
             <h2>Registrar Operación</h2>
             <div class="input-group">
-                <input type="text" id="sellerName" placeholder="Vendedor (IGN)">
-                <input type="number" id="amount" placeholder="Monto Total" oninput="calculateFee()">
+                <input type="text" id="sellerName" placeholder="Vendedor (IGN)" class="tactic-input">
+                <input type="number" id="amount" placeholder="Monto Total" oninput="calculateFee()" class="tactic-input">
             </div>
             <div class="fee-preview">
-                <p>Comisión LIONS-GOLD (0.06%): <span id="fee-amount">0.00</span></p>
+                <p>Comisión LIONS-GOLD (0.06%): <strong id="fee-amount">0.00</strong></p>
             </div>
-            <button id="btn-create" onclick="createTrade()">INICIAR TRANSACCIÓN</button>
+            <button id="btn-create" onclick="createTrade()">EJECUTAR PROTOCOLO</button>
         </section>
 
-        <hr>
+        <hr class="separator">
 
         <section id="offers-list">
             <h2>Historial de Trades</h2>
