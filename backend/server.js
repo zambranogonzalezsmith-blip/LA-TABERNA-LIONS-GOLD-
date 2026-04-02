@@ -1,17 +1,18 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const dotenv = require('dotenv');
-
-dotenv.config();
+const cors = require('cors'); // Vital para permitir la conexión desde GitHub
 const app = express();
+
+app.use(cors());
 app.use(express.json());
 
-const db = new sqlite3.Database('./database/albion_p2p.db');
-
-// Ruta de prueba
-app.get('/', (req, res) => {
-    res.send('Servidor P2P LIONS-GOLD Operativo');
+// Ruta para recibir el trade desde el frontend
+app.post('/api/trades', (req, res) => {
+    const nuevoTrade = req.body;
+    console.log("Recibido en LIONS-GOLD Server:", nuevoTrade);
+    
+    // Aquí conectarías con tu database/schema.sql
+    // Por ahora, devolvemos éxito
+    res.status(201).json({ message: "Trade registrado en el servidor", id: nuevoTrade.id });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Servidor en puerto ${PORT}`));
+app.listen(3000, () => console.log("Servidor LIONS-GOLD activo en puerto 3000"));
