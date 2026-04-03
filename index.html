@@ -3,134 +3,224 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LA TABERNA LIONS-GOLD | Mercado P2P v2.3</title>
+    <title>LIONS-GOLD | MARKETPLACE P2P</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body { background-color: #0b1120; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
-        .gold-text { color: #f59e0b; }
-        .tab-active { border-bottom: 3px solid #f59e0b; color: #f59e0b; font-weight: bold; }
-        .glass-panel { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        .btn-gold { background: linear-gradient(45deg, #92400e, #f59e0b); color: white; font-weight: bold; transition: all 0.3s; cursor: pointer; }
-        .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
-        .input-albion { background: #0f172a; border: 1px solid #334155; color: white; }
-        .hidden { display: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Inter:wght@300;400;700&display=swap');
+
+        :root {
+            --m-gold: #c5a059;
+            --m-gold-dark: #84662d;
+            --m-border: #3d4451;
+            --bg-dark: #0a0c10;
+        }
+
+        body { 
+            background: radial-gradient(circle at center, #1a202c 0%, #0a0c10 100%);
+            color: #e2e8f0; 
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        h1, h2, .font-rpg { font-family: 'Cinzel', serif; }
+
+        /* Estilo Panel de Piedra */
+        .rpg-panel {
+            background: linear-gradient(145deg, #161d27, #0f141a);
+            border: 2px solid var(--m-border);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8), 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+        }
+
+        .rpg-panel::before {
+            content: "";
+            position: absolute;
+            top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border: 1px solid var(--m-gold-dark);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        /* Botón estilo Gema */
+        .btn-rpg {
+            background: linear-gradient(to bottom, #92400e, #451a03);
+            border: 1px solid var(--m-gold);
+            color: var(--m-gold);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-rpg:hover {
+            filter: brightness(1.3);
+            box-shadow: 0 0 20px rgba(184, 134, 11, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .btn-rpg:active { transform: translateY(0); }
+
+        /* Inputs Estilo Pergamino Oscuro */
+        .input-rpg {
+            background: #05070a !important;
+            border: 1px solid #2d3748 !important;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
+            color: #cbd5e0;
+            transition: border 0.3s;
+        }
+
+        .input-rpg:focus {
+            border-color: var(--m-gold) !important;
+            outline: none;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to bottom, #f59e0b, #92400e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tab-active {
+            border-bottom: 2px solid var(--m-gold);
+            color: var(--m-gold);
+            text-shadow: 0 0 10px rgba(197, 160, 89, 0.5);
+        }
+
+        /* Animación Radar */
+        .pulse-gold {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(197, 160, 89, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen">
 
-    <nav class="bg-slate-950 border-b border-slate-800 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 flex justify-between h-16 items-center">
-            <div class="flex items-center gap-3">
-                <i class="fa-solid fa-shield-halved text-3xl gold-text"></i>
-                <span class="font-black text-xl tracking-tighter uppercase">LIONS-GOLD <span class="text-[10px] bg-amber-600 text-black px-1 rounded ml-1">v2.3</span></span>
+    <nav class="bg-black/80 border-b-2 border-[#1e293b] backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 flex justify-between h-20 items-center">
+            <div class="flex items-center gap-4">
+                <div class="p-2 border border-amber-900/50 rounded-full bg-gradient-to-b from-amber-600/20 to-transparent">
+                    <i class="fa-solid fa-lion text-3xl gold-gradient-text"></i>
+                </div>
+                <span class="font-rpg font-black text-2xl tracking-widest gold-gradient-text">LIONS-GOLD</span>
             </div>
-            <div class="flex space-x-4 md:space-x-6 text-sm">
-                <button onclick="switchTab('market')" id="btn-market" class="py-5 tab-active transition-all uppercase text-[11px] font-bold">Mercado</button>
-                <button onclick="switchTab('rules')" id="btn-rules" class="py-5 text-slate-400 hover:text-amber-500 transition-all uppercase text-[11px] font-bold">Reglas</button>
-                <button onclick="switchTab('admin')" id="btn-admin" class="py-5 text-slate-400 hover:text-red-500 transition-all uppercase text-[11px] font-bold"><i class="fa-solid fa-lock text-[10px]"></i> Admin</button>
+            <div class="flex space-x-8 text-[11px] font-bold tracking-widest uppercase">
+                <button onclick="switchTab('market')" id="btn-market" class="py-7 tab-active hover:text-amber-400 transition-all">Mercado</button>
+                <button onclick="switchTab('rules')" id="btn-rules" class="py-7 text-slate-500 hover:text-amber-400 transition-all">Leyes</button>
+                <button onclick="switchTab('admin')" id="btn-admin" class="py-7 text-slate-500 hover:text-red-500 transition-all">Mando</button>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow p-4 md:p-8">
+    <main class="max-w-6xl mx-auto p-6 mt-6">
         
-        <div id="view-market" class="max-w-5xl mx-auto space-y-6">
-            <div class="glass-panel p-6 rounded-2xl text-center border-t border-amber-500/30">
-                <h1 class="text-3xl font-black mb-1 gold-text uppercase">Sello del Contrato</h1>
-                <p class="text-slate-400 text-xs italic">"Honradez en el trade, fuerza en el clan."</p>
+        <div id="view-market" class="space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-4xl font-black gold-gradient-text italic">Intercambio de Suministros</h2>
+                <div class="flex justify-center items-center gap-4 text-slate-500 uppercase text-[10px] tracking-[0.3em]">
+                    <span class="w-20 h-px bg-slate-800"></span>
+                    Sesión de Comercio Segura
+                    <span class="w-20 h-px bg-slate-800"></span>
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="lg:col-span-2 glass-panel p-6 rounded-xl border border-slate-700">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] text-amber-500 uppercase font-black tracking-widest">Vendedor (IGN)</label>
-                            <input type="text" id="sellerName" onblur="verificarJugador()" placeholder="Tu nombre en el juego" class="w-full input-albion rounded-lg p-3 text-sm focus:border-amber-500 outline-none">
-                            <div id="verify-status" class="text-[10px] italic h-4 mt-1"></div>
+            <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                <div class="lg:col-span-3 rpg-panel p-8 rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                        <div class="space-y-3">
+                            <label class="font-rpg text-xs text-amber-600 uppercase tracking-widest">Nombre del Mercader</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-user absolute left-4 top-4 text-slate-600"></i>
+                                <input type="text" id="sellerName" onblur="verificarJugador()" placeholder="IGN del Vendedor..." 
+                                       class="w-full input-rpg pl-12 p-4 rounded border-slate-700 text-sm">
+                            </div>
+                            <div id="verify-status" class="text-[10px] font-bold tracking-tighter h-4"></div>
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] text-slate-400 uppercase font-black">Ítem / Recurso</label>
-                            <input type="text" id="itemName" placeholder="Ej: Silver / Mamut / T8 Leather" class="w-full input-albion rounded-lg p-3 text-sm focus:border-amber-500 outline-none">
+
+                        <div class="space-y-3">
+                            <label class="font-rpg text-xs text-slate-400 uppercase tracking-widest">Carga Ofrecida</label>
+                            <div class="relative">
+                                <i class="fa-solid fa-box-open absolute left-4 top-4 text-slate-600"></i>
+                                <input type="text" id="itemName" placeholder="Ej: Silver / Mamut / T8.3..." 
+                                       class="w-full input-rpg pl-12 p-4 rounded border-slate-700 text-sm">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] text-slate-400 uppercase font-black">Monto / Valor Bruto</label>
-                            <input type="number" id="amount" oninput="calculatePreview()" placeholder="0.00" class="w-full input-albion rounded-lg p-3 text-sm focus:border-amber-500 outline-none">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-10">
+                        <div class="space-y-3">
+                            <label class="font-rpg text-xs text-slate-400 uppercase tracking-widest">Monto de Plata</label>
+                            <input type="number" id="amount" oninput="calculatePreview()" placeholder="000,000,000" 
+                                   class="w-full input-rpg p-4 rounded border-slate-700 font-mono text-amber-500 text-lg">
                         </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] text-slate-400 uppercase font-black">Punto de Entrega</label>
-                            <select id="location" class="w-full input-albion rounded-lg p-3 text-sm outline-none">
+                        <div class="space-y-3">
+                            <label class="font-rpg text-xs text-slate-400 uppercase tracking-widest">Punto de Encuentro</label>
+                            <select id="location" class="w-full input-rpg p-4 rounded border-slate-700 text-sm appearance-none">
                                 <option value="Martlock">Martlock</option>
                                 <option value="Caerleon">Caerleon</option>
                                 <option value="Fort Sterling">Fort Sterling</option>
-                                <option value="Thetford">Thetford</option>
-                                <option value="Lymhurst">Lymhurst</option>
-                                <option value="Bridgewatch">Bridgewatch</option>
                                 <option value="Brecilien">Brecilien</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 mb-6 flex justify-between items-center">
+                    <div class="bg-black/40 border border-amber-900/20 p-6 rounded mb-8 grid grid-cols-2 gap-4 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-2 opacity-10"><i class="fa-solid fa-calculator text-6xl"></i></div>
                         <div>
-                            <span class="block text-[10px] text-slate-500 uppercase font-bold">Comisión (0.06%)</span>
-                            <span class="gold-text font-mono text-lg" id="previewFee">0.00</span>
+                            <span class="block text-[10px] text-slate-500 uppercase font-black">Tributo al Clan (0.06%)</span>
+                            <span class="text-xl font-mono text-amber-700" id="previewFee">0.00</span>
                         </div>
-                        <div class="text-right">
-                            <span class="block text-[10px] text-slate-500 uppercase font-bold">Neto a Recibir</span>
-                            <span class="text-green-400 font-black font-mono text-2xl" id="previewNet">0.00</span>
+                        <div class="text-right border-l border-slate-800">
+                            <span class="block text-[10px] text-slate-500 uppercase font-black">Suma Neta</span>
+                            <span class="text-3xl font-mono text-green-500 block" id="previewNet">0.00</span>
                         </div>
                     </div>
 
-                    <button onclick="createTrade()" class="w-full btn-gold py-4 rounded-xl flex items-center justify-center gap-3 text-lg uppercase">
-                        <i class="fa-solid fa-handshake"></i> Registrar Transacción
+                    <button onclick="createTrade()" class="w-full btn-rpg py-5 rounded font-rpg font-black tracking-[0.4em] uppercase text-lg">
+                        Sellar Contrato
                     </button>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="glass-panel p-6 rounded-xl text-center border-dashed border border-slate-600">
-                        <i class="fa-solid fa-tower-broadcast text-3xl text-slate-600 mb-2"></i>
-                        <h4 class="text-[10px] font-black uppercase text-slate-400">Radar In-Game</h4>
-                        <div id="playerCard" class="mt-4 hidden p-2 bg-slate-900 rounded border border-amber-500/20">
-                            <div class="text-amber-500 font-bold text-lg" id="p-name">---</div>
-                            <div class="text-[10px] text-slate-400 font-mono" id="p-guild">---</div>
+                <div class="space-y-6">
+                    <div class="rpg-panel p-6 rounded-lg text-center pulse-gold">
+                        <h4 class="font-rpg text-[10px] text-amber-600 mb-4 tracking-widest">Estado del Radar</h4>
+                        <div id="playerCard" class="hidden animate-pulse">
+                            <div class="text-white font-bold text-xl" id="p-name">---</div>
+                            <div class="text-amber-500 text-[10px] uppercase tracking-widest mt-1" id="p-guild">---</div>
                         </div>
+                        <div id="no-player" class="text-slate-600 italic text-xs">Esperando señal de Albion...</div>
+                    </div>
+
+                    <div class="rpg-panel p-6 rounded-lg bg-[#0f141a]/80">
+                        <h4 class="font-rpg text-[10px] text-slate-400 mb-4 tracking-widest">CONSEJO TÁCTICO</h4>
+                        <p class="text-[11px] text-slate-500 leading-relaxed italic">
+                            "Asegúrate de realizar el intercambio en una zona segura o bajo custodia de un oficial de LIONS-GOLD."
+                        </p>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="view-rules" class="max-w-3xl mx-auto hidden">
-            <div class="glass-panel p-8 rounded-2xl border border-amber-500/20">
-                <h2 class="text-2xl font-black gold-text mb-6 uppercase italic">Estatutos LIONS-GOLD</h2>
-                <ul class="space-y-4 text-sm text-slate-300">
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-check gold-text mt-1"></i> El 0.06% se descuenta para el fondo de guerra del clan.</li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-shield-virus text-red-500 mt-1"></i> Suplantación de identidad es baneo inmediato.</li>
-                    <li class="flex items-start gap-3"><i class="fa-solid fa-clock text-blue-400 mt-1"></i> Los trades deben ser confirmados in-game por un oficial.</li>
-                </ul>
-            </div>
-        </div>
-
-        <div id="view-admin" class="max-w-6xl mx-auto hidden space-y-6">
-            <div class="flex justify-between items-center bg-red-950/20 p-4 rounded-xl border border-red-900/30">
-                <h2 class="font-black text-red-500 uppercase tracking-widest"><i class="fa-solid fa-terminal mr-2"></i> Comando Central</h2>
-                <button onclick="refreshAdminData()" class="bg-slate-800 px-4 py-2 rounded text-[10px] font-bold hover:bg-amber-600 hover:text-black">SINCRONIZAR RADAR</button>
-            </div>
-            
-            <div class="panel-tactico glass-panel rounded-xl overflow-hidden">
-                <table class="w-full text-left text-sm">
-                    <thead class="bg-slate-950 text-[10px] text-slate-500 uppercase">
+        <div id="view-admin" class="hidden animate-fadeIn">
+            <div class="rpg-panel rounded-lg overflow-hidden border-red-900/30">
+                <div class="bg-red-950/20 p-4 border-b border-red-900/30 flex justify-between items-center">
+                    <h3 class="font-rpg text-red-500 text-sm tracking-widest font-black">REGISTRO DE OPERACIONES</h3>
+                    <button onclick="refreshAdminData()" class="text-[9px] bg-red-900/20 border border-red-500 text-red-500 px-3 py-1 hover:bg-red-500 hover:text-white transition-all">SINCRO TOTAL</button>
+                </div>
+                <table class="w-full text-left text-xs">
+                    <thead class="bg-black/50 text-slate-500 uppercase font-black">
                         <tr>
-                            <th class="p-4">IGN</th>
-                            <th class="p-4">Carga</th>
-                            <th class="p-4">Monto</th>
-                            <th class="p-4">Ubicación</th>
-                            <th class="p-4">Status</th>
-                            <th class="p-4 text-right">Acción</th>
+                            <th class="p-5">Mercader</th>
+                            <th class="p-5">Carga</th>
+                            <th class="p-5 text-amber-500 text-right">Monto Neto</th>
+                            <th class="p-5">Zona</th>
+                            <th class="p-5 text-right">Acción</th>
                         </tr>
                     </thead>
                     <tbody id="adminBody" class="divide-y divide-slate-800">
@@ -138,15 +228,13 @@
                 </table>
             </div>
         </div>
-
     </main>
 
     <script>
-        const API_BASE = 'http://localhost:3000/api';
+        const API_BASE = 'http://127.0.0.1:3000/api';
         let adminToken = "";
         let playerVerified = false;
 
-        // 1. GESTIÓN DE PESTAÑAS (CORREGIDO)
         function switchTab(tabId) {
             if (tabId === 'admin' && !adminToken) {
                 const pass = prompt("🔐 INGRESE CLAVE DE MANDO:");
@@ -154,70 +242,68 @@
                 adminToken = pass;
             }
 
-            // Ocultar todas las vistas
             ['market', 'rules', 'admin'].forEach(id => {
-                document.getElementById('view-' + id).classList.add('hidden');
-                document.getElementById('btn-' + id).classList.remove('tab-active');
-                document.getElementById('btn-' + id).classList.add('text-slate-400');
+                const view = document.getElementById('view-' + id);
+                const btn = document.getElementById('btn-' + id);
+                if(view) view.classList.add('hidden');
+                if(btn) {
+                    btn.classList.remove('tab-active');
+                    btn.classList.add('text-slate-500');
+                }
             });
 
-            // Mostrar vista seleccionada
             document.getElementById('view-' + tabId).classList.remove('hidden');
             document.getElementById('btn-' + tabId).classList.add('tab-active');
-            document.getElementById('btn-' + tabId).classList.remove('text-slate-400');
-
             if(tabId === 'admin') refreshAdminData();
         }
 
-        // 2. RADAR DE ALBION (CORREGIDO)
         async function verificarJugador() {
             const name = document.getElementById('sellerName').value;
             const status = document.getElementById('verify-status');
             const card = document.getElementById('playerCard');
+            const placeholder = document.getElementById('no-player');
             
             if (name.length < 3) return;
-            status.innerHTML = "🔍 Escaneando Albion...";
+            status.innerHTML = "<span class='text-slate-500 animate-pulse'>SINCRONIZANDO...</span>";
             
             try {
-                // Proxy gratuito para evitar problemas de CORS en local
                 const res = await fetch(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${name}`);
                 const data = await res.json();
                 const player = data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
                 
                 if (player) {
-                    status.innerHTML = `<span class="text-green-500 font-bold">✅ CONFIRMADO</span>`;
+                    status.innerHTML = `<span class="text-green-500">SEÑAL ESTABLE</span>`;
                     card.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
                     document.getElementById('p-name').innerText = player.Name;
                     document.getElementById('p-guild').innerText = player.GuildName || "SIN GREMIO";
                     playerVerified = true;
                 } else {
-                    status.innerHTML = `<span class="text-red-500">❌ NO ENCONTRADO</span>`;
+                    status.innerHTML = `<span class="text-red-500">FUERA DE RANGO</span>`;
                     card.classList.add('hidden');
+                    placeholder.classList.remove('hidden');
                     playerVerified = false;
                 }
             } catch (e) {
-                status.innerHTML = `<span class="text-amber-500">⚠️ API OFFLINE (Bypass activo)</span>`;
+                status.innerHTML = `<span class="text-amber-500">MODO OFFLINE</span>`;
                 playerVerified = true; 
             }
         }
 
-        // 3. CÁLCULOS
         function calculatePreview() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const fee = amount * 0.0006;
-            document.getElementById('previewFee').innerText = fee.toLocaleString(undefined, {minimumFractionDigits: 2});
-            document.getElementById('previewNet').innerText = (amount - fee).toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('previewFee').innerText = fee.toLocaleString();
+            document.getElementById('previewNet').innerText = (amount - fee).toLocaleString();
         }
 
-        // 4. REGISTRO (API)
         async function createTrade() {
-            if (!playerVerified) return alert("Verifique su nombre con el Radar primero.");
             const seller = document.getElementById('sellerName').value;
             const item = document.getElementById('itemName').value;
-            const amount = document.getElementById('amount').value;
+            const amount = parseFloat(document.getElementById('amount').value);
             const loc = document.getElementById('location').value;
 
-            if(!seller || !item || !amount) return alert("Complete los datos tácticos.");
+            if(!seller || isNaN(amount)) return alert("⚠️ Error de protocolo: Datos insuficientes.");
 
             try {
                 const res = await fetch(`${API_BASE}/trades`, {
@@ -225,44 +311,34 @@
                     headers: {'Content-Type': 'application/json'},
                     body: JSON.stringify({ seller, item, amount, location: loc, fee: amount * 0.0006 })
                 });
-                if(res.ok) alert("Contrato Sellado exitosamente.");
-                else alert("Error en el servidor o estás en Blacklist.");
-            } catch(e) { alert("Error de conexión con el backend."); }
+                const data = await res.json();
+                if(res.ok) alert("🛡️ CONTRATO SELLADO EN LA BASE DE DATOS.");
+                else alert("❌ FALLO: " + data.error);
+            } catch(e) { alert("📡 ERROR: Backend fuera de línea."); }
         }
 
-        // 5. ADMIN (REFRESCAR)
         async function refreshAdminData() {
             const tbody = document.getElementById('adminBody');
             try {
                 const res = await fetch(`${API_BASE}/admin/users`, {
                     headers: { 'x-admin-token': adminToken }
                 });
-                if(res.status === 401) { alert("Clave Incorrecta"); switchTab('market'); return; }
-                
+                if(res.status === 401) { alert("Acceso Denegado"); switchTab('market'); return; }
                 const users = await res.json();
                 tbody.innerHTML = users.map(u => `
-                    <tr>
-                        <td class="p-4 font-bold">${u.username}</td>
-                        <td class="p-4 text-xs text-slate-400">${u.last_item || '---'}</td>
-                        <td class="p-4 text-emerald-400 font-mono">${u.last_amount || '0'}</td>
-                        <td class="p-4 text-xs italic">${u.last_location || '---'}</td>
-                        <td class="p-4"><span class="text-[9px] border border-slate-700 px-2 py-1 rounded">${u.status}</span></td>
-                        <td class="p-4 text-right"><button class="text-red-500 text-[10px] border border-red-900 px-2 py-1 rounded hover:bg-red-500 hover:text-white">BAN</button></td>
+                    <tr class="hover:bg-white/5 transition-colors">
+                        <td class="p-5 font-bold text-slate-300">${u.username}</td>
+                        <td class="p-5 text-slate-500">${u.last_item || '---'}</td>
+                        <td class="p-5 text-right text-green-500 font-mono font-bold">${(u.last_amount - u.last_fee).toLocaleString()}</td>
+                        <td class="p-5 text-slate-400 italic">${u.last_location || '---'}</td>
+                        <td class="p-5 text-right"><button class="border border-red-900 text-red-900 px-2 py-1 text-[8px] hover:bg-red-900 hover:text-white">BAN</button></td>
                     </tr>
                 `).join('');
-            } catch(e) { console.log(e); }
+            } catch(e) { console.error(e); }
         }
+
+        // Test inicial
+        console.log("Sistema LIONS-GOLD iniciado...");
     </script>
 </body>
 </html>
-// Añade esto al final de tu script para probar la conexión apenas cargue
-async function testConnection() {
-    try {
-        const res = await fetch(`${API_BASE}/ping`);
-        const data = await res.json();
-        console.log("📡 Estado del Servidor:", data.mensaje);
-    } catch (e) {
-        console.error("❌ Fallo crítico: El servidor no responde. Revisa si node server.js está activo.");
-    }
-}
-testConnection();
