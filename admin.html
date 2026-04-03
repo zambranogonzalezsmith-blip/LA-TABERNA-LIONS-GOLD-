@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>LIONS-GOLD | Centro de Comando</title>
+    <style>
+        .status-active { color: #00ff00; }
+        .status-blacklisted { color: #ff0000; font-weight: bold; }
+        .btn-ban { background: #660000; border: 1px solid red; color: white; cursor: pointer; }
+        .btn-up { background: #004400; color: white; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Panel de Control de Personal: LIONS-GOLD</h1>
+    </header>
+    <main>
+        <section class="panel">
+            <h2>Censo de Usuarios y Reputación</h2>
+            <table id="user-table" border="1" style="width: 100%; text-align: left;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Jugador (IGN)</th>
+                        <th>Reputación</th>
+                        <th>Estado</th>
+                        <th>Acciones Tácticas</th>
+                    </tr>
+                </thead>
+                <tbody id="user-list">
+                    </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api/admin';
+
+        async function loadUsers() {
+            const res = await fetch(`${API_URL}/users`);
+            const users = await res.json();
+            const list = document.getElementById('user-list');
+            list.innerHTML = users.map(u => `
+                <tr>
+                    <td>${u.id}</td>
+                    <td><strong>${u.username}</strong></td>
+                    <td>${u.reputation} ⭐</td>
+                    <td class="status-${u.status}">${u.status.toUpperCase()}</td>
+                    <td>
+                        <button class="btn-up" onclick="changeRep('${u.username}', 10)">+10 Rep</button>
+                        <button class="btn-ban" onclick="banUser('${u.username}')">BANEAR</button>
+                        ${u.status === 'blacklisted' ? `<button onclick="activateUser('${u.username}')">PERDONAR</button>` : ''}
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        async function banUser(username) {
+            if(!confirm(`¿Confirmas el baneo definitivo de ${username}?`)) return;
+            await fetch(`${API_URL}/update-status`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username, newStatus: 'blacklisted', reason: 'Fraude detectado' })
+            });
+            loadUsers();
+        }
+
+        async function changeRep(username, points) {
+            await fetch(`${API_URL}/reputation`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username, points })
+            });
+            loadUsers();
+        }
+
+        window.onload = loadUsers;
+    </script>
+</body>
+</html>
