@@ -255,3 +255,14 @@
     </script>
 </body>
 </html>
+// Añade esto al final de tu script para probar la conexión apenas cargue
+async function testConnection() {
+    try {
+        const res = await fetch(`${API_BASE}/ping`);
+        const data = await res.json();
+        console.log("📡 Estado del Servidor:", data.mensaje);
+    } catch (e) {
+        console.error("❌ Fallo crítico: El servidor no responde. Revisa si node server.js está activo.");
+    }
+}
+testConnection();
