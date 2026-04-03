@@ -73,3 +73,40 @@ app.listen(PORT, () => {
     console.log(`📍 URL: http://127.0.0.1:${PORT}`);
     console.log(`-----------------------------------------`);
 });
+const axios = require('axios'); // Asegúrate de tener axios instalado: npm install axios
+
+// --- RADAR TÁCTICO DE ALBION ---
+app.get('/api/verify-player/:name', async (req, res) => {
+    const playerName = req.params.name;
+    
+    try {
+        // Llamada oficial a la base de datos de Albion (GameInfo API)
+        const response = await axios.get(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${playerName}`, {
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+            }
+        });
+
+        // La API de Albion devuelve listas de players y guilds. Buscamos el match exacto.
+        const player = response.data.players.find(
+            p => p.Name.toLowerCase() === playerName.toLowerCase()
+        );
+
+        if (player) {
+            // Si el jugador existe, enviamos sus datos reales al Frontend
+            res.json({ 
+                found: true, 
+                name: player.Name, 
+                guild: player.GuildName || "SIN GREMIO",
+                alliance: player.AllianceName || "SIN ALIANZA",
+                killFame: player.KillFame 
+            });
+        } else {
+            res.json({ found: false });
+        }
+
+    } catch (error) {
+        console.error("⚠️ Error en conexión con Albion:", error.message);
+        res.status(500).json({ error: "No se pudo sincronizar con la base de datos de Albion" });
+    }
+});
