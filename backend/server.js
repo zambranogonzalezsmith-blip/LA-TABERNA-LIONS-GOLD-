@@ -1,3 +1,5 @@
+// CLAVE DE MANDO CENTRAL (Cámbiala por una segura)
+const ADMIN_TOKEN = "LG_CARACAS_2026_X7";
 const fs = require('fs');
 const path = require('path');
 const sqlite3 = require('sqlite3').verbose();
