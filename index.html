@@ -67,7 +67,7 @@
 
         /* DISEÑO DE PERGAMINO 📜 */
         .pergamino {
-            background: #f4e4bc; /* Color papel viejo */
+            background: #f4e4bc;
             background: linear-gradient(to right, #d4b483 0%, #f4e4bc 15%, #f4e4bc 85%, #d4b483 100%);
             border-radius: 5px;
             box-shadow: 0 10px 20px rgba(0,0,0,0.5), inset 0 0 50px rgba(139, 69, 19, 0.2);
@@ -139,12 +139,24 @@
                     <div class="space-y-3">
                         <label class="font-rpg text-xs text-slate-400 font-bold uppercase tracking-widest">Punto de Encuentro</label>
                         <select id="location" class="w-full input-rpg p-4 rounded-lg text-sm appearance-none cursor-pointer">
-                            <option value="Lymhurst">Lymhurst (Sede Central)</option>
-                            <option value="Martlock">Martlock</option>
-                            <option value="Bridgewatch">Bridgewatch</option>
-                            <option value="Fort Sterling">Fort Sterling</option>
-                            <option value="Thetford">Thetford</option>
-                            <option value="Caerleon">Caerleon</option>
+                            <optgroup label="Sede Principal" class="bg-slate-900">
+                                <option value="Lymhurst">Lymhurst</option>
+                            </optgroup>
+                            <optgroup label="Ciudades Reales" class="bg-slate-900">
+                                <option value="Martlock">Martlock</option>
+                                <option value="Bridgewatch">Bridgewatch</option>
+                                <option value="Fort Sterling">Fort Sterling</option>
+                                <option value="Thetford">Thetford</option>
+                                <option value="Caerleon">Caerleon</option>
+                            </optgroup>
+                            <optgroup label="Zonas Especiales" class="bg-slate-900">
+                                <option value="Brecilien">Brecilien</option>
+                                <option value="Outlands">Tierras Lejanas (HO)</option>
+                            </optgroup>
+                            <optgroup label="Propiedades Privadas" class="bg-slate-900">
+                                <option value="Isla de Gremio">Isla de Gremio (LIONS-GOLD)</option>
+                                <option value="Isla Privada">Isla Privada</option>
+                            </optgroup>
                         </select>
                     </div>
                 </div>
