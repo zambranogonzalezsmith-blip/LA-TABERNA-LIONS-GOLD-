@@ -56,3 +56,37 @@ app.post('/api/trades', checkBlacklist, (req, res) => {
 });
 
 app.listen(3000, () => console.log("🚀 Servidor LIONS-GOLD en puerto 3000"));
+// --- RUTA: OBTENER TODOS LOS USUARIOS (Para el Panel) ---
+app.get('/api/admin/users', (req, res) => {
+    db.all("SELECT id, username, reputation, status FROM users ORDER BY reputation DESC", [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+// --- RUTA: CAMBIAR STATUS (Banear/Activar) ---
+app.post('/api/admin/update-status', (req, res) => {
+    const { username, newStatus, reason } = req.body;
+
+    db.run("UPDATE users SET status = ? WHERE username = ?", [newStatus, username], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+
+        // Si es un baneo, registrar en la tabla Blacklist formalmente
+        if (newStatus === 'blacklisted') {
+            db.run(`INSERT INTO blacklist (bad_user_id, reason) 
+                    SELECT id, ? FROM users WHERE username = ?`, [reason || 'Violación de términos P2P', username]);
+        }
+        
+        console.log(`🛡️ SEGURIDAD: Usuario ${username} actualizado a ${newStatus}`);
+        res.json({ message: `Estado de ${username} actualizado a ${newStatus}` });
+    });
+});
+
+// --- RUTA: AJUSTAR REPUTACIÓN ---
+app.post('/api/admin/reputation', (req, res) => {
+    const { username, points } = req.body;
+    db.run("UPDATE users SET reputation = reputation + ? WHERE username = ?", [points, username], (err) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: "Reputación actualizada" });
+    });
+});
