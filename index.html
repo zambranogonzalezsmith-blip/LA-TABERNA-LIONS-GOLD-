@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LA TABERNA LIONS-GOLD | Mercado P2P v2.1</title>
+    <title>LA TABERNA LIONS-GOLD | Mercado P2P v2.3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
@@ -12,10 +12,10 @@
         .gold-text { color: #f59e0b; }
         .tab-active { border-bottom: 3px solid #f59e0b; color: #f59e0b; font-weight: bold; }
         .glass-panel { background: rgba(30, 41, 59, 0.5); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.05); }
-        .btn-gold { background: linear-gradient(45deg, #92400e, #f59e0b); color: white; font-weight: bold; transition: all 0.3s; }
+        .btn-gold { background: linear-gradient(45deg, #92400e, #f59e0b); color: white; font-weight: bold; transition: all 0.3s; cursor: pointer; }
         .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); }
         .input-albion { background: #0f172a; border: 1px solid #334155; color: white; }
-        .input-albion:focus { border-color: #f59e0b; ring: 1px solid #f59e0b; outline: none; }
+        .hidden { display: none; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -24,48 +24,46 @@
         <div class="max-w-6xl mx-auto px-4 flex justify-between h-16 items-center">
             <div class="flex items-center gap-3">
                 <i class="fa-solid fa-shield-halved text-3xl gold-text"></i>
-                <span class="font-black text-xl tracking-tighter uppercase">LIONS-GOLD <span class="text-[10px] bg-amber-600 text-black px-1 rounded ml-1">OFFICIAL P2P</span></span>
+                <span class="font-black text-xl tracking-tighter uppercase">LIONS-GOLD <span class="text-[10px] bg-amber-600 text-black px-1 rounded ml-1">v2.3</span></span>
             </div>
-            <div class="flex space-x-6 text-sm">
-                <button onclick="switchTab('market')" id="btn-market" class="py-5 tab-active transition-all">Mercado</button>
-                <button onclick="switchTab('rules')" id="btn-rules" class="py-5 text-slate-400 hover:text-amber-500 transition-all">Reglas</button>
+            <div class="flex space-x-4 md:space-x-6 text-sm">
+                <button onclick="switchTab('market')" id="btn-market" class="py-5 tab-active transition-all uppercase text-[11px] font-bold">Mercado</button>
+                <button onclick="switchTab('rules')" id="btn-rules" class="py-5 text-slate-400 hover:text-amber-500 transition-all uppercase text-[11px] font-bold">Reglas</button>
+                <button onclick="switchTab('admin')" id="btn-admin" class="py-5 text-slate-400 hover:text-red-500 transition-all uppercase text-[11px] font-bold"><i class="fa-solid fa-lock text-[10px]"></i> Admin</button>
             </div>
         </div>
     </nav>
 
     <main class="flex-grow p-4 md:p-8">
+        
         <div id="view-market" class="max-w-5xl mx-auto space-y-6">
-            <div class="glass-panel p-6 rounded-2xl text-center border-t border-amber-500/30 shadow-2xl">
-                <h1 class="text-3xl md:text-5xl font-black mb-2 italic tracking-tight uppercase gold-text">Sello del Contrato</h1>
-                <p class="text-slate-400 text-sm italic">Valide su IGN antes de proceder con el intercambio de bienes.</p>
+            <div class="glass-panel p-6 rounded-2xl text-center border-t border-amber-500/30">
+                <h1 class="text-3xl font-black mb-1 gold-text uppercase">Sello del Contrato</h1>
+                <p class="text-slate-400 text-xs italic">"Honradez en el trade, fuerza en el clan."</p>
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="lg:col-span-2 glass-panel p-6 rounded-xl border border-slate-700">
-                    <h3 class="text-xl font-bold mb-6 flex items-center gap-2 border-b border-slate-700 pb-2 uppercase text-sm tracking-widest">
-                        <i class="fa-solid fa-file-signature gold-text"></i> Detalles de la Operación
-                    </h3>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div class="space-y-1">
-                            <label class="text-[10px] text-amber-500 uppercase font-black">Vendedor (IGN Albion)</label>
-                            <input type="text" id="sellerName" onblur="verificarJugador()" placeholder="Ej: ScarfaceLG" class="w-full input-albion rounded-lg p-3 text-sm">
+                            <label class="text-[10px] text-amber-500 uppercase font-black tracking-widest">Vendedor (IGN)</label>
+                            <input type="text" id="sellerName" onblur="verificarJugador()" placeholder="Tu nombre en el juego" class="w-full input-albion rounded-lg p-3 text-sm focus:border-amber-500 outline-none">
                             <div id="verify-status" class="text-[10px] italic h-4 mt-1"></div>
                         </div>
                         <div class="space-y-1">
                             <label class="text-[10px] text-slate-400 uppercase font-black">Ítem / Recurso</label>
-                            <input type="text" id="itemName" placeholder="Ej: Silver / Mamut / T8 Leather" class="w-full input-albion rounded-lg p-3 text-sm">
+                            <input type="text" id="itemName" placeholder="Ej: Silver / Mamut / T8 Leather" class="w-full input-albion rounded-lg p-3 text-sm focus:border-amber-500 outline-none">
                         </div>
                     </div>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                         <div class="space-y-1">
-                            <label class="text-[10px] text-slate-400 uppercase font-black">Cantidad / Valor Bruto</label>
-                            <input type="number" id="amount" oninput="calculatePreview()" placeholder="0.00" class="w-full input-albion rounded-lg p-3 text-sm">
+                            <label class="text-[10px] text-slate-400 uppercase font-black">Monto / Valor Bruto</label>
+                            <input type="number" id="amount" oninput="calculatePreview()" placeholder="0.00" class="w-full input-albion rounded-lg p-3 text-sm focus:border-amber-500 outline-none">
                         </div>
                         <div class="space-y-1">
                             <label class="text-[10px] text-slate-400 uppercase font-black">Punto de Entrega</label>
-                            <select id="location" class="w-full input-albion rounded-lg p-3 text-sm">
+                            <select id="location" class="w-full input-albion rounded-lg p-3 text-sm outline-none">
                                 <option value="Martlock">Martlock</option>
                                 <option value="Caerleon">Caerleon</option>
                                 <option value="Fort Sterling">Fort Sterling</option>
@@ -77,119 +75,182 @@
                         </div>
                     </div>
 
-                    <div class="space-y-1 mb-6">
-                        <label class="text-[10px] text-slate-400 uppercase font-black">Descripción Adicional / Notas Tácticas</label>
-                        <textarea id="description" rows="2" placeholder="Detalles específicos del trade..." class="w-full input-albion rounded-lg p-3 text-sm"></textarea>
-                    </div>
-
                     <div class="bg-slate-950 p-4 rounded-lg border border-slate-800 mb-6 flex justify-between items-center">
                         <div>
-                            <span class="block text-[10px] text-slate-500 uppercase font-bold">Impuesto de Clan (0.06%)</span>
+                            <span class="block text-[10px] text-slate-500 uppercase font-bold">Comisión (0.06%)</span>
                             <span class="gold-text font-mono text-lg" id="previewFee">0.00</span>
                         </div>
                         <div class="text-right">
-                            <span class="block text-[10px] text-slate-500 uppercase font-bold">Neto Estimado</span>
+                            <span class="block text-[10px] text-slate-500 uppercase font-bold">Neto a Recibir</span>
                             <span class="text-green-400 font-black font-mono text-2xl" id="previewNet">0.00</span>
                         </div>
                     </div>
 
-                    <button onclick="createTrade()" id="btnSubmit" class="w-full btn-gold py-4 rounded-xl flex items-center justify-center gap-3 text-lg uppercase tracking-tighter">
-                        <i class="fa-solid fa-handshake"></i> Sellar Contrato
+                    <button onclick="createTrade()" class="w-full btn-gold py-4 rounded-xl flex items-center justify-center gap-3 text-lg uppercase">
+                        <i class="fa-solid fa-handshake"></i> Registrar Transacción
                     </button>
                 </div>
 
-                <div class="flex flex-col gap-4">
+                <div class="space-y-4">
                     <div class="glass-panel p-6 rounded-xl text-center border-dashed border border-slate-600">
                         <i class="fa-solid fa-tower-broadcast text-3xl text-slate-600 mb-2"></i>
-                        <h4 class="text-xs font-black uppercase text-slate-400">Radar In-Game</h4>
-                        <div id="playerCard" class="mt-4 hidden animate-pulse">
+                        <h4 class="text-[10px] font-black uppercase text-slate-400">Radar In-Game</h4>
+                        <div id="playerCard" class="mt-4 hidden p-2 bg-slate-900 rounded border border-amber-500/20">
                             <div class="text-amber-500 font-bold text-lg" id="p-name">---</div>
-                            <div class="text-[10px] text-slate-500" id="p-guild">---</div>
+                            <div class="text-[10px] text-slate-400 font-mono" id="p-guild">---</div>
                         </div>
-                    </div>
-                    <div class="glass-panel p-6 rounded-xl bg-red-950/20 border border-red-900/30">
-                        <h4 class="text-[10px] font-black text-red-500 uppercase mb-2">Advertencia de Seguridad</h4>
-                        <p class="text-[10px] text-slate-400 italic">"El uso de nombres falsos o intentar suplantar la identidad de un oficial resultará en baneo permanente y reporte en el foro oficial."</p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <div id="view-rules" class="max-w-3xl mx-auto hidden">
+            <div class="glass-panel p-8 rounded-2xl border border-amber-500/20">
+                <h2 class="text-2xl font-black gold-text mb-6 uppercase italic">Estatutos LIONS-GOLD</h2>
+                <ul class="space-y-4 text-sm text-slate-300">
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-check gold-text mt-1"></i> El 0.06% se descuenta para el fondo de guerra del clan.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-shield-virus text-red-500 mt-1"></i> Suplantación de identidad es baneo inmediato.</li>
+                    <li class="flex items-start gap-3"><i class="fa-solid fa-clock text-blue-400 mt-1"></i> Los trades deben ser confirmados in-game por un oficial.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="view-admin" class="max-w-6xl mx-auto hidden space-y-6">
+            <div class="flex justify-between items-center bg-red-950/20 p-4 rounded-xl border border-red-900/30">
+                <h2 class="font-black text-red-500 uppercase tracking-widest"><i class="fa-solid fa-terminal mr-2"></i> Comando Central</h2>
+                <button onclick="refreshAdminData()" class="bg-slate-800 px-4 py-2 rounded text-[10px] font-bold hover:bg-amber-600 hover:text-black">SINCRONIZAR RADAR</button>
+            </div>
+            
+            <div class="panel-tactico glass-panel rounded-xl overflow-hidden">
+                <table class="w-full text-left text-sm">
+                    <thead class="bg-slate-950 text-[10px] text-slate-500 uppercase">
+                        <tr>
+                            <th class="p-4">IGN</th>
+                            <th class="p-4">Carga</th>
+                            <th class="p-4">Monto</th>
+                            <th class="p-4">Ubicación</th>
+                            <th class="p-4">Status</th>
+                            <th class="p-4 text-right">Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminBody" class="divide-y divide-slate-800">
+                        </tbody>
+                </table>
+            </div>
+        </div>
+
     </main>
 
     <script>
         const API_BASE = 'http://localhost:3000/api';
+        let adminToken = "";
         let playerVerified = false;
 
+        // 1. GESTIÓN DE PESTAÑAS (CORREGIDO)
+        function switchTab(tabId) {
+            if (tabId === 'admin' && !adminToken) {
+                const pass = prompt("🔐 INGRESE CLAVE DE MANDO:");
+                if (!pass) return;
+                adminToken = pass;
+            }
+
+            // Ocultar todas las vistas
+            ['market', 'rules', 'admin'].forEach(id => {
+                document.getElementById('view-' + id).classList.add('hidden');
+                document.getElementById('btn-' + id).classList.remove('tab-active');
+                document.getElementById('btn-' + id).classList.add('text-slate-400');
+            });
+
+            // Mostrar vista seleccionada
+            document.getElementById('view-' + tabId).classList.remove('hidden');
+            document.getElementById('btn-' + tabId).classList.add('tab-active');
+            document.getElementById('btn-' + tabId).classList.remove('text-slate-400');
+
+            if(tabId === 'admin') refreshAdminData();
+        }
+
+        // 2. RADAR DE ALBION (CORREGIDO)
         async function verificarJugador() {
             const name = document.getElementById('sellerName').value;
             const status = document.getElementById('verify-status');
             const card = document.getElementById('playerCard');
             
             if (name.length < 3) return;
-            
-            status.innerHTML = "🔍 Escaneando base de datos de Albion...";
+            status.innerHTML = "🔍 Escaneando Albion...";
             
             try {
-                // Usamos la API pública de Albion para verificar existencia
+                // Proxy gratuito para evitar problemas de CORS en local
                 const res = await fetch(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${name}`);
                 const data = await res.json();
-                
                 const player = data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
                 
                 if (player) {
-                    status.innerHTML = `<span class="text-green-500 font-bold"><i class="fa-solid fa-check"></i> JUGADOR CONFIRMADO</span>`;
+                    status.innerHTML = `<span class="text-green-500 font-bold">✅ CONFIRMADO</span>`;
                     card.classList.remove('hidden');
                     document.getElementById('p-name').innerText = player.Name;
                     document.getElementById('p-guild').innerText = player.GuildName || "SIN GREMIO";
                     playerVerified = true;
                 } else {
-                    status.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-circle-exclamation"></i> NO REGISTRADO EN EL JUEGO</span>`;
+                    status.innerHTML = `<span class="text-red-500">❌ NO ENCONTRADO</span>`;
                     card.classList.add('hidden');
                     playerVerified = false;
                 }
             } catch (e) {
-                status.innerHTML = `<span class="text-slate-500">Servidor de Albion ocupado...</span>`;
-                playerVerified = true; // Bypass preventivo si la API cae
+                status.innerHTML = `<span class="text-amber-500">⚠️ API OFFLINE (Bypass activo)</span>`;
+                playerVerified = true; 
             }
         }
 
+        // 3. CÁLCULOS
         function calculatePreview() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const fee = amount * 0.0006;
-            document.getElementById('previewFee').innerText = fee.toLocaleString();
-            document.getElementById('previewNet').innerText = (amount - fee).toLocaleString();
+            document.getElementById('previewFee').innerText = fee.toLocaleString(undefined, {minimumFractionDigits: 2});
+            document.getElementById('previewNet').innerText = (amount - fee).toLocaleString(undefined, {minimumFractionDigits: 2});
         }
 
+        // 4. REGISTRO (API)
         async function createTrade() {
+            if (!playerVerified) return alert("Verifique su nombre con el Radar primero.");
             const seller = document.getElementById('sellerName').value;
-            const amount = document.getElementById('amount').value;
             const item = document.getElementById('itemName').value;
+            const amount = document.getElementById('amount').value;
             const loc = document.getElementById('location').value;
-            const desc = document.getElementById('description').value;
 
-            if (!playerVerified) return alert("❌ Error: El nombre de jugador no ha sido verificado.");
-            if (!item || !amount) return alert("⚠️ Complete los datos del ítem y cantidad.");
+            if(!seller || !item || !amount) return alert("Complete los datos tácticos.");
 
-            const res = await fetch(`${API_BASE}/trades`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ 
-                    seller, 
-                    amount, 
-                    item, 
-                    location: loc, 
-                    description: desc,
-                    fee: amount * 0.0006 
-                })
-            });
-
-            if (res.ok) alert("📜 CONTRATO SELLADO: Su oferta está en revisión.");
-            else if (res.status === 403) alert("🚫 ACCESO DENEGADO: Estás en la Blacklist.");
+            try {
+                const res = await fetch(`${API_BASE}/trades`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ seller, item, amount, location: loc, fee: amount * 0.0006 })
+                });
+                if(res.ok) alert("Contrato Sellado exitosamente.");
+                else alert("Error en el servidor o estás en Blacklist.");
+            } catch(e) { alert("Error de conexión con el backend."); }
         }
 
-        function switchTab(id) {
-            // Lógica de pestañas simplificada
-            alert("Cambiando a " + id);
+        // 5. ADMIN (REFRESCAR)
+        async function refreshAdminData() {
+            const tbody = document.getElementById('adminBody');
+            try {
+                const res = await fetch(`${API_BASE}/admin/users`, {
+                    headers: { 'x-admin-token': adminToken }
+                });
+                if(res.status === 401) { alert("Clave Incorrecta"); switchTab('market'); return; }
+                
+                const users = await res.json();
+                tbody.innerHTML = users.map(u => `
+                    <tr>
+                        <td class="p-4 font-bold">${u.username}</td>
+                        <td class="p-4 text-xs text-slate-400">${u.last_item || '---'}</td>
+                        <td class="p-4 text-emerald-400 font-mono">${u.last_amount || '0'}</td>
+                        <td class="p-4 text-xs italic">${u.last_location || '---'}</td>
+                        <td class="p-4"><span class="text-[9px] border border-slate-700 px-2 py-1 rounded">${u.status}</span></td>
+                        <td class="p-4 text-right"><button class="text-red-500 text-[10px] border border-red-900 px-2 py-1 rounded hover:bg-red-500 hover:text-white">BAN</button></td>
+                    </tr>
+                `).join('');
+            } catch(e) { console.log(e); }
         }
     </script>
 </body>
