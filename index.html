@@ -257,36 +257,40 @@
             if(tabId === 'admin') refreshAdminData();
         }
 
+        // --- MAGIA APLICADA AQUÍ: Conexión directa a tu backend ---
         async function verificarJugador() {
-            const name = document.getElementById('sellerName').value;
+            const name = document.getElementById('sellerName').value.trim();
             const status = document.getElementById('verify-status');
             const card = document.getElementById('playerCard');
             const placeholder = document.getElementById('no-player');
             
             if (name.length < 3) return;
-            status.innerHTML = "<span class='text-slate-500 animate-pulse'>SINCRONIZANDO...</span>";
+            status.innerHTML = "<span class='text-amber-500 animate-pulse'>📡 RASTREANDO SEÑAL...</span>";
             
             try {
-                const res = await fetch(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${name}`);
+                // Ahora apunta a tu propio servidor (Adiós errores de CORS)
+                const res = await fetch(`${API_BASE}/verify-player/${name}`);
                 const data = await res.json();
-                const player = data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
                 
-                if (player) {
-                    status.innerHTML = `<span class="text-green-500">SEÑAL ESTABLE</span>`;
+                if (data.found) {
+                    status.innerHTML = `<span class="text-green-500 font-bold">✅ IDENTIDAD CONFIRMADA</span>`;
                     card.classList.remove('hidden');
                     placeholder.classList.add('hidden');
-                    document.getElementById('p-name').innerText = player.Name;
-                    document.getElementById('p-guild').innerText = player.GuildName || "SIN GREMIO";
+                    
+                    document.getElementById('p-name').innerText = data.name;
+                    document.getElementById('p-guild').innerText = data.guild;
+                    
                     playerVerified = true;
                 } else {
-                    status.innerHTML = `<span class="text-red-500">FUERA DE RANGO</span>`;
+                    status.innerHTML = `<span class="text-red-500">❌ SUJETO NO ENCONTRADO</span>`;
                     card.classList.add('hidden');
                     placeholder.classList.remove('hidden');
                     playerVerified = false;
                 }
             } catch (e) {
-                status.innerHTML = `<span class="text-amber-500">MODO OFFLINE</span>`;
-                playerVerified = true; 
+                status.innerHTML = `<span class="text-red-400">⚠️ FALLO DE COMUNICACIÓN LOCAL</span>`;
+                console.error("Error en el radar local:", e);
+                playerVerified = false; 
             }
         }
 
@@ -298,6 +302,11 @@
         }
 
         async function createTrade() {
+            // Protección extra: Si el jugador no fue verificado, no deja avanzar
+            if (!playerVerified) {
+                return alert("⚠️ Protocolo denegado: Debes verificar un nombre válido en el Radar primero.");
+            }
+
             const seller = document.getElementById('sellerName').value;
             const item = document.getElementById('itemName').value;
             const amount = parseFloat(document.getElementById('amount').value);
