@@ -21,9 +21,9 @@
         .btn-gold { background: linear-gradient(45deg, #92400e, #f59e0b); color: white; font-weight: bold; transition: all 0.3s; }
         .btn-gold:hover { animation: pulse-gold 1.5s infinite; transform: translateY(-1px); }
         
-        /* Estilo para los estados del trade */
         .status-completed { background-color: #064e3b; color: #34d399; }
         .status-pending { background-color: #78350f; color: #fbbf24; }
+        .status-blacklisted { background-color: #7f1d1d; color: #fecaca; border: 1px solid #ef4444; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -47,10 +47,9 @@
     <main class="flex-grow p-4 md:p-8">
         
         <div id="view-market" class="max-w-5xl mx-auto space-y-6">
-            
             <div class="glass-panel p-6 rounded-2xl text-center relative overflow-hidden shadow-2xl">
                 <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent"></div>
-                <h1 class="text-3xl md:text-5xl font-black mb-2 italic tracking-tight">SISTEMA MERCATUS UNITI</h1>
+                <h1 class="text-3xl md:text-5xl font-black mb-2 italic tracking-tight uppercase">Sistema Mercatus Uniti</h1>
                 <p class="text-slate-400 text-sm md:text-base">Infraestructura de Comercio Seguro • Fee 0.06% • Protocolo Anti-Scam Activo</p>
             </div>
 
@@ -106,26 +105,13 @@
                     <div class="text-center">
                         <i class="fa-solid fa-fingerprint text-5xl text-slate-700 mb-4"></i>
                         <h3 class="text-lg font-black uppercase tracking-tight">Bóveda de Evidencia</h3>
-                        <p class="text-xs text-slate-500 mt-2 px-4 italic">Sube la captura de pantalla del trade in-game para validar el movimiento ante el sistema.</p>
+                        <p class="text-xs text-slate-500 mt-2 px-4 italic">Sube la captura de pantalla del trade para validar el movimiento.</p>
                     </div>
-
                     <div class="mt-6">
-                        <div id="upload-area" class="space-y-4">
-                            <button onclick="document.getElementById('fileInput').click()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white p-4 rounded-lg text-sm transition-all flex items-center justify-center gap-2">
-                                <i class="fa-solid fa-upload"></i> Subir Captura
-                            </button>
-                            <input type="file" id="fileInput" class="hidden" accept="image/*" onchange="handleFileUpload(this)">
-                        </div>
-                        
-                        <div id="preview-area" class="hidden space-y-3">
-                            <img id="img-preview" src="" class="w-full rounded-lg border border-amber-500/50 shadow-lg shadow-amber-500/10">
-                            <div class="flex items-center justify-between">
-                                <span class="text-[10px] text-green-400 font-bold uppercase tracking-widest flex items-center gap-1">
-                                    <i class="fa-solid fa-circle-check"></i> Lista para envío
-                                </span>
-                                <button onclick="resetUpload()" class="text-red-500 text-[10px] hover:underline font-bold uppercase">Borrar</button>
-                            </div>
-                        </div>
+                        <button onclick="document.getElementById('fileInput').click()" class="w-full bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white p-4 rounded-lg text-sm transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-upload"></i> Subir Captura
+                        </button>
+                        <input type="file" id="fileInput" class="hidden" accept="image/*">
                     </div>
                 </div>
             </div>
@@ -135,22 +121,19 @@
                     <h3 class="font-black text-sm uppercase tracking-widest flex items-center gap-2">
                         <i class="fa-solid fa-list-ul gold-text text-xs"></i> Registro de Operaciones Recientes
                     </h3>
-                    <span class="text-[10px] bg-slate-800 px-2 py-1 rounded text-slate-400">Total: <span id="tradeCountLabel">0</span></span>
                 </div>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-xs md:text-sm">
-                        <thead class="bg-slate-950 text-slate-500 uppercase tracking-tighter">
+                        <thead class="bg-slate-950 text-slate-500 uppercase">
                             <tr>
-                                <th class="p-4">UUID Operación</th>
+                                <th class="p-4">ID</th>
                                 <th class="p-4">Vendedor</th>
                                 <th class="p-4">Comprador</th>
-                                <th class="p-4">Monto Bruto</th>
-                                <th class="p-4">LG-Fee</th>
+                                <th class="p-4">Monto</th>
                                 <th class="p-4 text-center">Estado</th>
                             </tr>
                         </thead>
-                        <tbody id="tradesTable" class="divide-y divide-slate-800/50">
-                            </tbody>
+                        <tbody id="tradesTable" class="divide-y divide-slate-800/50"></tbody>
                     </table>
                 </div>
             </div>
@@ -158,64 +141,51 @@
 
         <div id="view-admin" class="max-w-5xl mx-auto hidden space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass-panel p-6 rounded-2xl border-l-4 border-amber-500 shadow-xl">
-                    <h4 class="text-slate-400 text-xs font-bold uppercase">Caja Fuerte (LIONS-GOLD)</h4>
-                    <p class="text-3xl font-black text-white mt-2 font-mono" id="totalEarnings">0</p>
-                    <p class="text-[10px] text-slate-500 mt-1 italic tracking-widest font-bold uppercase">Total Acumulado (0.06%)</p>
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-amber-500">
+                    <h4 class="text-slate-400 text-xs font-bold uppercase">Caja Fuerte LG</h4>
+                    <p class="text-3xl font-black text-white mt-2 font-mono" id="totalEarnings">0.00</p>
                 </div>
-                <div class="glass-panel p-6 rounded-2xl border-l-4 border-red-600 shadow-xl">
-                    <h4 class="text-slate-400 text-xs font-bold uppercase">Amenazas Detectadas</h4>
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-red-600">
+                    <h4 class="text-slate-400 text-xs font-bold uppercase">Amenazas</h4>
                     <p class="text-3xl font-black text-white mt-2 font-mono" id="totalBanned">0</p>
-                    <p class="text-[10px] text-slate-500 mt-1 italic tracking-widest font-bold uppercase">Entidades en Blacklist</p>
                 </div>
-                <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500 shadow-xl">
-                    <h4 class="text-slate-400 text-xs font-bold uppercase">Flujo Comercial</h4>
-                    <p class="text-3xl font-black text-white mt-2 font-mono" id="totalTrades">0</p>
-                    <p class="text-[10px] text-slate-500 mt-1 italic tracking-widest font-bold uppercase">Intercambios Exitosos</p>
+                <div class="glass-panel p-6 rounded-2xl border-l-4 border-emerald-500">
+                    <h4 class="text-slate-400 text-xs font-bold uppercase">Usuarios Activos</h4>
+                    <p class="text-3xl font-black text-white mt-2 font-mono" id="totalUsersCount">0</p>
                 </div>
             </div>
 
-            <div class="glass-panel p-6 rounded-2xl border border-red-950/30 shadow-2xl bg-slate-900/20">
+            <div class="glass-panel p-6 rounded-2xl border border-slate-800 shadow-2xl">
                 <div class="flex justify-between items-center mb-6">
-                    <div>
-                        <h3 class="text-xl font-black text-red-500 uppercase tracking-tighter italic">Protocolo Blacklist</h3>
-                        <p class="text-[10px] text-slate-500">Personajes restringidos para transacciones P2P.</p>
-                    </div>
-                    <button onclick="clearData()" class="text-[10px] bg-red-900/20 hover:bg-red-900/50 text-red-500 px-3 py-1 rounded transition-all">WIPE SYSTEM</button>
+                    <h3 class="text-xl font-black text-amber-500 uppercase italic">Gestión de Personal P2P</h3>
+                    <button onclick="refreshAdminData()" class="text-xs bg-slate-800 px-3 py-1 rounded hover:bg-slate-700 transition-all"><i class="fa-solid fa-rotate"></i> Actualizar Censo</button>
                 </div>
-                <div class="flex gap-2 mb-6">
-                    <input type="text" id="banInput" placeholder="Nombre exacto del personaje..." class="flex-1 bg-slate-950 border border-slate-800 rounded-lg p-3 text-white focus:border-red-600 outline-none shadow-inner">
-                    <button onclick="banUser()" class="bg-red-700 hover:bg-red-600 text-white px-8 py-3 rounded-lg font-black tracking-widest shadow-lg shadow-red-700/20">BANEAR</button>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-slate-950 text-slate-500 uppercase text-[10px] tracking-widest">
+                            <tr>
+                                <th class="p-4">ID</th>
+                                <th class="p-4">Jugador (IGN)</th>
+                                <th class="p-4">Reputación</th>
+                                <th class="p-4">Estatus</th>
+                                <th class="p-4 text-center">Protocolo de Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUserTable" class="divide-y divide-slate-800/50">
+                            </tbody>
+                    </table>
                 </div>
-                <ul id="blacklistList" class="grid grid-cols-1 md:grid-cols-2 gap-2">
-                    </ul>
             </div>
         </div>
 
-        <div id="view-rules" class="max-w-3xl mx-auto hidden animate-pulse-slow">
+        <div id="view-rules" class="max-w-3xl mx-auto hidden">
             <div class="glass-panel p-8 rounded-2xl shadow-2xl relative border-amber-500/20 border">
-                <i class="fa-solid fa-gavel absolute -top-5 -right-5 text-7xl text-slate-800/30"></i>
-                <h1 class="text-3xl font-black gold-text mb-8 border-b border-amber-500/30 pb-4 italic">ESTATUTOS DE LA TABERNA</h1>
+                <h1 class="text-3xl font-black gold-text mb-8 border-b border-amber-500/30 pb-4 italic uppercase">Estatutos de la Taberna</h1>
                 <div class="space-y-6 text-slate-300 text-sm leading-relaxed">
-                    <div class="flex gap-4">
-                        <span class="text-amber-500 font-black">01.</span>
-                        <p><strong class="text-white uppercase tracking-widest text-[11px]">Soberanía de Comisión:</strong> Se aplica un 0.06% fijo e innegociable para cubrir la infraestructura digital de LIONS-GOLD.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="text-amber-500 font-black">02.</span>
-                        <p><strong class="text-white uppercase tracking-widest text-[11px]">Prueba de Fe:</strong> No hay liberación de fondos sin el registro visual (Screenshot) del trade. La palabra no es suficiente.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="text-amber-500 font-black">03.</span>
-                        <p><strong class="text-white uppercase tracking-widest text-[11px]">Muro de la Vergüenza:</strong> Cualquier intento de fraude será penalizado con el baneo total de la red Mercatus Uniti y publicación de su IGN.</p>
-                    </div>
-                    <div class="flex gap-4">
-                        <span class="text-amber-500 font-black">04.</span>
-                        <p><strong class="text-white uppercase tracking-widest text-[11px]">Juramento Digital:</strong> Al presionar "Iniciar", ambas partes aceptan que este documento digital es el único registro válido ante una disputa.</p>
-                    </div>
-                </div>
-                <div class="mt-12 pt-6 border-t border-slate-800 text-center">
-                    <p class="text-[10px] text-slate-600 font-mono italic tracking-tighter italic uppercase">Propiedad de la División de Desarrollo de LIONS-GOLD • Caracas, 2026</p>
+                    <p><span class="text-amber-500 font-bold mr-2">01.</span> Comisión fija del 0.06% para mantenimiento de red.</p>
+                    <p><span class="text-amber-500 font-bold mr-2">02.</span> El registro visual es obligatorio para validación.</p>
+                    <p><span class="text-amber-500 font-bold mr-2">03.</span> El baneo por estafa es permanente y global.</p>
                 </div>
             </div>
         </div>
@@ -223,92 +193,90 @@
     </main>
 
     <script>
-        // --- BASE DE DATOS LOCAL ---
-        const DB_KEY = 'lg_db_p2p_v2';
-        let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
-            trades: [],
-            blacklist: ['Rata_Albion_01', 'FakeLions99'],
-            earnings: 0
-        };
+        // CONFIGURACIÓN CENTRAL
+        const API_BASE = 'http://localhost:3000/api'; 
 
-        // --- NAVEGACIÓN ---
+        // NAVEGACIÓN
         function switchTab(tabId) {
             ['market', 'admin', 'rules'].forEach(t => {
                 document.getElementById('view-' + t).classList.add('hidden');
                 document.getElementById('btn-' + t).classList.remove('tab-active');
-                document.getElementById('btn-' + t).classList.add('text-slate-400');
             });
             document.getElementById('view-' + tabId).classList.remove('hidden');
             document.getElementById('btn-' + tabId).classList.add('tab-active');
-            document.getElementById('btn-' + tabId).classList.remove('text-slate-400');
-            if(tabId === 'admin') updateAdminPanel();
+            
+            if(tabId === 'admin') refreshAdminData();
         }
 
-        // --- LÓGICA DE NEGOCIO (FEE 0.06%) ---
+        // LÓGICA DE CÁLCULO
         function calculatePreview() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const fee = amount * 0.0006;
-            const net = amount - fee;
-
-            document.getElementById('previewFee').innerText = fee.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 4});
-            document.getElementById('previewNet').innerText = net.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('previewFee').innerText = fee.toFixed(4);
+            document.getElementById('previewNet').innerText = (amount - fee).toFixed(2);
         }
 
-        // --- ACCIONES DE TRADE ---
-        function createTrade() {
-            const seller = document.getElementById('sellerName').value.trim();
-            const buyer = document.getElementById('buyerName').value.trim();
-            const amount = parseFloat(document.getElementById('amount').value);
-            const currency = document.getElementById('currency').value;
+        // --- FUNCIONES DE ADMINISTRACIÓN (SERVER CONNECT) ---
 
-            if(!seller || !buyer || !amount || amount <= 0) {
-                return alert("⚠️ ERROR: Completa los datos tácticos de la transacción.");
-            }
+        async function refreshAdminData() {
+            try {
+                const response = await fetch(`${API_BASE}/admin/users`);
+                const users = await response.json();
+                
+                const tbody = document.getElementById('adminUserTable');
+                tbody.innerHTML = '';
+                
+                let bannedCount = 0;
+                users.forEach(u => {
+                    if(u.status === 'blacklisted') bannedCount++;
+                    const statusClass = u.status === 'blacklisted' ? 'status-blacklisted' : 'text-green-400';
+                    
+                    tbody.innerHTML += `
+                        <tr class="border-b border-slate-800/50">
+                            <td class="p-4 text-slate-500 font-mono text-xs">${u.id}</td>
+                            <td class="p-4 font-bold text-white">${u.username}</td>
+                            <td class="p-4 text-amber-500">${u.reputation} ⭐</td>
+                            <td class="p-4"><span class="px-2 py-1 rounded text-[10px] font-black uppercase ${statusClass}">${u.status}</span></td>
+                            <td class="p-4 text-center space-x-2">
+                                <button onclick="updateRep('${u.username}', 10)" class="bg-emerald-900/30 text-emerald-500 p-1 px-2 rounded text-[10px] border border-emerald-500/30 hover:bg-emerald-500 hover:text-white transition-all">+ REP</button>
+                                <button onclick="toggleBan('${u.username}', '${u.status}')" class="bg-red-900/30 text-red-500 p-1 px-2 rounded text-[10px] border border-red-500/30 hover:bg-red-500 hover:text-white transition-all">
+                                    ${u.status === 'blacklisted' ? 'PERDONAR' : 'BANEAR'}
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                });
 
-            if(db.blacklist.includes(seller) || db.blacklist.includes(buyer)) {
-                return alert("⛔ SEGURIDAD: Usuario bloqueado detectado. Operación denegada por el alto mando.");
-            }
+                document.getElementById('totalBanned').innerText = bannedCount;
+                document.getElementById('totalUsersCount').innerText = users.length;
+            } catch (e) { console.error("Error cargando admin:", e); }
+        }
 
-            const fee = amount * 0.0006;
-            const tradeId = 'LG-' + Math.random().toString(36).substr(2, 5).toUpperCase();
+        async function updateRep(username, points) {
+            await fetch(`${API_BASE}/admin/reputation`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username, points })
+            });
+            refreshAdminData();
+        }
 
-            const newTrade = {
-                id: tradeId,
-                seller,
-                buyer,
-                amount,
-                fee,
-                currency,
-                status: 'Pendiente Evidencia',
-                timestamp: new Date().toLocaleString()
-            };
+        async function toggleBan(username, currentStatus) {
+            const newStatus = currentStatus === 'blacklisted' ? 'active' : 'blacklisted';
+            if(!confirm(`¿Cambiar estado de ${username} a ${newStatus.toUpperCase()}?`)) return;
 
-            db.trades.unshift(newTrade);
-            db.earnings += fee;
-            saveDB();
-            renderTrades();
-            alert(`✅ Trade ${tradeId} registrado en el sistema.`);
-            
-            // Reset parcial
-            document.getElementById('amount').value = '';
+            await fetch(`${API_BASE}/admin/update-status`, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ username, newStatus, reason: 'Actualización Manual' })
+            });
+            refreshAdminData();
+        }
+
+        // CARGA INICIAL
+        window.onload = () => {
             calculatePreview();
-        }
-
-        // --- GESTIÓN DE UI ---
-        function renderTrades() {
-            const tbody = document.getElementById('tradesTable');
-            document.getElementById('tradeCountLabel').innerText = db.trades.length;
-            tbody.innerHTML = '';
-
-            db.trades.forEach(trade => {
-                const statusClass = trade.status === 'Completado' ? 'status-completed' : 'status-pending';
-                tbody.innerHTML += `
-                    <tr class="hover:bg-slate-800/30 transition-all border-b border-slate-800/30">
-                        <td class="p-4 font-mono text-[10px] text-slate-500">${trade.id}</td>
-                        <td class="p-4 font-black text-white">${trade.seller}</td>
-                        <td class="p-4 text-slate-300 font-bold">${trade.buyer}</td>
-                        <td class="p-4 font-mono">${trade.amount.toLocaleString()} <span class="text-[10px] text-amber-500 font-black">${trade.currency}</span></td>
-                        <td class="p-4 text-amber-500 font-mono italic text-xs">+${trade.fee.toFixed(2)}</td>
-                        <td class="p-4 text-center">
-                            <span class="px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest ${statusClass}">
-    
+        };
+    </script>
+</body>
+</html>
