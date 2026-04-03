@@ -3,70 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | Centro de Comando</title>
+    <title>LIONS-GOLD | Comando Central</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+        
         :root {
             --gold: #f59e0b;
-            --bg: #0b1120;
-            --panel: rgba(30, 41, 59, 0.7);
+            --bg: #020617;
+            --panel: rgba(15, 23, 42, 0.9);
+            --border: #42301c;
         }
         body { 
             background-color: var(--bg); 
             color: #e2e8f0; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', sans-serif;
             margin: 0;
             padding: 20px;
+            background-image: radial-gradient(circle at top, #1e293b 0%, #020617 100%);
         }
         header {
             border-bottom: 2px solid var(--gold);
             margin-bottom: 30px;
-            padding-bottom: 10px;
+            padding-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        h1 { color: var(--gold); text-transform: uppercase; letter-spacing: 2px; }
+        h1 { font-family: 'Cinzel', serif; color: var(--gold); margin: 0; font-size: 1.5rem; letter-spacing: 2px; }
+        
         .panel { 
             background: var(--panel); 
-            padding: 20px; 
-            border-radius: 12px; 
-            border: 1px solid rgba(245, 158, 11, 0.2);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            padding: 25px; 
+            border-radius: 8px; 
+            border: 2px solid var(--border);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.7);
         }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { background: #0f172a; color: var(--gold); text-transform: uppercase; font-size: 0.8rem; padding: 12px; }
+        
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
+        th { background: #0f172a; color: var(--gold); text-transform: uppercase; font-size: 0.7rem; padding: 15px; border-bottom: 1px solid var(--border); }
         td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
         
-        .status-active { color: #00ff00; font-weight: bold; }
-        .status-blacklisted { color: #ff4444; font-weight: bold; background: rgba(255, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px; }
+        .status-active { color: #34d399; font-weight: bold; }
+        .status-blacklisted { color: #f87171; font-weight: bold; background: rgba(239, 68, 68, 0.1); padding: 4px 8px; border-radius: 4px; }
         
+        .badge-item { background: #1e293b; color: #94a3b8; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; border: 1px solid var(--border); }
+        .location-tag { color: var(--gold); font-size: 0.75rem; font-style: italic; }
+
         button { 
-            padding: 6px 12px; 
+            padding: 8px 14px; 
             border-radius: 4px; 
             cursor: pointer; 
             font-weight: bold; 
             border: none;
-            transition: 0.3s;
-            margin-right: 5px;
+            transition: 0.2s;
+            text-transform: uppercase;
+            font-size: 0.7rem;
         }
-        .btn-up { background: #064e3b; color: #34d399; border: 1px solid #34d399; }
-        .btn-up:hover { background: #34d399; color: #064e3b; }
-        .btn-ban { background: #7f1d1d; color: #fecaca; border: 1px solid #fecaca; }
-        .btn-ban:hover { background: #fecaca; color: #7f1d1d; }
-        .btn-auth { background: var(--gold); color: black; margin-bottom: 20px; }
+        .btn-up { background: #064e3b; color: #34d399; border: 1px solid #059669; }
+        .btn-up:hover { background: #059669; color: white; }
+        .btn-ban { background: #7f1d1d; color: #fecaca; }
+        .btn-ban:hover { background: #b91c1c; }
+        .btn-auth { background: var(--gold); color: black; font-family: 'Cinzel', serif; }
+        
+        .desc-cell { max-width: 200px; font-size: 0.75rem; color: #94a3b8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     </style>
 </head>
 <body>
     <header>
-        <h1>Panel de Control de Personal: LIONS-GOLD</h1>
-    </header>
-    <main>
+        <h1>COMANDO CENTRAL: LIONS-GOLD</h1>
         <button class="btn-auth" onclick="setAuthToken()">🔑 Validar Rango</button>
-        
+    </header>
+
+    <main>
         <section class="panel">
-            <h2>Censo de Usuarios y Reputación</h2>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <h2 style="font-family: 'Cinzel', serif; color: white;">Monitor de Operaciones P2P</h2>
+                <span id="load-status" style="font-size: 0.7rem; color: #64748b;"></span>
+            </div>
+            
             <table id="user-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
                         <th>Jugador (IGN)</th>
+                        <th>Último Ítem</th>
+                        <th>Monto/Qty</th>
+                        <th>Ubicación</th>
+                        <th>Descripción</th>
                         <th>Reputación</th>
                         <th>Estado</th>
                         <th>Acciones Tácticas</th>
@@ -83,7 +105,7 @@
         let adminToken = localStorage.getItem('lg_admin_token') || "";
 
         function setAuthToken() {
-            const token = prompt("Ingrese CLAVE DE MANDO CENTRAL:");
+            const token = prompt("INGRESE CLAVE DE MANDO CENTRAL:");
             if (token) {
                 adminToken = token;
                 localStorage.setItem('lg_admin_token', token);
@@ -92,6 +114,9 @@
         }
 
         async function loadUsers() {
+            const statusLabel = document.getElementById('load-status');
+            statusLabel.innerText = "Sincronizando...";
+            
             try {
                 const res = await fetch(`${API_URL}/users`, {
                     headers: { 'x-admin-token': adminToken }
@@ -104,33 +129,38 @@
 
                 const users = await res.json();
                 const list = document.getElementById('user-list');
+                
                 list.innerHTML = users.map(u => `
                     <tr>
-                        <td>${u.id}</td>
                         <td><strong>${u.username}</strong></td>
-                        <td>${u.reputation} ⭐</td>
+                        <td><span class="badge-item">${u.last_item || 'N/A'}</span></td>
+                        <td class="font-mono" style="color: #4ade80;">${u.last_amount || '0.00'}</td>
+                        <td><span class="location-tag">${u.last_location || 'Desconocido'}</span></td>
+                        <td class="desc-cell" title="${u.last_description || ''}">${u.last_description || 'Sin detalles'}</td>
+                        <td style="color: var(--gold);">${u.reputation} ⭐</td>
                         <td><span class="status-${u.status}">${u.status.toUpperCase()}</span></td>
                         <td>
-                            <button class="btn-up" onclick="changeRep('${u.username}', 10)">+10 Rep</button>
-                            <button class="btn-ban" onclick="banUser('${u.username}')">BANEAR</button>
-                            ${u.status === 'blacklisted' ? `<button onclick="activateUser('${u.username}')">PERDONAR</button>` : ''}
+                            <div style="display: flex; gap: 5px;">
+                                <button class="btn-up" onclick="changeRep('${u.username}', 10)" title="Aumentar Reputación">+10</button>
+                                <button class="btn-ban" onclick="banUser('${u.username}')">BAN</button>
+                                ${u.status === 'blacklisted' ? `<button style="background: #1e293b; color: white;" onclick="activateUser('${u.username}')">PERDÓN</button>` : ''}
+                            </div>
                         </td>
                     </tr>
                 `).join('');
+                statusLabel.innerText = "Actualizado";
             } catch (err) {
+                statusLabel.innerText = "Error de conexión";
                 console.error("Error cargando usuarios:", err);
             }
         }
 
         async function banUser(username) {
-            if(!confirm(`¿Confirmas el baneo definitivo de ${username}?`)) return;
+            if(!confirm(`¿Confirmas el baneo disciplinario de ${username}?`)) return;
             await fetch(`${API_URL}/update-status`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-admin-token': adminToken
-                },
-                body: JSON.stringify({ username, newStatus: 'blacklisted', reason: 'Fraude detectado' })
+                headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
+                body: JSON.stringify({ username, newStatus: 'blacklisted', reason: 'Incumplimiento de contrato P2P' })
             });
             loadUsers();
         }
@@ -138,10 +168,7 @@
         async function changeRep(username, points) {
             await fetch(`${API_URL}/reputation`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-admin-token': adminToken
-                },
+                headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
                 body: JSON.stringify({ username, points })
             });
             loadUsers();
@@ -150,10 +177,7 @@
         async function activateUser(username) {
             await fetch(`${API_URL}/update-status`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'x-admin-token': adminToken
-                },
+                headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
                 body: JSON.stringify({ username, newStatus: 'active' })
             });
             loadUsers();
@@ -161,7 +185,7 @@
 
         window.onload = () => {
             if (adminToken) loadUsers();
-            else alert("Por favor, valide su rango para acceder a los datos.");
+            else alert("Inicie sesión con su clave de mando.");
         };
     </script>
 </body>
