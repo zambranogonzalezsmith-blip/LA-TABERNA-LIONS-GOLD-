@@ -18,7 +18,6 @@
             --m-white: #f5f5f5;
         }
 
-        /* FONDO DE TABERNA MEDIEVAL */
         body { 
             background-color: #0a0a0a;
             background-image: linear-gradient(rgba(10, 10, 10, 0.85), rgba(15, 10, 5, 0.95)), 
@@ -35,7 +34,6 @@
         .font-medieval { font-family: 'MedievalSharp', cursive; }
         .font-mono { font-family: 'Roboto Mono', monospace; }
 
-        /* PANELES DE MADERA Y HIERRO */
         .rpg-panel {
             background: linear-gradient(145deg, rgba(45, 27, 19, 0.9), rgba(20, 12, 8, 0.95));
             border: 2px solid #5d4037;
@@ -44,7 +42,6 @@
             position: relative;
         }
 
-        /* BOTONES ESTILO FORJA */
         .btn-rpg {
             background: linear-gradient(to bottom, #8d6e63 0%, #3e2723 100%);
             border: 2px solid var(--m-gold);
@@ -61,14 +58,12 @@
             transform: translateY(-2px);
         }
 
-        /* INPUTS OSCUROS */
         .input-rpg {
             background: rgba(10, 5, 2, 0.8) !important;
             border: 1px solid #795548 !important;
             color: #d7ccc8;
-            transition: border-color 0.3s;
         }
-        .input-rpg:focus { border-color: var(--m-gold) !important; outline: none; box-shadow: 0 0 10px rgba(255,215,0,0.2); }
+        .input-rpg:focus { border-color: var(--m-gold) !important; outline: none; }
 
         .gold-gradient-text {
             background: linear-gradient(to bottom, #fffde7, #ffd700, #ff8f00);
@@ -77,7 +72,6 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
-        /* ESTANDARTES (BANDERAS BLANCO/VERDE CON LEÓN DORADO) */
         .banner-container {
             position: absolute; top: 0; left: 50%; transform: translateX(-50%);
             display: flex; gap: 40px; pointer-events: none; z-index: 0;
@@ -92,19 +86,10 @@
         .medieval-banner::after {
             content: ''; position: absolute; bottom: -39px; left: 0;
             border-left: 40px solid transparent; border-right: 40px solid transparent;
-            border-top: 40px solid var(--m-green); /* Punta del estandarte */
+            border-top: 40px solid var(--m-green);
         }
-        .medieval-banner::before {
-            content: ''; position: absolute; bottom: -39px; left: 0;
-            border-left: 40px solid var(--m-white); border-right: 40px solid transparent;
-            border-top: 40px solid transparent; z-index: 1;
-        }
-        .banner-lion {
-            color: var(--m-gold); font-size: 2.5rem; z-index: 10;
-            filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.8));
-        }
+        .banner-lion { color: var(--m-gold); font-size: 2.5rem; filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.8)); }
 
-        /* NAVEGACIÓN ACTIVA */
         .tab-active { border-bottom: 3px solid var(--m-gold); color: var(--m-gold); background: linear-gradient(to top, rgba(255, 215, 0, 0.1), transparent); }
     </style>
 </head>
@@ -117,13 +102,13 @@
 
     <nav class="bg-black/80 border-b-2 border-[#5d4037] backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 flex justify-between h-20 items-center">
-            <div class="flex items-center gap-4 cursor-pointer z-10" onclick="switchTab('market')">
-                <div class="p-2 border-2 border-yellow-600 rounded-full bg-black/50 shadow-[0_0_15px_rgba(255,215,0,0.3)]">
+            <div class="flex items-center gap-4 cursor-pointer" onclick="switchTab('market')">
+                <div class="p-2 border-2 border-yellow-600 rounded-full bg-black/50">
                     <i class="fa-solid fa-shield-cat text-3xl gold-gradient-text"></i>
                 </div>
                 <span class="font-medieval font-bold text-3xl tracking-widest gold-gradient-text">LIONS-GOLD</span>
             </div>
-            <div class="flex text-xs font-bold tracking-[0.1em] uppercase h-full items-center gap-1 z-10">
+            <div class="flex text-xs font-bold uppercase h-full items-center gap-1">
                 <button onclick="switchTab('market')" id="btn-market" class="px-4 tab-active h-full">Taberna</button>
                 <button onclick="switchTab('exchange')" id="btn-exchange" class="px-4 text-gray-400 hover:text-white h-full">Exchange</button>
                 <button onclick="switchTab('admin')" id="btn-admin" class="px-4 text-gray-500 hover:text-yellow-600 h-full">Mando</button>
@@ -134,64 +119,54 @@
     <main class="max-w-6xl mx-auto p-4 mt-8 flex-grow w-full space-y-12 relative z-10">
         
         <div id="view-market" class="space-y-8">
-            <div class="text-center space-y-3 bg-black/60 p-6 rounded-xl border border-yellow-900/30 backdrop-blur-sm">
-                <h2 class="text-5xl font-medieval gold-gradient-text tracking-wider drop-shadow-2xl">La Taberna de Lymhurst</h2>
-                <div class="text-gray-400 uppercase text-xs tracking-[0.4em] font-rpg">Registro Oficial de Contratos</div>
+            <div class="text-center space-y-3 bg-black/60 p-6 rounded-xl border border-yellow-900/30">
+                <h2 class="text-5xl font-medieval gold-gradient-text tracking-wider">La Taberna de Lymhurst</h2>
+                <div class="text-gray-400 uppercase text-xs tracking-[0.4em] font-rpg">Registro de Contratos de Plata</div>
             </div>
 
-            <div class="rpg-panel p-8 md:p-10 max-w-4xl mx-auto">
-                
+            <div class="rpg-panel p-8 max-w-4xl mx-auto">
                 <div class="mb-8 p-6 bg-black/50 rounded-lg border border-gray-700">
-                    <label class="font-rpg text-xs text-yellow-500 font-bold uppercase tracking-widest block mb-3"><i class="fa-solid fa-magnifying-glass mr-2"></i>Verificar Identidad del Mercader</label>
+                    <label class="font-rpg text-xs text-yellow-500 font-bold uppercase block mb-3">Verificar Mercader en Albion Online</label>
                     <div class="flex gap-3">
-                        <input type="text" id="sellerName" placeholder="Escribe el nombre exacto en Albion..." class="flex-grow input-rpg p-4 rounded text-sm font-bold">
-                        <button onclick="verificarJugador()" id="btnVerify" class="bg-blue-900 hover:bg-blue-800 text-blue-100 border border-blue-700 px-6 rounded font-rpg font-bold transition-colors">
+                        <input type="text" id="sellerName" placeholder="Nombre del personaje..." class="flex-grow input-rpg p-4 rounded font-bold">
+                        <button onclick="verificarJugador()" id="btnVerify" class="bg-blue-900 hover:bg-blue-800 text-blue-100 border border-blue-700 px-6 rounded font-rpg font-bold">
                             VERIFICAR
                         </button>
                     </div>
-                    <div id="verifyStatus" class="mt-3 text-xs font-mono text-gray-500">Esperando nombre del jugador...</div>
+                    <div id="verifyStatus" class="mt-3 text-xs font-mono text-gray-500 italic">Consulta la base de datos oficial del juego.</div>
                 </div>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                     <div class="space-y-3">
-                        <label class="font-rpg text-xs text-gray-400 font-bold uppercase tracking-widest">Mercancía Ofrecida</label>
-                        <input type="text" id="itemName" placeholder="Ej: Silver / Mamut / T8.3..." class="w-full input-rpg p-4 rounded text-sm">
+                        <label class="font-rpg text-xs text-gray-400 font-bold uppercase">Item / Servicio</label>
+                        <input type="text" id="itemName" placeholder="Ej: Silver / Mamut / T8.3..." class="w-full input-rpg p-4 rounded">
                     </div>
                     <div class="space-y-3">
-                        <label class="font-rpg text-xs text-gray-400 font-bold uppercase tracking-widest">Punto de Encuentro</label>
-                        <select id="location" class="w-full input-rpg p-4 rounded text-sm appearance-none cursor-pointer">
-                            <optgroup label="Sede Principal" class="bg-gray-900 text-yellow-500"><option value="Lymhurst">Lymhurst</option></optgroup>
-                            <optgroup label="Ciudades Reales" class="bg-gray-900 text-white">
-                                <option value="Martlock">Martlock</option>
-                                <option value="Bridgewatch">Bridgewatch</option>
-                                <option value="Fort Sterling">Fort Sterling</option>
-                                <option value="Thetford">Thetford</option>
-                                <option value="Caerleon">Caerleon</option>
-                            </optgroup>
-                            <optgroup label="Zonas Especiales" class="bg-gray-900 text-purple-400">
-                                <option value="Brecilien">Brecilien</option>
-                                <option value="Outlands">Tierras Lejanas (HO)</option>
-                            </optgroup>
-                            <optgroup label="Propiedades Privadas" class="bg-gray-900 text-green-400">
-                                <option value="Isla de Gremio">Isla de Gremio (LIONS-GOLD)</option>
-                                <option value="Isla Privada">Isla Privada</option>
-                            </optgroup>
+                        <label class="font-rpg text-xs text-gray-400 font-bold uppercase">Ubicación</label>
+                        <select id="location" class="w-full input-rpg p-4 rounded appearance-none">
+                            <option value="Lymhurst">Lymhurst</option>
+                            <option value="Martlock">Martlock</option>
+                            <option value="Bridgewatch">Bridgewatch</option>
+                            <option value="Fort Sterling">Fort Sterling</option>
+                            <option value="Thetford">Thetford</option>
+                            <option value="Caerleon">Caerleon</option>
+                            <option value="Brecilien">Brecilien</option>
                         </select>
                     </div>
                 </div>
 
                 <div class="space-y-3 mb-8">
-                    <label class="font-rpg text-xs text-gray-400 font-bold uppercase tracking-widest">Monto de Plata Bruto</label>
+                    <label class="font-rpg text-xs text-gray-400 font-bold uppercase">Monto Bruto</label>
                     <input type="number" id="amount" oninput="calculatePreview()" placeholder="0" class="w-full input-rpg p-4 rounded font-mono text-yellow-500 text-2xl text-center">
                 </div>
 
-                <div class="bg-black/80 border border-yellow-900/50 p-6 rounded-lg mb-8 flex justify-between items-center shadow-inner">
+                <div class="bg-black/80 border border-yellow-900/50 p-6 rounded-lg mb-8 flex justify-between items-center">
                     <div>
-                        <span class="block text-[10px] text-gray-400 uppercase font-black tracking-widest">Impuesto Gremio (0.06%)</span>
+                        <span class="block text-[10px] text-gray-400 uppercase font-black">Fee Gremial (0.06%)</span>
                         <span class="text-xl font-mono text-red-400 font-bold" id="previewFee">0</span>
                     </div>
                     <div class="text-right">
-                        <span class="block text-[10px] text-gray-400 uppercase font-black tracking-widest">Plata Neta a Recibir</span>
+                        <span class="block text-[10px] text-gray-400 uppercase font-black">Neto a Recibir</span>
                         <span class="text-4xl font-mono text-green-500 font-black" id="previewNet">0</span>
                     </div>
                 </div>
@@ -205,45 +180,34 @@
         <div id="view-exchange" class="hidden space-y-6">
             <div class="rpg-panel p-6">
                 <div class="flex justify-between items-end border-b border-yellow-900/30 pb-4 mb-6">
-                    <div>
-                        <h2 class="text-3xl font-medieval gold-gradient-text tracking-wider">LIONS EXCHANGE</h2>
-                        <p class="text-[10px] text-gray-400 uppercase font-mono">Terminal Comercial</p>
-                    </div>
+                    <h2 class="text-3xl font-medieval gold-gradient-text">LIONS EXCHANGE</h2>
                     <div class="text-right font-mono text-xs bg-black/50 p-2 rounded border border-gray-700">
-                        <span class="text-gray-400">1M Plata = </span>
-                        <span class="text-green-400 font-bold" id="rateUSD">$0.52</span> | 
-                        <span class="text-yellow-400 font-bold" id="rateBS">23.40 Bs</span>
+                        <span class="text-gray-400">1M = </span>
+                        <span class="text-green-400">$0.52</span> | <span class="text-yellow-400">23.40 Bs</span>
                     </div>
                 </div>
 
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
                     <div class="lg:col-span-4 bg-black/40 p-5 rounded border border-gray-800">
-                        <div class="flex mb-4 bg-black rounded p-1 border border-gray-700">
-                            <button onclick="setExType('VENTA')" id="exBtnVenta" class="w-1/2 py-2 text-xs font-bold rounded bg-red-900/80 text-white border border-red-500">VENTA</button>
-                            <button onclick="setExType('COMPRA')" id="exBtnCompra" class="w-1/2 py-2 text-xs font-bold rounded text-gray-500 hover:bg-gray-800">COMPRA</button>
+                        <div class="flex mb-4 bg-black rounded p-1">
+                            <button onclick="setExType('VENTA')" id="exBtnVenta" class="w-1/2 py-2 text-xs font-bold rounded bg-red-900/80 text-white">VENTA</button>
+                            <button onclick="setExType('COMPRA')" id="exBtnCompra" class="w-1/2 py-2 text-xs font-bold rounded text-gray-500">COMPRA</button>
                         </div>
                         <div class="space-y-4">
                             <input type="text" id="exItem" placeholder="Mercancía..." class="w-full input-rpg p-3 rounded text-sm">
-                            <input type="number" id="exPrice" oninput="calcExRates()" placeholder="Plata Total" class="w-full input-rpg p-3 rounded font-mono text-sm">
+                            <input type="number" id="exPrice" oninput="calcExRates()" placeholder="Precio Plata" class="w-full input-rpg p-3 rounded font-mono text-sm">
                             <div class="grid grid-cols-2 gap-2">
                                 <input type="text" id="exFrom" placeholder="Origen" class="input-rpg p-3 rounded text-xs">
                                 <input type="text" id="exTo" placeholder="Destino" class="input-rpg p-3 rounded text-xs">
                             </div>
-                            <input type="date" id="exDate" class="w-full input-rpg p-3 rounded text-xs text-gray-400">
-                            
-                            <div class="p-3 bg-black/80 rounded border border-gray-700 text-xs font-mono space-y-2">
-                                <div class="flex justify-between"><span>USD:</span> <span id="exValUSD" class="text-green-400">$0.00</span></div>
-                                <div class="flex justify-between"><span>BS:</span> <span id="exValBS" class="text-yellow-400">0.00 Bs</span></div>
-                            </div>
-                            <button onclick="submitExchangeOrder()" class="w-full btn-rpg py-3 rounded font-bold uppercase text-sm">Publicar Orden</button>
+                            <button onclick="submitExchangeOrder()" class="w-full btn-rpg py-3 rounded font-bold text-sm">PUBLICAR ORDEN</button>
                         </div>
                     </div>
 
-                    <div class="lg:col-span-8 bg-black/40 rounded border border-gray-800 flex flex-col min-h-[400px]">
-                        <div class="p-3 text-[10px] uppercase font-bold text-gray-400 grid grid-cols-4 border-b border-gray-700 bg-black/60">
-                            <span>Item / Tipo</span><span class="text-right">Precio</span><span class="text-right">Ruta</span><span class="text-right">Acción</span>
+                    <div class="lg:col-span-8 bg-black/40 rounded border border-gray-800 min-h-[300px]">
+                        <div id="exchangeBook" class="divide-y divide-gray-800">
+                            <div class="p-10 text-center text-xs opacity-50 italic">Cargando mercado...</div>
                         </div>
-                        <div id="exchangeBook" class="p-10 text-center text-xs opacity-50 italic font-rpg">Cargando libro de órdenes...</div>
                     </div>
                 </div>
             </div>
@@ -251,93 +215,53 @@
 
         <div id="view-admin" class="hidden">
             <div class="rpg-panel p-8">
-                <h3 class="font-rpg text-yellow-500 mb-6 flex justify-between items-center uppercase tracking-widest text-xl">
-                    <span><i class="fa-solid fa-crown mr-2"></i> Registros de Mando</span>
-                    <button onclick="refreshAdminData()" class="text-xs btn-rpg px-4 py-2 rounded"><i class="fa-solid fa-rotate mr-2"></i>Sincronizar</button>
+                <h3 class="font-rpg text-yellow-500 mb-6 flex justify-between items-center text-xl">
+                    <span><i class="fa-solid fa-crown mr-2"></i> ARCHIVOS SECRETOS</span>
+                    <button onclick="loadAdminLogs()" class="text-xs btn-rpg px-4 py-2 rounded">SINCRONIZAR</button>
                 </h3>
-                <div class="bg-black/60 rounded border border-gray-700 overflow-hidden">
-                    <table class="w-full text-left text-xs uppercase tracking-wider">
-                        <thead class="bg-black/90 text-yellow-600 font-bold">
-                            <tr>
-                                <th class="p-4 border-b border-gray-800">Mercader</th>
-                                <th class="p-4 border-b border-gray-800 text-right">Plata Neta</th>
-                                <th class="p-4 border-b border-gray-800">Zona</th>
-                            </tr>
-                        </thead>
-                        <tbody id="adminBody" class="divide-y divide-gray-800/50">
-                            <tr><td colspan="3" class="p-6 text-center text-gray-500 italic">Ingrese clave para ver pergaminos...</td></tr>
-                        </tbody>
-                    </table>
+                <div id="adminContainer" class="bg-black/60 rounded border border-gray-700 p-4 font-mono text-xs text-gray-400">
+                    Esperando autorización de Sargento...
                 </div>
             </div>
         </div>
-
     </main>
 
     <script>
-        // URL ACTUALIZADA
         const API_URL = "https://script.google.com/macros/s/AKfycbwQbVXd7_k_l0sESDEGLbLS1sBEVHiQTJXOvJxFLDnTmmmcDhbsaXAXPKh9g2b_pGph/exec";
-        let adminToken = ""; let exType = 'VENTA';
-        const RATE_USD = 0.52; const RATE_BS = 23.40;
-        let isPlayerVerified = false;
+        let exType = 'VENTA';
+        let isVerified = false;
 
         function switchTab(tabId) {
-            if (tabId === 'admin' && !adminToken) {
-                adminToken = prompt("🔐 CLAVE DE MANDO:");
-                if (!adminToken) return;
-                refreshAdminData();
-            }
             ['market', 'exchange', 'admin'].forEach(id => {
                 document.getElementById('view-' + id).classList.add('hidden');
-                document.getElementById('btn-' + id).classList.remove('tab-active', 'text-gray-400');
-                document.getElementById('btn-' + id).classList.add('text-gray-400');
+                document.getElementById('btn-' + id).classList.remove('tab-active');
             });
             document.getElementById('view-' + tabId).classList.remove('hidden');
             document.getElementById('btn-' + tabId).classList.add('tab-active');
-            document.getElementById('btn-' + tabId).classList.remove('text-gray-400');
-            
             if(tabId === 'exchange') loadExchangeData();
         }
 
-        // --- SISTEMA DE VERIFICACIÓN ALBION ONLINE ---
         async function verificarJugador() {
             const nombre = document.getElementById('sellerName').value.trim();
             const statusDiv = document.getElementById('verifyStatus');
-            const btn = document.getElementById('btnVerify');
+            if(!nombre) return;
 
-            if(!nombre) {
-                statusDiv.innerHTML = '<span class="text-red-400">⚠️ Ingrese un nombre primero.</span>';
-                return;
-            }
-
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
-            statusDiv.innerHTML = '<span class="text-yellow-400">Consultando archivos de Albion...</span>';
-
+            statusDiv.innerText = "Consultando Oráculo...";
             try {
-                const proxyUrl = `https://api.allorigins.win/raw?url=`;
-                const albionUrl = encodeURIComponent(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${nombre}`);
-                
-                const response = await fetch(proxyUrl + albionUrl);
-                const data = await response.json();
-                
-                const jugador = data.players.find(p => p.Name.toLowerCase() === nombre.toLowerCase());
+                const res = await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + nombre)}`);
+                const data = await res.json();
+                const p = data.players.find(x => x.Name.toLowerCase() === nombre.toLowerCase());
 
-                if (jugador) {
-                    const gremioStr = jugador.GuildName ? `Gremio: [${jugador.GuildName}]` : "Sin Gremio";
-                    statusDiv.innerHTML = `<span class="text-green-400 font-bold"><i class="fa-solid fa-check-circle"></i> IDENTIDAD CONFIRMADA | ${gremioStr}</span>`;
-                    isPlayerVerified = true;
-                    document.getElementById('sellerName').classList.add('border-green-500', 'text-green-400');
+                if(p) {
+                    statusDiv.innerHTML = `<span class="text-green-400">JUGADOR REAL: [${p.GuildName || 'Sin Gremio'}] - Kill Fame: ${p.KillFame.toLocaleString()}</span>`;
+                    isVerified = true;
                 } else {
-                    statusDiv.innerHTML = `<span class="text-red-500 font-bold"><i class="fa-solid fa-skull"></i> JUGADOR NO EXISTE</span>`;
-                    isPlayerVerified = false;
+                    statusDiv.innerHTML = `<span class="text-red-500">⚠ JUGADOR NO ENCONTRADO</span>`;
+                    isVerified = false;
                 }
-            } catch (error) {
-                statusDiv.innerHTML = `<span class="text-orange-400"><i class="fa-solid fa-triangle-exclamation"></i> Error de red al conectar con el servidor.</span>`;
-            }
-            btn.innerHTML = 'VERIFICAR';
+            } catch(e) { statusDiv.innerText = "Error de conexión con Albion."; }
         }
 
-        // --- CÁLCULOS Y CONTRATOS ---
         function calculatePreview() {
             const amount = parseFloat(document.getElementById('amount').value) || 0;
             const fee = amount * 0.0006;
@@ -346,88 +270,53 @@
         }
 
         async function createTrade() {
-            if(!isPlayerVerified) {
-                const proceed = confirm("⚠️ El jugador no ha sido verificado en la API de Albion. ¿Sellar contrato bajo su propio riesgo?");
-                if(!proceed) return;
-            }
-
-            const btn = document.getElementById('btnAction');
             const data = {
                 action: 'create',
-                seller: document.getElementById('sellerName').value.trim(),
-                item: document.getElementById('itemName').value.trim(),
+                seller: document.getElementById('sellerName').value,
+                item: document.getElementById('itemName').value,
                 amount: document.getElementById('amount').value,
-                location: document.getElementById('location').value,
-                net: document.getElementById('amount').value * 0.9994
+                location: document.getElementById('location').value
             };
+            if(!data.seller || !data.amount) return alert("Faltan datos en el pergamino.");
 
-            if(!data.seller || data.amount <= 0) return alert("⚠️ Manifiesto incompleto.");
-            
-            btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-hourglass-half fa-spin"></i> Sellando...';
-            
             try {
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("📜 CONTRATO SELLADO Y ENVIADO A MANDO.");
+                alert("CONTRATO SELLADO");
                 location.reload();
-            } catch(e) { alert("Error de red."); btn.disabled = false; btn.innerHTML = '<i class="fa-solid fa-scroll"></i> Sellar Contrato'; }
+            } catch(e) { alert("Error al enviar."); }
         }
 
-        // --- EXCHANGE LOGIC ---
-        function setExType(type) {
-            exType = type;
-            document.getElementById('exBtnVenta').className = type === 'VENTA' ? 'w-1/2 py-2 text-xs font-bold rounded bg-red-900/80 text-white border border-red-500' : 'w-1/2 py-2 text-xs font-bold rounded text-gray-500 hover:bg-gray-800 border border-transparent';
-            document.getElementById('exBtnCompra').className = type === 'COMPRA' ? 'w-1/2 py-2 text-xs font-bold rounded bg-green-900/80 text-white border border-green-500' : 'w-1/2 py-2 text-xs font-bold rounded text-gray-500 hover:bg-gray-800 border border-transparent';
-        }
-
-        function calcExRates() {
-            const price = parseFloat(document.getElementById('exPrice').value) || 0;
-            const millions = price / 1000000;
-            document.getElementById('exValUSD').innerText = "$" + (millions * RATE_USD).toFixed(2);
-            document.getElementById('exValBS').innerText = (millions * RATE_BS).toFixed(2) + " Bs";
-        }
-
-        async function loadExchangeData() {
-            const container = document.getElementById('exchangeBook');
+        function loadExchangeData() {
             const script = document.createElement('script');
-            script.src = `${API_URL}?callback=renderExchange&t=${new Date().getTime()}`;
+            script.src = `${API_URL}?callback=renderExchange&t=${Date.now()}`;
             document.body.appendChild(script);
-            script.onload = () => script.remove();
         }
 
         window.renderExchange = function(data) {
             const container = document.getElementById('exchangeBook');
-            if(!data || data.length === 0) {
-                container.innerHTML = '<div class="p-10 text-center text-xs opacity-50 italic font-rpg">No hay órdenes activas.</div>';
-                return;
-            }
-            container.innerHTML = data.reverse().map(o => `
-                <div class="grid grid-cols-4 p-3 border-b border-gray-800/50 text-[11px] items-center hover:bg-white/5">
-                    <div class="font-bold uppercase"><span class="${o.type === 'VENTA' ? 'text-red-500' : 'text-green-500'}">[${o.type || 'VENTA'}]</span> ${o.item || 'PLATA'}</div>
-                    <div class="text-right font-mono text-yellow-500">${parseInt(o.price || 0).toLocaleString()}</div>
-                    <div class="text-right text-gray-400 font-mono">${o.locStart || '-'} > ${o.locEnd || '-'}</div>
-                    <div class="text-right"><button class="text-[9px] bg-yellow-900/30 text-yellow-500 px-2 py-1 rounded border border-yellow-700/50 hover:bg-yellow-600 hover:text-black">TRATAR</button></div>
+            container.innerHTML = data.map(o => `
+                <div class="p-4 flex justify-between items-center hover:bg-white/5">
+                    <div>
+                        <span class="${o.type === 'VENTA' ? 'text-red-500' : 'text-green-500'} font-bold">[${o.type}]</span>
+                        <span class="ml-2">${o.item}</span>
+                    </div>
+                    <div class="font-mono text-yellow-500">${parseInt(o.price).toLocaleString()}</div>
                 </div>
-            `).join('');
+            `).join('') || '<div class="p-10 text-center">No hay órdenes.</div>';
         };
 
-        async function submitExchangeOrder() {
-            const data = {
-                action: 'create',
-                type: exType,
-                item: document.getElementById('exItem').value,
-                price: document.getElementById('exPrice').value,
-                locStart: document.getElementById('exFrom').value,
-                locEnd: document.getElementById('exTo').value
-            };
-            if(!data.item || !data.price) return alert("Faltan datos.");
-            try {
-                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Orden enviada.");
-                loadExchangeData();
-            } catch(e) { alert("Error."); }
+        function loadAdminLogs() {
+            const pass = prompt("CLAVE DE ACCESO:");
+            if(!pass) return;
+            const script = document.createElement('script');
+            script.src = `${API_URL}?token=${pass}&callback=renderAdmin&t=${Date.now()}`;
+            document.body.appendChild(script);
         }
 
-        async function refreshAdminData() { alert("Accediendo a los archivos de Mando..."); }
+        window.renderAdmin = function(data) {
+            const cont = document.getElementById('adminContainer');
+            cont.innerHTML = data.reverse().map(r => `<div>> ${r.seller} vendió ${r.item} por ${parseInt(r.amount).toLocaleString()}</div>`).join('');
+        };
     </script>
 </body>
 </html>
