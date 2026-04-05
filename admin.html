@@ -7,12 +7,22 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto+Mono:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto+Mono:wght@400;700&family=Inter:wght@400;700&display=swap');
+        
         body { background: #07090a; color: #cbd5e1; font-family: 'Inter', sans-serif; }
         .font-rpg { font-family: 'Cinzel', serif; }
-        .panel-mando { background: linear-gradient(145deg, #0f172a, #020617); border: 1px solid #1e293b; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .panel-mando { 
+            background: linear-gradient(145deg, #0f172a, #020617); 
+            border: 1px solid #1e293b; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5); 
+        }
         .gold-text { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
-        .row-item:hover { background: rgba(30, 41, 59, 0.5); border-left: 4px solid #fbbf24; transition: 0.2s; }
+        .row-item:hover { 
+            background: rgba(30, 41, 59, 0.5); 
+            border-left: 4px solid #fbbf24; 
+            transition: 0.2s; 
+        }
+        .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
     </style>
 </head>
 <body class="min-h-screen p-4 md:p-8">
@@ -33,15 +43,15 @@
 
     <main class="max-w-6xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <div class="panel-mando p-6 rounded-lg">
+            <div class="panel-mando p-6 rounded-lg border-t-2 border-amber-500/30">
                 <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Total Operado (Silver)</span>
                 <div class="text-2xl font-mono gold-text mt-1" id="statTotal">0</div>
             </div>
-            <div class="panel-mando p-6 rounded-lg">
+            <div class="panel-mando p-6 rounded-lg border-t-2 border-emerald-500/30">
                 <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Impuestos de Gremio</span>
                 <div class="text-2xl font-mono text-emerald-500 mt-1" id="statTax">0</div>
             </div>
-            <div class="panel-mando p-6 rounded-lg">
+            <div class="panel-mando p-6 rounded-lg border-t-2 border-sky-500/30">
                 <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Contratos Sellados</span>
                 <div class="text-2xl font-mono text-sky-500 mt-1" id="statCount">0</div>
             </div>
@@ -72,48 +82,63 @@
         // Al cargar la página pedimos la clave
         window.onload = () => {
             CLAVE_ACCESO = prompt("🔐 INGRESE CLAVE DE ACCESO NIVEL SARGENTO:");
-            if(CLAVE_ACCESO) sincronizarMando();
-            else document.getElementById('contenedorRegistros').innerHTML = "<p class='p-10 text-center text-red-500'>ACCESO DENEGADO</p>";
+            if(CLAVE_ACCESO) {
+                sincronizarMando();
+            } else {
+                document.getElementById('contenedorRegistros').innerHTML = `
+                    <div class="p-20 text-center text-red-500 font-bold uppercase tracking-widest">
+                        <i class="fa-solid fa-ban text-3xl mb-4 block"></i> ACCESO DENEGADO
+                    </div>`;
+            }
         };
 
         function sincronizarMando() {
             const container = document.getElementById('contenedorRegistros');
-            container.innerHTML = '<div class="p-20 text-center text-amber-500 font-mono text-xs uppercase animate-pulse">Sincronizando con HQ de Google...</div>';
+            container.innerHTML = `
+                <div class="p-20 text-center">
+                    <div class="inline-block animate-spin mb-4 text-amber-500 text-3xl"><i class="fa-solid fa-compass"></i></div>
+                    <div class="text-amber-500 font-mono text-xs uppercase tracking-[0.3em] animate-pulse">Sincronizando con HQ de Google...</div>
+                </div>`;
 
             // Canal JSONP para evitar bloqueos de seguridad (CORS)
             const script = document.createElement('script');
-            script.src = `${API_URL}?callback=procesarDatosMando&token=${encodeURIComponent(CLAVE_ACCESO)}&t=${new Date().getTime()}`;
+            // Usamos encodeURIComponent para proteger caracteres especiales en la clave
+            script.src = `${API_URL}?callback=procesarDatosMando&token=${encodeURIComponent(CLAVE_ACCESO)}&t=${Date.now()}`;
             document.body.appendChild(script);
             
-            // Limpiar el script después de usarlo
             script.onload = () => script.remove();
+            script.onerror = () => {
+                container.innerHTML = "<p class='p-10 text-center text-red-500'>Error crítico de conexión.</p>";
+            };
         }
 
-        // Esta función recibe los datos del Excel
+        // Esta función procesa los datos que llegan desde el script de Google
         window.procesarDatosMando = function(data) {
             const container = document.getElementById('contenedorRegistros');
             
-            if(!data || data.error) {
-                container.innerHTML = `<div class="p-20 text-center text-red-500 font-bold uppercase tracking-widest">
-                    <i class="fa-solid fa-triangle-exclamation text-3xl mb-4 block"></i>
-                    Error de Autenticación o Enlace Inválido
-                </div>`;
+            // Si el servidor devuelve error o no hay datos
+            if(!data || data.error || typeof data === 'string') {
+                container.innerHTML = `
+                    <div class="p-20 text-center text-red-500 font-bold uppercase tracking-widest">
+                        <i class="fa-solid fa-triangle-exclamation text-3xl mb-4 block"></i>
+                        Clave de Acceso Incorrecta o Error en Base de Datos
+                    </div>`;
                 return;
             }
 
             if(data.length === 0) {
-                container.innerHTML = '<div class="p-20 text-center text-slate-500 italic">No hay registros en el libro mayor.</div>';
+                container.innerHTML = '<div class="p-20 text-center text-slate-500 italic font-mono">El libro de contratos está vacío.</div>';
                 return;
             }
 
-            // Cálculos de estadísticas
             let totalSilver = 0;
             let totalTax = 0;
 
-            // Inyectar filas
-            container.innerHTML = data.reverse().map(reg => {
-                const monto = parseInt(reg.amount || reg.monto || 0);
-                const neto = parseInt(reg.net || reg.neta || 0);
+            // Mapear los registros (el .reverse() pone lo más nuevo arriba)
+            const htmlFilas = data.reverse().map(reg => {
+                // Normalización de datos (soporta nombres en inglés o español)
+                const monto = parseFloat(reg.amount || reg.monto || 0);
+                const neto = parseFloat(reg.net || reg.neta || 0);
                 const impuesto = monto - neto;
                 
                 totalSilver += monto;
@@ -122,25 +147,29 @@
                 return `
                 <div class="grid grid-cols-5 p-4 items-center row-item transition-all">
                     <div class="col-span-2">
-                        <span class="block font-bold text-slate-200 text-sm">${reg.seller || reg.mercader || 'Desconocido'}</span>
-                        <span class="text-[10px] text-amber-600 font-mono uppercase">${reg.item || 'S/D'}</span>
+                        <span class="block font-bold text-slate-200 text-sm uppercase">${reg.seller || reg.mercader || 'Anónimo'}</span>
+                        <span class="text-[10px] text-amber-600 font-mono font-bold uppercase tracking-tighter italic">📦 ${reg.item || 'Suministros'}</span>
                     </div>
                     <div class="text-right">
-                        <span class="block font-mono text-sm text-emerald-400 font-bold">${neto.toLocaleString()}</span>
-                        <span class="text-[9px] text-slate-600 italic">Fee: ${impuesto.toLocaleString()}</span>
+                        <span class="block font-mono text-sm text-emerald-400 font-bold">${Math.floor(neto).toLocaleString()}</span>
+                        <span class="text-[9px] text-slate-600 italic">Fee: ${Math.floor(impuesto).toLocaleString()}</span>
                     </div>
                     <div class="text-right text-[10px] font-mono text-slate-400">
-                        <i class="fa-solid fa-map-pin mr-1 text-red-500 opacity-50"></i> ${reg.location || 'N/A'}
+                        <span class="bg-slate-800 px-2 py-0.5 rounded border border-slate-700">
+                            <i class="fa-solid fa-map-pin mr-1 text-red-500 opacity-50"></i> ${reg.location || 'Z. Desconocida'}
+                        </span>
                     </div>
                     <div class="text-right">
-                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[8px] font-black border border-emerald-500/20">VERIFICADO</span>
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[8px] font-black border border-emerald-500/20">SELLADO</span>
                     </div>
                 </div>`;
             }).join('');
 
-            // Actualizar Widgets superiores
-            document.getElementById('statTotal').innerText = totalSilver.toLocaleString();
-            document.getElementById('statTax').innerText = totalTax.toLocaleString();
+            container.innerHTML = htmlFilas;
+
+            // Actualizar Widgets con formato legible
+            document.getElementById('statTotal').innerText = Math.floor(totalSilver).toLocaleString();
+            document.getElementById('statTax').innerText = Math.floor(totalTax).toLocaleString();
             document.getElementById('statCount').innerText = data.length;
         };
     </script>
