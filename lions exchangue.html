@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIONS-GOLD | EXCHANGE P2P</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto+Mono:wght@400;700&display=swap');
+        :root { --gold: #c5a059; --bg-dark: #0b0e11; --binance-green: #02c076; --binance-red: #f84960; }
+        body { background: var(--bg-dark); color: #eaecef; font-family: 'Inter', sans-serif; }
+        .font-rpg { font-family: 'Cinzel', serif; }
+        .font-mono { font-family: 'Roboto Mono', monospace; }
+        .trade-panel { background: #161a1e; border: 1px solid #2b3139; }
+        .input-trade { background: #2b3139; border: 1px solid transparent; color: white; }
+        .input-trade:focus { border-color: var(--gold); outline: none; }
+        .tab-active { border-bottom: 2px solid var(--gold); color: var(--gold); }
+        /* Estilo de Pergamino para la Sede */
+        .pergamino { background: #f4e4bc; color: #5d4037; border-top: 4px solid #8d6e63; border-bottom: 4px solid #8d6e63; }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <nav class="p-4 bg-[#161a1e] border-b border-gray-800 flex justify-between items-center sticky top-0 z-50">
+        <div class="flex items-center gap-3">
+            <i class="fa-solid fa-lion text-2xl text-amber-500"></i>
+            <span class="font-rpg font-black text-lg tracking-tighter">LIONS-EXCHANGE</span>
+        </div>
+        <div class="flex gap-6 text-[10px] font-mono">
+            <div class="text-gray-400">1M SILVER / USD: <span class="text-green-500" id="priceUSD">$0.50</span></div>
+            <div class="text-gray-400">1M SILVER / BS: <span class="text-yellow-500" id="priceBS">22.50</span></div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+        
+        <div class="lg:col-span-4 space-y-4">
+            <div class="trade-panel p-5 rounded-lg shadow-xl">
+                <h2 class="font-rpg text-amber-500 text-sm mb-4 uppercase tracking-widest">Crear Orden de Mercado</h2>
+                
+                <div class="flex mb-4 bg-gray-900 rounded p-1">
+                    <button onclick="setOrderType('VENTA')" id="btnVenta" class="w-1/2 py-2 text-xs font-bold rounded bg-red-500/20 text-red-500">VENTA</button>
+                    <button onclick="setOrderType('COMPRA')" id="btnCompra" class="w-1/2 py-2 text-xs font-bold rounded hover:bg-green-500/10">COMPRA</button>
+                </div>
+
+                <div class="space-y-3">
+                    <input type="text" id="itemName" placeholder="Item de Albion (Ej: Oso T8 / Silver)" class="w-full p-3 rounded input-trade text-sm">
+                    <input type="number" id="price" oninput="calcExchange()" placeholder="Precio (Silver)" class="w-full p-3 rounded input-trade text-sm font-mono">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="locStart" placeholder="Lugar Compra" class="p-3 rounded input-trade text-[10px]">
+                        <input type="text" id="locEnd" placeholder="Lugar Entrega" class="p-3 rounded input-trade text-[10px]">
+                    </div>
+                    
+                    <label class="text-[10px] text-gray-500 uppercase px-1">Fecha Límite Entrega</label>
+                    <input type="date" id="deadline" class="w-full p-3 rounded input-trade text-sm">
+
+                    <div class="p-3 bg-black/40 rounded border border-gray-800 space-y-1">
+                        <div class="flex justify-between text-[10px] text-gray-500"><span>Valor en BS:</span> <span id="valBS" class="text-white">0</span></div>
+                        <div class="flex justify-between text-[10px] text-gray-500"><span>Valor en USD:</span> <span id="valUSD" class="text-white">0</span></div>
+                    </div>
+
+                    <button onclick="submitOrder()" id="mainActionBtn" class="w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 transition-all shadow-lg">
+                        COLOCAR ORDEN DE VENTA
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-8 trade-panel rounded-lg overflow-hidden flex flex-col min-h-[500px]">
+            <div class="p-4 border-b border-gray-800 flex justify-between items-center">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Libro de Órdenes en Vivo</span>
+                <button onclick="loadOrders()" class="text-xs text-amber-500"><i class="fa-solid fa-rotate"></i></button>
+            </div>
+            
+            <div class="grid grid-cols-4 p-3 text-[9px] uppercase font-bold text-gray-600 bg-black/20">
+                <span>Item / Mercader</span>
+                <span class="text-right">Precio (Silver)</span>
+                <span class="text-right">Origen -> Destino</span>
+                <span class="text-right">Acción</span>
+            </div>
+
+            <div id="orderBook" class="flex-grow overflow-y-auto divide-y divide-gray-800/50">
+                </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-10 p-10">
+        <div class="pergamino max-w-xl mx-auto p-8 text-center shadow-2xl relative">
+            <h4 class="font-rpg text-xs opacity-60">Control de Suministros Real</h4>
+            <p class="font-rpg text-3xl font-black tracking-widest my-2">LYMHURST HQ</p>
+            <div class="h-[1px] bg-black/10 w-1/2 mx-auto my-3"></div>
+            <p class="text-[9px] font-mono opacity-50 uppercase tracking-[0.3em]">Lions-Gold Logistics Division</p>
+        </div>
+    </footer>
+
+    <script>
+        const API_URL = "https://script.google.com/macros/s/AKfycbwQbVXd7_k_l0sESDEGLbLS1sBEVHiQTJXOvJxFLDnTmmmcDhbsaXAXPKh9g2b_pGph/exec";
+        let currentType = 'VENTA';
+        
+        // Tasas de cambio manuales (Usted puede actualizarlas aquí)
+        const RATE_USD_PER_M = 0.52; // 0.52$ por cada millón
+        const RATE_BS_PER_M = 23.40; // 23.40 Bs por cada millón
+
+        function setOrderType(type) {
+            currentType = type;
+            const btnV = document.getElementById('btnVenta');
+            const btnC = document.getElementById('btnCompra');
+            const actionBtn = document.getElementById('mainActionBtn');
+
+            if(type === 'VENTA') {
+                btnV.className = "w-1/2 py-2 text-xs font-bold rounded bg-red-500/20 text-red-500";
+                btnC.className = "w-1/2 py-2 text-xs font-bold rounded hover:bg-green-500/10";
+                actionBtn.className = "w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 shadow-lg";
+                actionBtn.innerText = "COLOCAR ORDEN DE VENTA";
+            } else {
+                btnC.className = "w-1/2 py-2 text-xs font-bold rounded bg-green-500/20 text-green-500";
+                btnV.className = "w-1/2 py-2 text-xs font-bold rounded hover:bg-red-500/10";
+                actionBtn.className = "w-full py-4 rounded font-black text-sm bg-green-600 hover:bg-green-500 shadow-lg";
+                actionBtn.innerText = "COLOCAR ORDEN DE COMPRA";
+            }
+        }
+
+        function calcExchange() {
+            const price = parseFloat(document.getElementById('price').value) || 0;
+            const millions = price / 1000000;
+            document.getElementById('valBS').innerText = (millions * RATE_BS_PER_M).toFixed(2) + " Bs";
+            document.getElementById('valUSD').innerText = "$" + (millions * RATE_USD_PER_M).toFixed(2);
+        }
+
+        async function submitOrder() {
+            const btn = document.getElementById('mainActionBtn');
+            const data = {
+                type: currentType,
+                item: document.getElementById('itemName').value,
+                price: document.getElementById('price').value,
+                locStart: document.getElementById('locStart').value,
+                locEnd: document.getElementById('locEnd').value,
+                deadline: document.getElementById('deadline').value,
+                status: 'ACTIVA'
+            };
+
+            if(!data.item || !data.price) return alert("Faltan datos de la orden.");
+
+            btn.disabled = true;
+            btn.innerText = "ENVIANDO A LA BOLSA...";
+
+            try {
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
+                alert("Orden publicada con éxito.");
+                location.reload();
+            } catch(e) { alert("Error de red."); btn.disabled = false; }
+        }
+
+        async function loadOrders() {
+            const container = document.getElementById('orderBook');
+            container.innerHTML = '<p class="p-10 text-center text-xs opacity-40">Sincronizando con el servidor...</p>';
+            
+            try {
+                const res = await fetch(API_URL);
+                const data = await res.json();
+                
+                container.innerHTML = data.reverse().map(o => `
+                    <div class="grid grid-cols-4 p-4 items-center hover:bg-white/5 transition-colors border-l-4 ${o.type === 'VENTA' ? 'border-red-500' : 'border-green-500'}">
+                        <div>
+                            <span class="block text-xs font-bold text-white uppercase">${o.item}</span>
+                            <span class="text-[8px] text-gray-500 uppercase">${o.type}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block font-mono text-xs ${o.type === 'VENTA' ? 'text-red-400' : 'text-green-400'}">${parseInt(o.price).toLocaleString()}</span>
+                            <span class="text-[8px] text-gray-600 font-mono">~$${((o.price/1000000)*RATE_USD_PER_M).toFixed(2)}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="block text-[9px] text-gray-400">${o.locStart || '-'} <i class="fa-solid fa-arrow-right mx-1"></i> ${o.locEnd || '-'}</span>
+                            <span class="text-[8px] text-amber-900 font-bold">${o.deadline || 'S/F'}</span>
+                        </div>
+                        <div class="text-right">
+                            <button onclick="cancelOrder('${o.date}')" class="text-[9px] bg-gray-800 px-2 py-1 rounded text-gray-400 hover:text-white">CANCELAR</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch(e) { container.innerHTML = '<p class="p-10 text-center text-red-500">Error al cargar datos.</p>'; }
+        }
+
+        // Carga inicial
+        loadOrders();
+    </script>
+</body>
+</html>
