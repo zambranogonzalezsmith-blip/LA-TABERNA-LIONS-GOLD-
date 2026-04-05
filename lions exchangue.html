@@ -40,21 +40,21 @@
                 </h2>
                 
                 <div class="flex mb-5 bg-black/50 rounded p-1 border border-gray-800">
-                    <button onclick="setOrderType('VENTA')" id="btnVenta" class="w-1/2 py-2.5 text-xs font-bold rounded bg-red-500/20 text-red-500">VENTA</button>
-                    <button onclick="setOrderType('COMPRA')" id="btnCompra" class="w-1/2 py-2.5 text-xs font-bold rounded text-gray-500">COMPRA</button>
+                    <button onclick="setOrderType('VENTA')" id="btnVenta" class="w-1/2 py-2.5 text-xs font-bold rounded bg-red-500/20 text-red-500 transition-all">VENTA</button>
+                    <button onclick="setOrderType('COMPRA')" id="btnCompra" class="w-1/2 py-2.5 text-xs font-bold rounded text-gray-500 transition-all">COMPRA</button>
                 </div>
 
                 <div class="space-y-4">
-                    <input type="text" id="traderName" placeholder="Nombre del Comerciante" class="w-full p-3 rounded input-trade text-sm font-bold">
+                    <input type="text" id="traderName" placeholder="Nombre del Comerciante" class="w-full p-3 rounded input-trade text-sm font-bold border-gray-700">
                     <div class="grid grid-cols-3 gap-2">
-                        <input type="text" id="itemName" placeholder="Item / Recurso" class="col-span-2 p-3 rounded input-trade text-sm">
-                        <input type="number" id="quantity" placeholder="Cant." class="p-3 rounded input-trade text-sm text-center" value="1">
+                        <input type="text" id="itemName" placeholder="Item / Recurso" class="col-span-2 p-3 rounded input-trade text-sm border-gray-700">
+                        <input type="number" id="quantity" placeholder="Cant." class="p-3 rounded input-trade text-sm text-center border-gray-700" value="1">
                     </div>
-                    <input type="number" id="price" placeholder="Precio Silver Total" class="w-full p-3 rounded input-trade text-sm font-mono text-amber-500">
+                    <input type="number" id="price" placeholder="Precio Silver Total" class="w-full p-3 rounded input-trade text-sm font-mono text-amber-500 border-gray-700">
                     
                     <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="locStart" placeholder="Ciudad Origen" class="w-full p-3 rounded input-trade text-[10px]">
-                        <input type="text" id="locEnd" placeholder="Ciudad Destino" class="w-full p-3 rounded input-trade text-[10px]">
+                        <input type="text" id="locStart" placeholder="Ciudad Origen" class="w-full p-3 rounded input-trade text-[10px] border-gray-700">
+                        <input type="text" id="locEnd" placeholder="Ciudad Destino" class="w-full p-3 rounded input-trade text-[10px] border-gray-700">
                     </div>
 
                     <button onclick="submitOrder()" id="mainActionBtn" class="w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 transition-all uppercase tracking-widest">
@@ -81,11 +81,12 @@
         </div>
     </main>
 
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbx9J6dtrm9tnAJvTp2tWHrsqDJ-7BXngrge_yFXd3STlfBwVcpQpnxdbMxrIH4AzKPOwQ/exec";
+        // URL ACTUALIZADA
+        const API_URL = "https://script.google.com/macros/s/AKfycbyqrS5VQzB3BceC4S6hE0qFJgXEkmHRcwgA84dPRy3VaAIIQXgCcdPhdcYQ6LqcQc4/exec";
         let currentType = 'VENTA';
-        
-        // Tasas de cambio (puedes ajustarlas aquí o traerlas de una celda de Excel)
         const RATES = { usd: 0.52, bs: 23.40 };
 
         function setOrderType(type) {
@@ -156,42 +157,51 @@
             const price = document.getElementById('price').value;
 
             if(!trader || !item || !price) {
-                alert("⚠ Mando requiere todos los datos para sellar el contrato.");
+                alert("⚠ Faltan datos para el contrato.");
                 return;
             }
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-feather-pointed animate-bounce mr-2"></i> ESCRIBIENDO...';
+            btn.innerHTML = '<i class="fa-solid fa-feather-pointed animate-bounce mr-2"></i> SELLANDO...';
 
-            const payload = new URLSearchParams();
-            payload.append('action', 'create');
-            payload.append('type', currentType);
-            payload.append('trader', trader);
-            payload.append('item', item);
-            payload.append('qty', document.getElementById('quantity').value || 1);
-            payload.append('price', price);
-            payload.append('locStart', document.getElementById('locStart').value.trim() || 'Lymhurst');
-            payload.append('locEnd', document.getElementById('locEnd').value.trim() || 'Caerleon');
+            // MÉTODO DE FORMULARIO DINÁMICO (ANTI-CORS)
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = API_URL;
+            form.target = 'hidden_iframe';
 
-            try {
-                // El POST a Google Scripts con mode: no-cors es ciego, pero efectivo
-                await fetch(API_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: payload
-                });
+            const fields = {
+                action: 'create',
+                type: currentType,
+                trader: trader,
+                item: item,
+                qty: document.getElementById('quantity').value || 1,
+                price: price,
+                locStart: document.getElementById('locStart').value.trim() || 'Lymhurst',
+                locEnd: document.getElementById('locEnd').value.trim() || 'Caerleon'
+            };
 
-                // Limpiar y Recargar
+            for (const key in fields) {
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = key;
+                input.value = fields[key];
+                form.appendChild(input);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+
+            // Feedback visual y limpieza
+            setTimeout(() => {
                 document.getElementById('itemName').value = '';
                 document.getElementById('price').value = '';
-                setTimeout(loadOrders, 1500);
-            } catch(e) {
-                alert("Error de comunicación con el HQ.");
-            } finally {
+                form.remove();
                 btn.disabled = false;
                 setOrderType(currentType);
-            }
+                loadOrders(); 
+                alert("✅ Orden enviada con éxito.");
+            }, 2000);
         }
 
         window.onload = loadOrders;
