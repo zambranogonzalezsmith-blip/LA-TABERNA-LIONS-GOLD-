@@ -3,221 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | TABERNA NATIVA</title>
+    <title>TABERNA LIONS-GOLD | INTERMEDIARIO SEGURO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Inter:wght@400;700&display=swap');
-        body { background: #0b0e11; color: #eaecef; font-family: 'Inter', sans-serif; }
-        .font-rpg { font-family: 'Cinzel', serif; }
-        .panel { background: #161a1e; border: 1px solid #2b3139; }
-        .input-lions { background: #2b3139; border: 1px solid #363c44; color: white; padding: 12px; border-radius: 4px; font-size: 14px; width: 100%; }
-        .input-lions:focus { border-color: #c5a059; outline: none; }
-        .order-card { animation: fadeIn 0.5s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&family=Inter:wght@400;700&display=swap');
+        
+        :root {
+            --gold: #c5a059;
+            --gold-glow: rgba(197, 160, 89, 0.4);
+            --mythic-red: #8b0000;
+        }
+
+        body { 
+            background: #050505; 
+            color: #d1d1d1; 
+            font-family: 'Inter', sans-serif;
+            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+        }
+
+        .font-mythic { font-family: 'Cinzel Decorative', serif; }
+        .font-medieval { font-family: 'MedievalSharp', cursive; }
+
+        .mythic-title {
+            color: var(--gold);
+            text-shadow: 0 0 10px var(--gold-glow), 2px 2px 5px black;
+            letter-spacing: 0.2rem;
+        }
+
+        .tavern-panel {
+            background: rgba(20, 22, 26, 0.95);
+            border: 2px solid #332b1e;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
+            position: relative;
+        }
+
+        .tavern-panel::before {
+            content: ""; position: absolute; top: -5px; left: -5px; right: -5px; bottom: -5px;
+            border: 1px solid var(--gold); opacity: 0.2; pointer-events: none;
+        }
+
+        .input-mythic {
+            background: #1a1d21;
+            border: 1px solid #3d3423;
+            color: #fff;
+            padding: 14px;
+            transition: 0.3s;
+        }
+
+        .input-mythic:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 10px var(--gold-glow);
+            outline: none;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #8b6b23 0%, #c5a059 50%, #8b6b23 100%);
+            color: black;
+            font-weight: 900;
+            text-transform: uppercase;
+            transition: 0.3s;
+            border: 1px solid #4a3a1a;
+        }
+
+        .btn-gold:hover {
+            filter: brightness(1.2);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px var(--gold-glow);
+        }
+
+        .activity-card {
+            background: rgba(0,0,0,0.6);
+            border-bottom: 2px solid var(--gold);
+            transition: 0.3s;
+        }
+
+        .activity-card:hover { background: rgba(197, 160, 89, 0.1); }
     </style>
 </head>
-<body class="min-h-screen p-4">
+<body class="min-h-screen">
 
-    <header class="max-w-6xl mx-auto mb-6 flex justify-between items-center border-b border-gray-800 pb-4">
-        <div>
-            <h1 class="font-rpg text-2xl text-amber-500 tracking-widest"><i class="fa-solid fa-lion"></i> LIONS-GOLD</h1>
-            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Taberna Central - Base GitHub</p>
+    <header class="py-12 text-center">
+        <h1 class="font-mythic text-4xl md:text-6xl mythic-title mb-2">TABERNA LIONS-GOLD</h1>
+        <p class="font-medieval text-amber-600 text-lg tracking-widest uppercase">Por la riqueza, la justicia y la gloria, la hermandad prevalecerá</p>
+        
+        <div class="max-w-2xl mx-auto mt-6 px-4">
+            <p class="text-gray-400 italic text-sm">
+                "Bajo el rugido del león, forjamos el acero y el oro. Somos la vanguardia de las Tierras Negras, 
+                donde la lealtad se paga con sangre y el comercio con honor. LIONS-GOLD no solo conquista territorios, 
+                gobierna la economía."
+            </p>
         </div>
-        <button onclick="loadOrders()" class="bg-amber-600/10 text-amber-500 px-4 py-2 rounded border border-amber-600/20 text-xs font-bold hover:bg-amber-600/20 transition-all">
-            <i class="fa-solid fa-sync-alt mr-2"></i> REVISAR PERGAMINO
-        </button>
+
+        <div class="mt-8">
+            <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="btn-gold px-8 py-3 rounded-sm text-sm tracking-tighter">
+                <i class="fa-brands fa-discord mr-2"></i> Clic para comercio en Albion
+            </a>
+        </div>
     </header>
 
-    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6">
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-4">
         
-        <div class="lg:col-span-4">
-            <div class="panel p-6 rounded-lg border-t-4 border-amber-600">
-                <h2 class="font-rpg text-amber-500 text-xs mb-6 uppercase text-center tracking-widest">Sellar Contrato</h2>
-                
-                <div class="flex gap-2 mb-6 bg-black/40 p-1 rounded">
-                    <button id="btnVenta" onclick="setType('VENTA')" class="flex-1 py-2 text-[10px] font-black rounded bg-red-600 text-white transition-all">VENTA</button>
-                    <button id="btnCompra" onclick="setType('COMPRA')" class="flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all">COMPRA</button>
+        <div class="lg:col-span-5">
+            <div class="tavern-panel p-8 rounded-sm">
+                <div class="mb-6 text-center border-b border-amber-900 pb-4">
+                    <h2 class="font-mythic text-amber-500 text-xl">INTERMEDIARIO SEGURO</h2>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Seguridad de transacción garantizada</p>
                 </div>
 
-                <div class="space-y-4">
-                    <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-lions">
-                    <input type="text" id="item" placeholder="Item (Ej: Buey T8)" class="input-lions">
-                    <input type="number" id="price" placeholder="Precio Silver Total" class="input-lions text-amber-400 font-bold font-mono">
+                <div class="flex gap-2 mb-6">
+                    <button id="typeBtn" onclick="toggleType()" class="w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 transition-all">MODO: VENTA</button>
+                </div>
+
+                <div class="space-y-4 font-medieval">
+                    <div>
+                        <label class="text-[10px] text-amber-700 uppercase font-bold">Identidad del Mercader</label>
+                        <input type="text" id="trader" placeholder="Nombre en Albion Online" class="input-mythic w-full mt-1">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-amber-700 uppercase font-bold">Mercancía de Valor</label>
+                        <input type="text" id="item" placeholder="Ej: Mamut de Transporte T8" class="input-mythic w-full mt-1">
+                    </div>
+                    <div>
+                        <label class="text-[10px] text-amber-700 uppercase font-bold">Precio en Plata</label>
+                        <input type="number" id="price" placeholder="000,000,000" class="input-mythic w-full mt-1 text-amber-500 font-bold">
+                    </div>
                     
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="start" placeholder="Desde" class="input-lions text-[10px]">
-                        <input type="text" id="end" placeholder="Hacia" class="input-lions text-[10px]">
+                    <div class="grid grid-cols-2 gap-4">
+                        <input type="text" id="start" placeholder="Ciudad Origen" class="input-mythic text-xs">
+                        <input type="text" id="end" placeholder="Ciudad Destino" class="input-mythic text-xs">
                     </div>
 
-                    <button onclick="sendToGithub()" id="btnAction" class="w-full py-4 mt-2 rounded font-black text-xs bg-amber-600 hover:bg-amber-500 text-white shadow-lg transition-all uppercase tracking-widest">
-                        <i class="fa-solid fa-feather-pointed mr-2"></i> Grabar en el Repo
+                    <button onclick="scarfaceVerify()" id="btnAction" class="w-full btn-gold py-5 mt-4 rounded-sm shadow-2xl">
+                        <i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-8">
-            <div class="panel rounded-lg overflow-hidden flex flex-col min-h-[500px]">
-                <div class="bg-black/40 p-4 border-b border-gray-800 flex justify-between">
-                    <span class="text-[10px] font-bold uppercase text-gray-400 tracking-widest">Contratos del Gremio</span>
-                    <span id="status" class="text-[9px] text-green-500 font-bold uppercase">Sincronizado</span>
+        <div class="lg:col-span-7 space-y-6">
+            <div class="tavern-panel p-6 rounded-sm">
+                <h3 class="font-mythic text-amber-500 mb-4 border-b border-amber-900 pb-2">CRÓNICAS DEL GREMIO</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="activity-card p-4">
+                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-khanda mr-2"></i> Escolta Armada</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Protección de caravanas en Zona Roja y Negra con vigilancia constante.</p>
+                    </div>
+                    <div class="activity-card p-4">
+                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-gem mr-2"></i> Subastas Reales</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Intercambio de items T8 y piezas maestras entre los lores del gremio.</p>
+                    </div>
+                    <div class="activity-card p-4">
+                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-shield-halved mr-2"></i> Anti-Estafas</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Verificación por Capitán SCARFACE. Mercaderes falsos son reportados manualmente.</p>
+                    </div>
+                    <div class="activity-card p-4">
+                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-coins mr-2"></i> Banco Central</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Gestión de riqueza interna y préstamos para monturas de guerra.</p>
+                    </div>
                 </div>
+            </div>
 
-                <div id="orderList" class="p-4 space-y-3 overflow-y-auto max-h-[700px]">
-                    <div class="text-center py-20 text-gray-700 italic text-sm uppercase">Cargando datos de GitHub...</div>
-                </div>
+            <div class="tavern-panel p-4 text-center border-dashed border-amber-900">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Estado del Bot de Verificación</p>
+                <p class="text-green-500 font-bold text-xs"><i class="fa-solid fa-circle-check animate-pulse mr-2"></i> CAPITÁN SCARFACE: ONLINE</p>
             </div>
         </div>
     </main>
 
+    <footer class="py-10 text-center text-gray-600 text-[10px] uppercase tracking-widest">
+        Smith Business Solutions | &copy; 2026 LIONS-GOLD INFRASTRUCTURE
+    </footer>
+
     <script>
-        // CONFIGURACIÓN TÁCTICA
-        const TOKEN = "TU_TOKEN_GHP_AQUÍ"; 
-        const REPO = "zambranogonzalezsmith-blip/LA-TABERNA-LIONS-GOLD-";
-        const FILE = "orders.json";
         const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1490396123313995836/x7iIrSmVz0JQghNgm6TxP9IUgQ8CB6r8R4R2E5UvzUzhVUUQWW51SfkIFQqvErE8iEdJ";
-        
         let currentType = 'VENTA';
 
-        function setType(type) {
-            currentType = type;
-            const bV = document.getElementById('btnVenta');
-            const bC = document.getElementById('btnCompra');
-            if(type === 'VENTA') {
-                bV.className = "flex-1 py-2 text-[10px] font-black rounded bg-red-600 text-white transition-all";
-                bC.className = "flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all";
+        function toggleType() {
+            const btn = document.getElementById('typeBtn');
+            if(currentType === 'VENTA') {
+                currentType = 'COMPRA';
+                btn.innerText = "MODO: COMPRA";
+                btn.className = "w-full py-3 text-xs font-black rounded bg-green-900/40 border border-green-700 text-green-500 transition-all";
             } else {
-                bC.className = "flex-1 py-2 text-[10px] font-black rounded bg-green-600 text-white transition-all";
-                bV.className = "flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all";
+                currentType = 'VENTA';
+                btn.innerText = "MODO: VENTA";
+                btn.className = "w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 transition-all";
             }
         }
 
-        // 1. LEER ÓRDENES
-        async function loadOrders() {
-            const list = document.getElementById('orderList');
-            document.getElementById('status').innerText = "Consultando...";
-            
-            try {
-                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?t=${Date.now()}`, {
-                    headers: { "Authorization": `token ${TOKEN}` }
-                });
-                const data = await res.json();
-                const orders = JSON.parse(atob(data.content));
-
-                if (orders.length === 0) {
-                    list.innerHTML = '<p class="text-center text-gray-700 py-10 uppercase text-[10px] tracking-widest">No hay órdenes registradas.</p>';
-                } else {
-                    list.innerHTML = orders.slice().reverse().map(o => {
-                        const color = o.type === 'VENTA' ? 'red' : 'green';
-                        return `
-                        <div class="order-card p-4 rounded bg-black/20 border-l-4 border-${color}-600 flex justify-between items-center">
-                            <div>
-                                <span class="text-[8px] px-1.5 py-0.5 rounded font-black bg-${color}-600/10 text-${color}-500 border border-${color}-600/20">${o.type}</span>
-                                <h3 class="text-sm font-black text-white mt-1 uppercase">${o.item}</h3>
-                                <p class="text-[10px] text-amber-500 font-bold">Por: ${o.trader}</p>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-lg font-black text-amber-400 font-mono">${parseInt(o.price).toLocaleString()}</p>
-                                <p class="text-[9px] text-gray-500 font-mono italic">${o.locStart} ➔ ${o.locEnd}</p>
-                            </div>
-                        </div>`;
-                    }).join('');
-                }
-                document.getElementById('status').innerText = "Sincronizado";
-            } catch (e) {
-                list.innerHTML = `<p class="text-red-500 text-center py-10 text-xs">Error: Verifica el Token o el archivo orders.json</p>`;
-            }
-        }
-
-        // FUNCIÓN NUEVA: ENVIAR NOTIFICACIÓN A DISCORD
-        async function notifyDiscord(order) {
-            const color = order.type === 'VENTA' ? 15548997 : 3066993; // Rojo o Verde en Decimal
-            const payload = {
-                username: "Taberna Lions-Gold",
-                embeds: [{
-                    title: `📜 NUEVO CONTRATO: ${order.type}`,
-                    color: color,
-                    fields: [
-                        { name: "🦁 Mercader", value: order.trader, inline: true },
-                        { name: "📦 Item", value: order.item, inline: true },
-                        { name: "💰 Precio Total", value: `${parseInt(order.price).toLocaleString()} Silver`, inline: false },
-                        { name: "📍 Ruta", value: `${order.locStart} ➔ ${order.locEnd}`, inline: false }
-                    ],
-                    footer: { text: "Smith Business Solutions | HQ Tactical" },
-                    timestamp: new Date().toISOString()
-                }]
-            };
-
-            await fetch(DISCORD_WEBHOOK, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload)
-            });
-        }
-
-        // 2. ENVIAR NUEVA ORDEN (Escribir en JSON)
-        async function sendToGithub() {
+        // EL CAPITÁN SCARFACE ENTRA EN ACCIÓN
+        async function scarfaceVerify() {
             const btn = document.getElementById('btnAction');
-            const trader = document.getElementById('trader').value;
+            const name = document.getElementById('trader').value.trim();
             const item = document.getElementById('item').value;
             const price = document.getElementById('price').value;
-            const start = document.getElementById('start').value || 'Origen';
-            const end = document.getElementById('end').value || 'Destino';
 
-            if (!trader || !item || !price) return alert("Sargento, complete los datos.");
+            if (!name || !item || !price) return alert("¡Sargento! No envíe un pergamino vacío.");
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-sync animate-spin mr-2"></i> ENVIANDO...';
+            btn.innerHTML = '<i class="fa-solid fa-skull animate-spin mr-2"></i> ESCANEANDO ALMA DEL MERCADER...';
 
             try {
-                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
-                    headers: { "Authorization": `token ${TOKEN}` }
-                });
-                const data = await res.json();
-                const orders = JSON.parse(atob(data.content));
+                // ACCESO A DATA DE JUGADORES (API OFICIAL DE ALBION)
+                const albionRes = await fetch(`https://gameinfo.albiononline.com/api/gameinfo/search?q=${name}`);
+                const albionData = await albionRes.json();
+                
+                // Buscamos si el jugador exacto existe
+                const playerMatch = albionData.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
+                
+                let verificationStatus = "";
+                let colorStatus = 0;
 
-                const newOrder = {
-                    type: currentType,
-                    trader: trader,
-                    item: item,
-                    price: price,
-                    locStart: start,
-                    locEnd: end,
-                    date: new Date().toISOString()
+                if (playerMatch) {
+                    verificationStatus = `✅ JUGADOR VERIFICADO: El mercader ${name} existe en Albion. (Guild: ${playerMatch.GuildName || 'Ninguno'})`;
+                    colorStatus = 12928512; // Dorado/Verde
+                } else {
+                    verificationStatus = `⚠️ ALERTA DE ESTAFA: El jugador "${name}" NO EXISTE. ¡Capitán SCARFACE recomienda reporte manual inmediato!`;
+                    colorStatus = 16711680; // Rojo Alerta
+                }
+
+                // ENVÍO DIRECTO A DISCORD (ELIMINADO EL .JSON)
+                const payload = {
+                    username: "CAPITÁN SCARFACE | SEGURIDAD LIONS-GOLD",
+                    avatar_url: "https://i.imgur.com/8n06IUp.png", // Imagen de bot opcional
+                    embeds: [{
+                        title: `📜 NUEVO CONTRATO DE TABERNA: ${currentType}`,
+                        description: `**Estado de Verificación:**\n${verificationStatus}`,
+                        color: colorStatus,
+                        fields: [
+                            { name: "🦁 Mercader", value: name, inline: true },
+                            { name: "📦 Item", value: item, inline: true },
+                            { name: "💰 Precio", value: `${parseInt(price).toLocaleString()} Silver`, inline: false },
+                            { name: "📍 Ruta", value: `${document.getElementById('start').value} ➔ ${document.getElementById('end').value}`, inline: true }
+                        ],
+                        footer: { text: "Seguridad Lions-Gold | Intermediario Seguro" },
+                        timestamp: new Date().toISOString()
+                    }]
                 };
 
-                orders.push(newOrder);
-
-                const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
-                    method: "PUT",
-                    headers: {
-                        "Authorization": `token ${TOKEN}`,
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({
-                        message: `Nueva orden: ${item} por ${trader}`,
-                        content: btoa(JSON.stringify(orders, null, 2)),
-                        sha: data.sha
-                    })
+                await fetch(DISCORD_WEBHOOK, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload)
                 });
 
-                if (updateRes.ok) {
-                    await notifyDiscord(newOrder); // Envío al Webhook de Discord
-                    document.getElementById('item').value = '';
-                    document.getElementById('price').value = '';
-                    loadOrders();
-                    alert("¡Contrato grabado y notificado en Discord!");
-                }
-            } catch (e) {
-                alert("Error crítico de comunicación.");
+                alert(playerMatch ? "¡Contrato sellado! El Capitán Scarface ha verificado al jugador." : "¡ATENCIÓN! El jugador no existe. La alerta ha sido enviada al Discord.");
+                
+                // Limpiar formulario
+                document.getElementById('trader').value = '';
+                document.getElementById('item').value = '';
+                document.getElementById('price').value = '';
+
+            } catch (error) {
+                console.error(error);
+                alert("Error en los servidores de Albion. Reintentando conexión...");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-feather-pointed mr-2"></i> Grabar en el Repo';
+                btn.innerHTML = '<i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO';
             }
         }
-
-        window.onload = loadOrders;
     </script>
 </body>
 </html>
