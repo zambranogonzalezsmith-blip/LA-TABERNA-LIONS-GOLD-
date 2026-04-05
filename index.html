@@ -26,6 +26,7 @@
     <header class="py-12 text-center">
         <h1 class="font-mythic text-4xl md:text-6xl mythic-title mb-2">TABERNA LIONS-GOLD</h1>
         <p class="font-medieval text-amber-600 text-lg tracking-widest uppercase">Por la riqueza, la justicia y la gloria, la hermandad prevalecerá</p>
+        
         <div class="mt-8">
             <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="btn-gold px-8 py-3 rounded-sm text-sm">
                 <i class="fa-brands fa-discord mr-2"></i> CLIC PARA COMERCIO EN ALBION
@@ -38,18 +39,22 @@
         <div class="lg:col-span-5">
             <div class="tavern-panel p-8 rounded-sm">
                 <h2 class="font-mythic text-amber-500 text-xl text-center border-b border-amber-900 pb-4">INTERMEDIARIO SEGURO</h2>
-                <p class="text-[10px] text-center text-gray-500 mt-2 uppercase">Seguridad de Transacción y Verificación Scarface</p>
+                <p class="text-[10px] text-center text-gray-500 mt-2 uppercase italic">Seguridad de Transacción y Verificación Scarface</p>
+                
                 <div class="mt-6 flex gap-2 mb-6">
                     <button id="typeBtn" onclick="toggleType()" class="w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 uppercase tracking-widest">MODO: VENTA</button>
                 </div>
+
                 <div class="space-y-4 font-medieval">
                     <input type="text" id="trader" placeholder="Nombre en Albion Online" class="input-mythic w-full">
                     <input type="text" id="item" placeholder="Item (Ej: Buey T8)" class="input-mythic w-full">
                     <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full text-amber-500 font-bold">
+                    
                     <div class="grid grid-cols-2 gap-4">
                         <input type="text" id="start" placeholder="Ciudad Origen" class="input-mythic text-xs">
                         <input type="text" id="end" placeholder="Ciudad Destino" class="input-mythic text-xs">
                     </div>
+
                     <button onclick="scarfaceVerify()" id="btnAction" class="w-full btn-gold py-5 mt-4 rounded-sm shadow-2xl">
                         <i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO
                     </button>
@@ -63,16 +68,18 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="activity-card p-4">
                         <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-map-location-dot mr-2"></i> Sede Central</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Ubicados en **Lymhurst**, operando con dominio en todos los reinos.</p>
+                        <p class="text-[11px] text-gray-400 mt-1">Ubicados en **Lymhurst**, operando con dominio en todos los reinos y ciudades reales.</p>
                     </div>
                     <div class="activity-card p-4">
                         <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-shield-halved mr-2"></i> Protección Scarface</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Verificación directa contra los registros oficiales de Albion.</p>
+                        <p class="text-[11px] text-gray-400 mt-1">Verificación directa contra los registros oficiales de Albion para evitar estafas en el comercio.</p>
                     </div>
                 </div>
             </div>
+
             <div class="tavern-panel p-4 text-center border-dashed border-amber-900">
                 <p class="text-green-500 font-bold text-xs"><i class="fa-solid fa-circle-check animate-pulse mr-2"></i> CAPITÁN SCARFACE: ONLINE</p>
+                <p class="text-[9px] text-gray-500 uppercase mt-1 tracking-widest text-center">Sistema de Verificación de Identidad Activo</p>
             </div>
         </div>
     </main>
@@ -89,7 +96,7 @@
         const HQ_SECURE_LINK = _p1 + _p2 + "/" + _p3;
 
         function resetKey() {
-            if(confirm("¿Desea cambiar la configuración de seguridad?")) {
+            if(confirm("¿Desea restablecer los parámetros de conexión?")) {
                 location.reload();
             }
         }
@@ -110,10 +117,10 @@
             const locStart = document.getElementById('start').value || 'Desconocido';
             const locEnd = document.getElementById('end').value || 'Desconocido';
 
-            if (!name || !item || !price) return alert("¡Comandante! Faltan datos en el contrato.");
+            if (!name || !item || !price) return alert("¡Comandante! El contrato requiere todos los datos.");
 
             btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-skull animate-spin mr-2"></i> VERIFICANDO...';
+            btn.innerHTML = '<i class="fa-solid fa-skull animate-spin mr-2"></i> ESCANEANDO REGISTROS...';
 
             try {
                 const proxyUrl = "https://corsproxy.io/?";
@@ -127,7 +134,7 @@
                     embeds: [{
                         title: `🔔 NUEVO REPORTE DE TABERNA: ${currentType}`,
                         color: playerMatch ? 3066993 : 15158332,
-                        description: playerMatch ? `✅ **USUARIO VERIFICADO**\nEl jugador existe.\n**Gremio:** ${playerMatch.GuildName || 'Sin Gremio'}` : `⚠️ **ALERTA: USUARIO NO ENCONTRADO**\n¡Posible estafador! El nombre no existe en Albion.`,
+                        description: playerMatch ? `✅ **USUARIO VERIFICADO**\nEl jugador existe en Albion Online.\n**Gremio:** ${playerMatch.GuildName || 'Sin Gremio'}` : `⚠️ **ALERTA: USUARIO NO ENCONTRADO**\n¡Posible estafador! El nombre no figura en los registros oficiales.`,
                         fields: [
                             { name: "👤 Mercader", value: name, inline: true },
                             { name: "📝 Tipo", value: currentType, inline: true },
@@ -147,14 +154,14 @@
                     body: JSON.stringify(payload)
                 });
 
-                alert(playerMatch ? "Contrato enviado al Discord." : "¡Alerta enviada! El jugador no existe en Albion.");
+                alert(playerMatch ? "Contrato enviado al Discord del Gremio." : "¡Alerta enviada! El sujeto no existe en Albion.");
                 
                 document.getElementById('trader').value = '';
                 document.getElementById('item').value = '';
                 document.getElementById('price').value = '';
 
             } catch (error) {
-                alert("Error de conexión. Intente en unos segundos.");
+                alert("Error de conexión con los registros de Albion.");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO';
