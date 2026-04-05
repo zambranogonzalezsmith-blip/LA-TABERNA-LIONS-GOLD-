@@ -36,8 +36,8 @@
                 <h2 class="font-rpg text-amber-500 text-xs mb-6 uppercase text-center tracking-widest">Sellar Contrato</h2>
                 
                 <div class="flex gap-2 mb-6 bg-black/40 p-1 rounded">
-                    <button onclick="currentType='VENTA'" class="flex-1 py-2 text-[10px] font-black rounded bg-red-600 text-white transition-all">VENTA</button>
-                    <button onclick="currentType='COMPRA'" class="flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all">COMPRA</button>
+                    <button id="btnVenta" onclick="setType('VENTA')" class="flex-1 py-2 text-[10px] font-black rounded bg-red-600 text-white transition-all">VENTA</button>
+                    <button id="btnCompra" onclick="setType('COMPRA')" class="flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all">COMPRA</button>
                 </div>
 
                 <div class="space-y-4">
@@ -72,11 +72,26 @@
     </main>
 
     <script>
-        // CONFIGURACIÓN TÁCTICA - CAMBIA ESTO
-        const TOKEN = "TU_TOKEN_GHP_AQUÍ"; // Pon aquí tu ghp_...
+        // CONFIGURACIÓN TÁCTICA
+        const TOKEN = "TU_TOKEN_GHP_AQUÍ"; 
         const REPO = "zambranogonzalezsmith-blip/LA-TABERNA-LIONS-GOLD-";
         const FILE = "orders.json";
+        const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1490396123313995836/x7iIrSmVz0JQghNgm6TxP9IUgQ8CB6r8R4R2E5UvzUzhVUUQWW51SfkIFQqvErE8iEdJ";
+        
         let currentType = 'VENTA';
+
+        function setType(type) {
+            currentType = type;
+            const bV = document.getElementById('btnVenta');
+            const bC = document.getElementById('btnCompra');
+            if(type === 'VENTA') {
+                bV.className = "flex-1 py-2 text-[10px] font-black rounded bg-red-600 text-white transition-all";
+                bC.className = "flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all";
+            } else {
+                bC.className = "flex-1 py-2 text-[10px] font-black rounded bg-green-600 text-white transition-all";
+                bV.className = "flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all";
+            }
+        }
 
         // 1. LEER ÓRDENES
         async function loadOrders() {
@@ -84,18 +99,16 @@
             document.getElementById('status').innerText = "Consultando...";
             
             try {
-                // El timestamp (t) evita que el navegador cargue datos viejos (cache)
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?t=${Date.now()}`, {
                     headers: { "Authorization": `token ${TOKEN}` }
                 });
                 const data = await res.json();
-                // Decodificar el contenido de Base64 que envía GitHub
                 const orders = JSON.parse(atob(data.content));
 
                 if (orders.length === 0) {
                     list.innerHTML = '<p class="text-center text-gray-700 py-10 uppercase text-[10px] tracking-widest">No hay órdenes registradas.</p>';
                 } else {
-                    list.innerHTML = orders.reverse().map(o => {
+                    list.innerHTML = orders.slice().reverse().map(o => {
                         const color = o.type === 'VENTA' ? 'red' : 'green';
                         return `
                         <div class="order-card p-4 rounded bg-black/20 border-l-4 border-${color}-600 flex justify-between items-center">
@@ -117,12 +130,40 @@
             }
         }
 
+        // FUNCIÓN NUEVA: ENVIAR NOTIFICACIÓN A DISCORD
+        async function notifyDiscord(order) {
+            const color = order.type === 'VENTA' ? 15548997 : 3066993; // Rojo o Verde en Decimal
+            const payload = {
+                username: "Taberna Lions-Gold",
+                embeds: [{
+                    title: `📜 NUEVO CONTRATO: ${order.type}`,
+                    color: color,
+                    fields: [
+                        { name: "🦁 Mercader", value: order.trader, inline: true },
+                        { name: "📦 Item", value: order.item, inline: true },
+                        { name: "💰 Precio Total", value: `${parseInt(order.price).toLocaleString()} Silver`, inline: false },
+                        { name: "📍 Ruta", value: `${order.locStart} ➔ ${order.locEnd}`, inline: false }
+                    ],
+                    footer: { text: "Smith Business Solutions | HQ Tactical" },
+                    timestamp: new Date().toISOString()
+                }]
+            };
+
+            await fetch(DISCORD_WEBHOOK, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+        }
+
         // 2. ENVIAR NUEVA ORDEN (Escribir en JSON)
         async function sendToGithub() {
             const btn = document.getElementById('btnAction');
             const trader = document.getElementById('trader').value;
             const item = document.getElementById('item').value;
             const price = document.getElementById('price').value;
+            const start = document.getElementById('start').value || 'Origen';
+            const end = document.getElementById('end').value || 'Destino';
 
             if (!trader || !item || !price) return alert("Sargento, complete los datos.");
 
@@ -130,25 +171,24 @@
             btn.innerHTML = '<i class="fa-solid fa-sync animate-spin mr-2"></i> ENVIANDO...';
 
             try {
-                // Obtener archivo actual para conseguir el SHA (ID de versión)
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
                     headers: { "Authorization": `token ${TOKEN}` }
                 });
                 const data = await res.json();
                 const orders = JSON.parse(atob(data.content));
 
-                // Agregar nueva orden
-                orders.push({
+                const newOrder = {
                     type: currentType,
                     trader: trader,
                     item: item,
                     price: price,
-                    locStart: document.getElementById('start').value || 'Origen',
-                    locEnd: document.getElementById('end').value || 'Destino',
+                    locStart: start,
+                    locEnd: end,
                     date: new Date().toISOString()
-                });
+                };
 
-                // Enviar archivo actualizado a GitHub
+                orders.push(newOrder);
+
                 const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
                     method: "PUT",
                     headers: {
@@ -157,16 +197,17 @@
                     },
                     body: JSON.stringify({
                         message: `Nueva orden: ${item} por ${trader}`,
-                        content: btoa(JSON.stringify(orders, null, 2)), // Convertir a Base64
+                        content: btoa(JSON.stringify(orders, null, 2)),
                         sha: data.sha
                     })
                 });
 
                 if (updateRes.ok) {
+                    await notifyDiscord(newOrder); // Envío al Webhook de Discord
                     document.getElementById('item').value = '';
                     document.getElementById('price').value = '';
                     loadOrders();
-                    alert("¡Contrato grabado con éxito!");
+                    alert("¡Contrato grabado y notificado en Discord!");
                 }
             } catch (e) {
                 alert("Error crítico de comunicación.");
@@ -176,7 +217,6 @@
             }
         }
 
-        // Carga inicial
         window.onload = loadOrders;
     </script>
 </body>
