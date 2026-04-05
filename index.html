@@ -13,6 +13,8 @@
         .panel { background: #161a1e; border: 1px solid #2b3139; }
         .input-lions { background: #2b3139; border: 1px solid #363c44; color: white; padding: 12px; border-radius: 4px; font-size: 14px; width: 100%; }
         .input-lions:focus { border-color: #c5a059; outline: none; }
+        .order-card { animation: fadeIn 0.5s ease-in; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="min-h-screen p-4">
@@ -20,10 +22,10 @@
     <header class="max-w-6xl mx-auto mb-6 flex justify-between items-center border-b border-gray-800 pb-4">
         <div>
             <h1 class="font-rpg text-2xl text-amber-500 tracking-widest"><i class="fa-solid fa-lion"></i> LIONS-GOLD</h1>
-            <p class="text-[10px] text-gray-500 uppercase">Base de Datos Nativa GitHub</p>
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest font-bold">Taberna Central - Base GitHub</p>
         </div>
-        <button onclick="loadOrders()" class="text-amber-500 text-xs font-bold px-3 py-2 border border-amber-500/20 rounded hover:bg-amber-500/10">
-            <i class="fa-solid fa-sync-alt"></i> ACTUALIZAR
+        <button onclick="loadOrders()" class="bg-amber-600/10 text-amber-500 px-4 py-2 rounded border border-amber-600/20 text-xs font-bold hover:bg-amber-600/20 transition-all">
+            <i class="fa-solid fa-sync-alt mr-2"></i> REVISAR PERGAMINO
         </button>
     </header>
 
@@ -31,98 +33,122 @@
         
         <div class="lg:col-span-4">
             <div class="panel p-6 rounded-lg border-t-4 border-amber-600">
+                <h2 class="font-rpg text-amber-500 text-xs mb-6 uppercase text-center tracking-widest">Sellar Contrato</h2>
+                
                 <div class="flex gap-2 mb-6 bg-black/40 p-1 rounded">
-                    <button onclick="currentType='VENTA'" class="flex-1 py-2 text-[10px] font-bold rounded bg-red-600 text-white">VENTA</button>
-                    <button onclick="currentType='COMPRA'" class="flex-1 py-2 text-[10px] font-bold rounded text-gray-500">COMPRA</button>
+                    <button onclick="currentType='VENTA'" class="flex-1 py-2 text-[10px] font-black rounded bg-red-600 text-white transition-all">VENTA</button>
+                    <button onclick="currentType='COMPRA'" class="flex-1 py-2 text-[10px] font-black rounded text-gray-500 transition-all">COMPRA</button>
                 </div>
+
                 <div class="space-y-4">
-                    <input type="text" id="trader" placeholder="Tu Nombre" class="input-lions">
-                    <input type="text" id="item" placeholder="Item / Recurso" class="input-lions">
-                    <input type="number" id="price" placeholder="Precio Silver" class="input-lions text-amber-400 font-bold">
-                    <button onclick="sendToGithub()" id="btnAction" class="w-full py-4 rounded font-black text-xs bg-amber-600 text-white uppercase tracking-widest">
-                        Sellar en GitHub
+                    <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-lions">
+                    <input type="text" id="item" placeholder="Item (Ej: Buey T8)" class="input-lions">
+                    <input type="number" id="price" placeholder="Precio Silver Total" class="input-lions text-amber-400 font-bold font-mono">
+                    
+                    <div class="grid grid-cols-2 gap-2">
+                        <input type="text" id="start" placeholder="Desde" class="input-lions text-[10px]">
+                        <input type="text" id="end" placeholder="Hacia" class="input-lions text-[10px]">
+                    </div>
+
+                    <button onclick="sendToGithub()" id="btnAction" class="w-full py-4 mt-2 rounded font-black text-xs bg-amber-600 hover:bg-amber-500 text-white shadow-lg transition-all uppercase tracking-widest">
+                        <i class="fa-solid fa-feather-pointed mr-2"></i> Grabar en el Repo
                     </button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8">
-            <div id="orderList" class="space-y-3">
-                <div class="text-center py-20 text-gray-600 italic">Cargando órdenes desde el repositorio...</div>
+            <div class="panel rounded-lg overflow-hidden flex flex-col min-h-[500px]">
+                <div class="bg-black/40 p-4 border-b border-gray-800 flex justify-between">
+                    <span class="text-[10px] font-bold uppercase text-gray-400 tracking-widest">Contratos del Gremio</span>
+                    <span id="status" class="text-[9px] text-green-500 font-bold uppercase">Sincronizado</span>
+                </div>
+
+                <div id="orderList" class="p-4 space-y-3 overflow-y-auto max-h-[700px]">
+                    <div class="text-center py-20 text-gray-700 italic text-sm uppercase">Cargando datos de GitHub...</div>
+                </div>
             </div>
         </div>
     </main>
 
     <script>
-        // CONFIGURACIÓN GLOBAL
-        const TOKEN = "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"
+        // CONFIGURACIÓN TÁCTICA - CAMBIA ESTO
+        const TOKEN = "TU_TOKEN_GHP_AQUÍ"; // Pon aquí tu ghp_...
         const REPO = "zambranogonzalezsmith-blip/LA-TABERNA-LIONS-GOLD-";
         const FILE = "orders.json";
         let currentType = 'VENTA';
 
-        // 1. CARGAR DESDE GITHUB
+        // 1. LEER ÓRDENES
         async function loadOrders() {
             const list = document.getElementById('orderList');
+            document.getElementById('status').innerText = "Consultando...";
+            
             try {
+                // El timestamp (t) evita que el navegador cargue datos viejos (cache)
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?t=${Date.now()}`, {
                     headers: { "Authorization": `token ${TOKEN}` }
                 });
                 const data = await res.json();
+                // Decodificar el contenido de Base64 que envía GitHub
                 const orders = JSON.parse(atob(data.content));
 
                 if (orders.length === 0) {
-                    list.innerHTML = '<p class="text-center text-gray-700 py-10 italic">El pergamino está vacío.</p>';
-                    return;
+                    list.innerHTML = '<p class="text-center text-gray-700 py-10 uppercase text-[10px] tracking-widest">No hay órdenes registradas.</p>';
+                } else {
+                    list.innerHTML = orders.reverse().map(o => {
+                        const color = o.type === 'VENTA' ? 'red' : 'green';
+                        return `
+                        <div class="order-card p-4 rounded bg-black/20 border-l-4 border-${color}-600 flex justify-between items-center">
+                            <div>
+                                <span class="text-[8px] px-1.5 py-0.5 rounded font-black bg-${color}-600/10 text-${color}-500 border border-${color}-600/20">${o.type}</span>
+                                <h3 class="text-sm font-black text-white mt-1 uppercase">${o.item}</h3>
+                                <p class="text-[10px] text-amber-500 font-bold">Por: ${o.trader}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-lg font-black text-amber-400 font-mono">${parseInt(o.price).toLocaleString()}</p>
+                                <p class="text-[9px] text-gray-500 font-mono italic">${o.locStart} ➔ ${o.locEnd}</p>
+                            </div>
+                        </div>`;
+                    }).join('');
                 }
-
-                list.innerHTML = orders.reverse().map(o => `
-                    <div class="panel p-4 rounded border-l-4 border-${o.type === 'VENTA' ? 'red' : 'green'}-600 flex justify-between items-center">
-                        <div>
-                            <span class="text-[9px] font-bold text-amber-500 uppercase">${o.trader}</span>
-                            <h3 class="text-sm font-bold text-white uppercase">${o.item}</h3>
-                        </div>
-                        <div class="text-right font-mono">
-                            <p class="text-sm font-bold">${parseInt(o.price).toLocaleString()} Silver</p>
-                            <p class="text-[9px] text-gray-500">${new Date(o.date).toLocaleString()}</p>
-                        </div>
-                    </div>
-                `).join('');
+                document.getElementById('status').innerText = "Sincronizado";
             } catch (e) {
-                list.innerHTML = `<p class="text-red-500 text-center py-10">Error de conexión: Verifica el Token o el Repositorio.</p>`;
+                list.innerHTML = `<p class="text-red-500 text-center py-10 text-xs">Error: Verifica el Token o el archivo orders.json</p>`;
             }
         }
 
-        // 2. ENVIAR A GITHUB (COMMIT)
+        // 2. ENVIAR NUEVA ORDEN (Escribir en JSON)
         async function sendToGithub() {
             const btn = document.getElementById('btnAction');
             const trader = document.getElementById('trader').value;
             const item = document.getElementById('item').value;
             const price = document.getElementById('price').value;
 
-            if (!trader || !item || !price) return alert("Completa los datos.");
+            if (!trader || !item || !price) return alert("Sargento, complete los datos.");
 
             btn.disabled = true;
-            btn.innerText = "ESCRIBIENDO EN EL REPO...";
+            btn.innerHTML = '<i class="fa-solid fa-sync animate-spin mr-2"></i> ENVIANDO...';
 
             try {
-                // Paso A: Obtener el archivo actual y su SHA
+                // Obtener archivo actual para conseguir el SHA (ID de versión)
                 const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
                     headers: { "Authorization": `token ${TOKEN}` }
                 });
                 const data = await res.json();
-                const currentOrders = JSON.parse(atob(data.content));
+                const orders = JSON.parse(atob(data.content));
 
-                // Paso B: Añadir nueva orden
-                const newOrder = {
+                // Agregar nueva orden
+                orders.push({
                     type: currentType,
                     trader: trader,
                     item: item,
                     price: price,
+                    locStart: document.getElementById('start').value || 'Origen',
+                    locEnd: document.getElementById('end').value || 'Destino',
                     date: new Date().toISOString()
-                };
-                currentOrders.push(newOrder);
+                });
 
-                // Paso C: Subir actualización (Commit)
+                // Enviar archivo actualizado a GitHub
                 const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
                     method: "PUT",
                     headers: {
@@ -130,26 +156,27 @@
                         "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
-                        message: `Nueva orden de ${trader}`,
-                        content: btoa(JSON.stringify(currentOrders, null, 2)),
+                        message: `Nueva orden: ${item} por ${trader}`,
+                        content: btoa(JSON.stringify(orders, null, 2)), // Convertir a Base64
                         sha: data.sha
                     })
                 });
 
                 if (updateRes.ok) {
-                    alert("¡Orden grabada en el repositorio!");
+                    document.getElementById('item').value = '';
+                    document.getElementById('price').value = '';
                     loadOrders();
-                } else {
-                    alert("Error al grabar en GitHub.");
+                    alert("¡Contrato grabado con éxito!");
                 }
             } catch (e) {
-                alert("Error crítico de API.");
+                alert("Error crítico de comunicación.");
             } finally {
                 btn.disabled = false;
-                btn.innerText = "Sellar en GitHub";
+                btn.innerHTML = '<i class="fa-solid fa-feather-pointed mr-2"></i> Grabar en el Repo';
             }
         }
 
+        // Carga inicial
         window.onload = loadOrders;
     </script>
 </body>
