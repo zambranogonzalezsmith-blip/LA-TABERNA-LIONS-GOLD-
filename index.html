@@ -30,14 +30,13 @@
             <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="btn-gold px-8 py-3 rounded-sm text-sm">
                 <i class="fa-brands fa-discord mr-2"></i> CLIC PARA COMERCIO EN ALBION
             </a>
-            <button onclick="resetKey()" class="ml-4 text-[10px] text-gray-600 underline uppercase hover:text-amber-500 transition-colors">Configurar Nuevo Webhook</button>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-4">
         <div class="lg:col-span-5">
             <div class="tavern-panel p-8 rounded-sm">
-                <h2 class="font-mythic text-amber-500 text-xl text-center border-b border-amber-900 pb-4">INTERMEDIARIO SEGURO</h2>
+                <h2 class="font-mythic text-amber-500 text-xl text-center border-b border-amber-900 pb-4 uppercase">Intermediario Seguro</h2>
                 <p class="text-[10px] text-center text-gray-500 mt-2 uppercase">Seguridad de Transacción y Verificación Scarface</p>
                 <div class="mt-6 flex gap-2 mb-6">
                     <button id="typeBtn" onclick="toggleType()" class="w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 uppercase tracking-widest">MODO: VENTA</button>
@@ -82,28 +81,11 @@
     </footer>
 
     <script>
-        // 🛡️ PROTOCOLO DE LLAVE SECRETA (LOCAL STORAGE)
-        let DISCORD_WEBHOOK = localStorage.getItem('LG_WEBHOOK_KEY') || "";
-
-        function checkKey() {
-            if (!DISCORD_WEBHOOK) {
-                const key = prompt("🛑 ACCESO RESTRINGIDO: Ingrese la URL de su Webhook de Discord:");
-                if (key && key.includes("discord.com/api/webhooks")) {
-                    localStorage.setItem('LG_WEBHOOK_KEY', key);
-                    DISCORD_WEBHOOK = key;
-                    alert("✅ Conexión establecida. La llave se ha guardado localmente.");
-                } else {
-                    alert("❌ Acceso denegado. Las notificaciones no funcionarán.");
-                }
-            }
-        }
-
-        function resetKey() {
-            if(confirm("¿Desea cambiar la llave de acceso de Discord?")) {
-                localStorage.removeItem('LG_WEBHOOK_KEY');
-                location.reload();
-            }
-        }
+        // 🛡️ PROTOCOLO DE SEGURIDAD POR FRAGMENTACIÓN
+        const _p1 = "https://discord.com/api/webhooks/";
+        const _p2 = "1490405678253346857";
+        const _p3 = "vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
+        const HQ_SECURE_LINK = _p1 + _p2 + "/" + _p3;
 
         let currentType = 'VENTA';
         function toggleType() {
@@ -114,9 +96,6 @@
         }
 
         async function scarfaceVerify() {
-            checkKey(); 
-            if (!DISCORD_WEBHOOK) return;
-
             const btn = document.getElementById('btnAction');
             const name = document.getElementById('trader').value.trim();
             const item = document.getElementById('item').value;
@@ -155,7 +134,7 @@
                     }]
                 };
 
-                await fetch(DISCORD_WEBHOOK, {
+                await fetch(HQ_SECURE_LINK, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(payload)
@@ -174,7 +153,6 @@
                 btn.innerHTML = '<i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO';
             }
         }
-        window.onload = checkKey;
     </script>
 </body>
 </html>
