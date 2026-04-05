@@ -8,77 +8,110 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto+Mono:wght@400;700&display=swap');
+        
         :root { --gold: #c5a059; --bg-dark: #0b0e11; --binance-green: #02c076; --binance-red: #f84960; }
         body { background: var(--bg-dark); color: #eaecef; font-family: 'Inter', sans-serif; }
+        
         .font-rpg { font-family: 'Cinzel', serif; }
         .font-mono { font-family: 'Roboto Mono', monospace; }
+        
         .trade-panel { background: #161a1e; border: 1px solid #2b3139; }
-        .input-trade { background: #2b3139; border: 1px solid transparent; color: white; }
-        .input-trade:focus { border-color: var(--gold); outline: none; }
+        .input-trade { background: #2b3139; border: 1px solid transparent; color: white; transition: all 0.3s; }
+        .input-trade:focus { border-color: var(--gold); outline: none; box-shadow: 0 0 8px rgba(197, 160, 89, 0.2); }
+        
         .tab-active { border-bottom: 2px solid var(--gold); color: var(--gold); }
+        
         /* Estilo de Pergamino para la Sede */
         .pergamino { background: #f4e4bc; color: #5d4037; border-top: 4px solid #8d6e63; border-bottom: 4px solid #8d6e63; }
+
+        /* Scrollbar Personalizado RPG Dark */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0b0e11; }
+        ::-webkit-scrollbar-thumb { background: #2b3139; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--gold); }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen flex flex-col">
 
-    <nav class="p-4 bg-[#161a1e] border-b border-gray-800 flex justify-between items-center sticky top-0 z-50">
+    <nav class="p-4 bg-[#161a1e] border-b border-gray-800 flex justify-between items-center sticky top-0 z-50 shadow-md">
         <div class="flex items-center gap-3">
-            <i class="fa-solid fa-lion text-2xl text-amber-500"></i>
+            <i class="fa-solid fa-lion text-2xl text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]"></i>
             <span class="font-rpg font-black text-lg tracking-tighter">LIONS-EXCHANGE</span>
         </div>
-        <div class="flex gap-6 text-[10px] font-mono">
-            <div class="text-gray-400">1M SILVER / USD: <span class="text-green-500" id="priceUSD">$0.50</span></div>
-            <div class="text-gray-400">1M SILVER / BS: <span class="text-yellow-500" id="priceBS">22.50</span></div>
+        <div class="flex gap-6 text-[10px] font-mono bg-black/40 px-4 py-2 rounded border border-gray-800">
+            <div class="text-gray-400">1M SILVER / USD: <span class="text-green-500 font-bold" id="priceUSD">$0.52</span></div>
+            <div class="text-gray-400">1M SILVER / BS: <span class="text-yellow-500 font-bold" id="priceBS">23.40</span></div>
         </div>
     </nav>
 
-    <main class="max-w-6xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-4">
+    <main class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-12 gap-6 flex-grow w-full mt-4">
         
         <div class="lg:col-span-4 space-y-4">
-            <div class="trade-panel p-5 rounded-lg shadow-xl">
-                <h2 class="font-rpg text-amber-500 text-sm mb-4 uppercase tracking-widest">Crear Orden de Mercado</h2>
+            <div class="trade-panel p-6 rounded-lg shadow-xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 rounded-full blur-3xl pointer-events-none"></div>
+
+                <h2 class="font-rpg text-amber-500 text-sm mb-5 uppercase tracking-widest flex items-center gap-2">
+                    <i class="fa-solid fa-file-signature"></i> Contrato de Mercado
+                </h2>
                 
-                <div class="flex mb-4 bg-gray-900 rounded p-1">
-                    <button onclick="setOrderType('VENTA')" id="btnVenta" class="w-1/2 py-2 text-xs font-bold rounded bg-red-500/20 text-red-500">VENTA</button>
-                    <button onclick="setOrderType('COMPRA')" id="btnCompra" class="w-1/2 py-2 text-xs font-bold rounded hover:bg-green-500/10">COMPRA</button>
+                <div class="flex mb-5 bg-black/50 rounded p-1 border border-gray-800">
+                    <button onclick="setOrderType('VENTA')" id="btnVenta" class="w-1/2 py-2.5 text-xs font-bold rounded bg-red-500/20 text-red-500 transition-all">VENTA</button>
+                    <button onclick="setOrderType('COMPRA')" id="btnCompra" class="w-1/2 py-2.5 text-xs font-bold rounded text-gray-500 hover:bg-white/5 transition-all">COMPRA</button>
                 </div>
 
-                <div class="space-y-3">
-                    <input type="text" id="itemName" placeholder="Item de Albion (Ej: Oso T8 / Silver)" class="w-full p-3 rounded input-trade text-sm">
-                    <input type="number" id="price" oninput="calcExchange()" placeholder="Precio (Silver)" class="w-full p-3 rounded input-trade text-sm font-mono">
+                <div class="space-y-4 relative z-10">
+                    <input type="text" id="traderName" placeholder="Tu Nombre en Albion" class="w-full p-3 rounded input-trade text-sm font-bold text-amber-100">
                     
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="locStart" placeholder="Lugar Compra" class="p-3 rounded input-trade text-[10px]">
-                        <input type="text" id="locEnd" placeholder="Lugar Entrega" class="p-3 rounded input-trade text-[10px]">
-                    </div>
-                    
-                    <label class="text-[10px] text-gray-500 uppercase px-1">Fecha Límite Entrega</label>
-                    <input type="date" id="deadline" class="w-full p-3 rounded input-trade text-sm">
-
-                    <div class="p-3 bg-black/40 rounded border border-gray-800 space-y-1">
-                        <div class="flex justify-between text-[10px] text-gray-500"><span>Valor en BS:</span> <span id="valBS" class="text-white">0</span></div>
-                        <div class="flex justify-between text-[10px] text-gray-500"><span>Valor en USD:</span> <span id="valUSD" class="text-white">0</span></div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="itemName" placeholder="Item (Ej: Oso T8)" class="col-span-2 p-3 rounded input-trade text-sm">
+                        <input type="number" id="quantity" placeholder="Cant." class="p-3 rounded input-trade text-sm text-center" value="1" min="1">
                     </div>
 
-                    <button onclick="submitOrder()" id="mainActionBtn" class="w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 transition-all shadow-lg">
+                    <input type="number" id="price" oninput="calcExchange()" placeholder="Precio Total (Silver)" class="w-full p-3 rounded input-trade text-sm font-mono text-amber-500">
+                    
+                    <div class="grid grid-cols-2 gap-2 border-t border-gray-800/50 pt-4">
+                        <div>
+                            <label class="text-[9px] text-gray-500 uppercase px-1">Origen</label>
+                            <input type="text" id="locStart" placeholder="Ej: Lymhurst" class="w-full p-3 rounded input-trade text-[11px]">
+                        </div>
+                        <div>
+                            <label class="text-[9px] text-gray-500 uppercase px-1">Destino</label>
+                            <input type="text" id="locEnd" placeholder="Ej: Brecilien" class="w-full p-3 rounded input-trade text-[11px]">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-[9px] text-gray-500 uppercase px-1">Fecha Límite Entrega</label>
+                        <input type="date" id="deadline" class="w-full p-3 rounded input-trade text-sm text-gray-400 cursor-pointer">
+                    </div>
+
+                    <div class="p-4 bg-black/60 rounded border border-gray-800 space-y-2">
+                        <div class="flex justify-between text-[11px] text-gray-400 font-mono"><span>Equivalente BS:</span> <span id="valBS" class="text-yellow-400 font-bold">0.00 Bs</span></div>
+                        <div class="flex justify-between text-[11px] text-gray-400 font-mono"><span>Equivalente USD:</span> <span id="valUSD" class="text-green-400 font-bold">$0.00</span></div>
+                    </div>
+
+                    <button onclick="submitOrder()" id="mainActionBtn" class="w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 transition-all shadow-[0_0_15px_rgba(220,38,38,0.2)]">
                         COLOCAR ORDEN DE VENTA
                     </button>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-8 trade-panel rounded-lg overflow-hidden flex flex-col min-h-[500px]">
-            <div class="p-4 border-b border-gray-800 flex justify-between items-center">
-                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">Libro de Órdenes en Vivo</span>
-                <button onclick="loadOrders()" class="text-xs text-amber-500"><i class="fa-solid fa-rotate"></i></button>
+        <div class="lg:col-span-8 trade-panel rounded-lg overflow-hidden flex flex-col h-[650px] shadow-xl">
+            <div class="p-5 border-b border-gray-800 flex justify-between items-center bg-black/40">
+                <span class="text-xs font-bold uppercase tracking-widest text-gray-400">
+                    <i class="fa-solid fa-book-journal-whills mr-2 text-amber-700"></i>Libro de Órdenes en Vivo
+                </span>
+                <button onclick="loadOrders()" class="text-xs text-amber-500 hover:text-amber-400 transition-colors p-2 bg-gray-900 rounded border border-gray-800">
+                    <i class="fa-solid fa-rotate mr-1"></i> Actualizar
+                </button>
             </div>
             
-            <div class="grid grid-cols-4 p-3 text-[9px] uppercase font-bold text-gray-600 bg-black/20">
-                <span>Item / Mercader</span>
-                <span class="text-right">Precio (Silver)</span>
-                <span class="text-right">Origen -> Destino</span>
-                <span class="text-right">Acción</span>
+            <div class="grid grid-cols-5 p-3 text-[10px] uppercase font-bold text-gray-500 bg-[#0d1014] border-b border-gray-800">
+                <span class="col-span-2 pl-2">Mercader / Item</span>
+                <span class="text-right">Precio Total</span>
+                <span class="text-right">Ruta (Origen -> Destino)</span>
+                <span class="text-right pr-2">Acción</span>
             </div>
 
             <div id="orderBook" class="flex-grow overflow-y-auto divide-y divide-gray-800/50">
@@ -87,12 +120,12 @@
 
     </main>
 
-    <footer class="mt-10 p-10">
-        <div class="pergamino max-w-xl mx-auto p-8 text-center shadow-2xl relative">
-            <h4 class="font-rpg text-xs opacity-60">Control de Suministros Real</h4>
-            <p class="font-rpg text-3xl font-black tracking-widest my-2">LYMHURST HQ</p>
-            <div class="h-[1px] bg-black/10 w-1/2 mx-auto my-3"></div>
-            <p class="text-[9px] font-mono opacity-50 uppercase tracking-[0.3em]">Lions-Gold Logistics Division</p>
+    <footer class="mt-auto py-10">
+        <div class="pergamino max-w-xl mx-auto p-8 text-center shadow-[0_10px_30px_rgba(0,0,0,0.5)] relative">
+            <h4 class="font-rpg text-xs opacity-60 font-bold">Control de Suministros Real</h4>
+            <p class="font-rpg text-3xl font-black tracking-widest my-2 drop-shadow-sm">LYMHURST HQ</p>
+            <div class="h-[2px] bg-[#5d4037]/20 w-1/2 mx-auto my-3"></div>
+            <p class="text-[10px] font-mono opacity-60 uppercase tracking-[0.3em] font-bold">Lions-Gold Logistics Division</p>
         </div>
     </footer>
 
@@ -100,9 +133,8 @@
         const API_URL = "https://script.google.com/macros/s/AKfycbwQbVXd7_k_l0sESDEGLbLS1sBEVHiQTJXOvJxFLDnTmmmcDhbsaXAXPKh9g2b_pGph/exec";
         let currentType = 'VENTA';
         
-        // Tasas de cambio manuales (Usted puede actualizarlas aquí)
-        const RATE_USD_PER_M = 0.52; // 0.52$ por cada millón
-        const RATE_BS_PER_M = 23.40; // 23.40 Bs por cada millón
+        const RATE_USD_PER_M = 0.52; 
+        const RATE_BS_PER_M = 23.40; 
 
         function setOrderType(type) {
             currentType = type;
@@ -111,14 +143,14 @@
             const actionBtn = document.getElementById('mainActionBtn');
 
             if(type === 'VENTA') {
-                btnV.className = "w-1/2 py-2 text-xs font-bold rounded bg-red-500/20 text-red-500";
-                btnC.className = "w-1/2 py-2 text-xs font-bold rounded hover:bg-green-500/10";
-                actionBtn.className = "w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 shadow-lg";
+                btnV.className = "w-1/2 py-2.5 text-xs font-bold rounded bg-red-500/20 text-red-500 transition-all";
+                btnC.className = "w-1/2 py-2.5 text-xs font-bold rounded text-gray-500 hover:bg-white/5 transition-all";
+                actionBtn.className = "w-full py-4 rounded font-black text-sm bg-red-600 hover:bg-red-500 shadow-[0_0_15px_rgba(220,38,38,0.2)] transition-all";
                 actionBtn.innerText = "COLOCAR ORDEN DE VENTA";
             } else {
-                btnC.className = "w-1/2 py-2 text-xs font-bold rounded bg-green-500/20 text-green-500";
-                btnV.className = "w-1/2 py-2 text-xs font-bold rounded hover:bg-red-500/10";
-                actionBtn.className = "w-full py-4 rounded font-black text-sm bg-green-600 hover:bg-green-500 shadow-lg";
+                btnC.className = "w-1/2 py-2.5 text-xs font-bold rounded bg-green-500/20 text-green-500 transition-all";
+                btnV.className = "w-1/2 py-2.5 text-xs font-bold rounded text-gray-500 hover:bg-white/5 transition-all";
+                actionBtn.className = "w-full py-4 rounded font-black text-sm bg-green-600 hover:bg-green-500 shadow-[0_0_15px_rgba(22,163,74,0.2)] transition-all";
                 actionBtn.innerText = "COLOCAR ORDEN DE COMPRA";
             }
         }
@@ -133,55 +165,102 @@
         async function submitOrder() {
             const btn = document.getElementById('mainActionBtn');
             const data = {
+                action: 'create', // Añadido para que el servidor sepa qué hacer
                 type: currentType,
-                item: document.getElementById('itemName').value,
+                trader: document.getElementById('traderName').value.trim(),
+                item: document.getElementById('itemName').value.trim(),
+                qty: document.getElementById('quantity').value || 1,
                 price: document.getElementById('price').value,
-                locStart: document.getElementById('locStart').value,
-                locEnd: document.getElementById('locEnd').value,
+                locStart: document.getElementById('locStart').value.trim(),
+                locEnd: document.getElementById('locEnd').value.trim(),
                 deadline: document.getElementById('deadline').value,
                 status: 'ACTIVA'
             };
 
-            if(!data.item || !data.price) return alert("Faltan datos de la orden.");
+            // Validación estricta
+            if(!data.trader || !data.item || !data.price) {
+                return alert("⚠️ ALERTA: Faltan datos críticos en el manifiesto (Nombre, Item o Precio).");
+            }
 
+            const originalText = btn.innerText;
             btn.disabled = true;
-            btn.innerText = "ENVIANDO A LA BOLSA...";
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> ENVIANDO A LA BOLSA...';
 
             try {
+                // Se envía la orden
                 await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(data) });
-                alert("Orden publicada con éxito.");
-                location.reload();
-            } catch(e) { alert("Error de red."); btn.disabled = false; }
+                alert("✅ Orden desplegada en el mercado exitosamente.");
+                // Limpiar campos críticos
+                document.getElementById('itemName').value = '';
+                document.getElementById('price').value = '';
+                calcExchange();
+                loadOrders(); // Recargar libro sin refrescar la página entera
+            } catch(e) { 
+                alert("❌ Error de comunicación con el cuartel general."); 
+            } finally {
+                btn.disabled = false;
+                btn.innerText = originalText;
+            }
+        }
+
+        // NUEVA FUNCIÓN AÑADIDA: Cancelar Orden
+        async function cancelOrder(orderId) {
+            if(!confirm("⚠️ ¿Autoriza la retirada inmediata de esta orden del mercado?")) return;
+
+            // Para simular el botón visualmente mientras se procesa
+            const btn = event.target;
+            const originalText = btn.innerText;
+            btn.innerText = "RETIRANDO...";
+            btn.disabled = true;
+
+            try {
+                const payload = { action: 'cancel', orderId: orderId };
+                await fetch(API_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(payload) });
+                alert("🛡️ Orden retirada con éxito.");
+                loadOrders();
+            } catch(e) {
+                alert("❌ Error al intentar retirar la orden.");
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
         }
 
         async function loadOrders() {
             const container = document.getElementById('orderBook');
-            container.innerHTML = '<p class="p-10 text-center text-xs opacity-40">Sincronizando con el servidor...</p>';
+            container.innerHTML = '<div class="p-10 flex justify-center items-center text-amber-500/50"><i class="fa-solid fa-circle-notch fa-spin text-3xl"></i></div>';
             
             try {
                 const res = await fetch(API_URL);
                 const data = await res.json();
                 
+                if(data.length === 0) {
+                    container.innerHTML = '<p class="p-10 text-center text-xs opacity-40 font-mono">El libro de órdenes está vacío...</p>';
+                    return;
+                }
+
                 container.innerHTML = data.reverse().map(o => `
-                    <div class="grid grid-cols-4 p-4 items-center hover:bg-white/5 transition-colors border-l-4 ${o.type === 'VENTA' ? 'border-red-500' : 'border-green-500'}">
-                        <div>
-                            <span class="block text-xs font-bold text-white uppercase">${o.item}</span>
-                            <span class="text-[8px] text-gray-500 uppercase">${o.type}</span>
+                    <div class="grid grid-cols-5 p-4 items-center hover:bg-white/5 transition-colors border-l-4 ${o.type === 'VENTA' ? 'border-red-500' : 'border-green-500'}">
+                        <div class="col-span-2 pl-2">
+                            <span class="block text-xs font-bold text-amber-400"><i class="fa-solid fa-user-shield mr-1 opacity-50"></i> ${o.trader || 'Mercader Anónimo'}</span>
+                            <span class="block text-[11px] font-bold text-white uppercase mt-1">${o.qty || 1}x ${o.item}</span>
+                            <span class="text-[9px] text-gray-500 uppercase font-mono border border-gray-700 px-1 rounded">${o.type}</span>
                         </div>
                         <div class="text-right">
-                            <span class="block font-mono text-xs ${o.type === 'VENTA' ? 'text-red-400' : 'text-green-400'}">${parseInt(o.price).toLocaleString()}</span>
-                            <span class="text-[8px] text-gray-600 font-mono">~$${((o.price/1000000)*RATE_USD_PER_M).toFixed(2)}</span>
+                            <span class="block font-mono text-[13px] font-bold ${o.type === 'VENTA' ? 'text-red-400' : 'text-green-400'}">${parseInt(o.price).toLocaleString()} <i class="fa-solid fa-coins text-gray-500 text-[10px]"></i></span>
+                            <span class="text-[9px] text-gray-600 font-mono">~$${((o.price/1000000)*RATE_USD_PER_M).toFixed(2)} / ${(o.price/1000000*RATE_BS_PER_M).toFixed(1)} Bs</span>
                         </div>
                         <div class="text-right">
-                            <span class="block text-[9px] text-gray-400">${o.locStart || '-'} <i class="fa-solid fa-arrow-right mx-1"></i> ${o.locEnd || '-'}</span>
-                            <span class="text-[8px] text-amber-900 font-bold">${o.deadline || 'S/F'}</span>
+                            <span class="block text-[10px] text-gray-300 font-mono">${o.locStart || 'S/D'} <i class="fa-solid fa-plane text-amber-700/50 mx-1"></i> ${o.locEnd || 'S/D'}</span>
+                            <span class="text-[9px] text-amber-600 font-bold bg-amber-900/20 px-1 rounded mt-1 inline-block"><i class="fa-regular fa-clock"></i> ${o.deadline || 'Sin límite'}</span>
                         </div>
-                        <div class="text-right">
-                            <button onclick="cancelOrder('${o.date}')" class="text-[9px] bg-gray-800 px-2 py-1 rounded text-gray-400 hover:text-white">CANCELAR</button>
+                        <div class="text-right pr-2">
+                            <button onclick="cancelOrder('${o.date || o.id}')" class="text-[9px] font-bold bg-[#1a1515] border border-red-900/50 px-3 py-1.5 rounded text-red-500/70 hover:text-red-400 hover:border-red-500 hover:bg-red-900/20 transition-all">CANCELAR</button>
                         </div>
                     </div>
                 `).join('');
-            } catch(e) { container.innerHTML = '<p class="p-10 text-center text-red-500">Error al cargar datos.</p>'; }
+            } catch(e) { 
+                container.innerHTML = '<p class="p-10 text-center text-red-500 text-xs font-mono"><i class="fa-solid fa-triangle-exclamation mr-2"></i>Error de conexión con el Cuartel General.</p>'; 
+            }
         }
 
         // Carga inicial
