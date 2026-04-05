@@ -3,197 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | COMANDO CENTRAL v2.2</title>
+    <title>LIONS-GOLD | CENTRO DE MANDO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&display=swap');
-        body { background-color: #020617; color: #e2e8f0; font-family: 'Segoe UI', sans-serif; }
-        .gold-text { color: #f59e0b; }
-        .panel-tactico { background: rgba(15, 23, 42, 0.8); border: 1px solid #1e293b; backdrop-filter: blur(10px); }
-        .header-mando { font-family: 'Orbitron', sans-serif; letter-spacing: 2px; border-bottom: 2px solid #f59e0b; }
-        
-        /* Estilos de Estado */
-        .status-active { color: #10b981; background: rgba(16, 185, 129, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid #10b981; }
-        .status-blacklisted { color: #ef4444; background: rgba(239, 68, 68, 0.1); padding: 2px 8px; border-radius: 4px; border: 1px solid #ef4444; }
-        
-        .btn-accion { transition: all 0.2s; font-size: 10px; font-weight: bold; text-transform: uppercase; }
-        .btn-accion:hover { transform: scale(1.05); filter: brightness(1.2); }
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Roboto+Mono:wght@400;700&display=swap');
+        body { background: #07090a; color: #cbd5e1; font-family: 'Inter', sans-serif; }
+        .font-rpg { font-family: 'Cinzel', serif; }
+        .panel-mando { background: linear-gradient(145deg, #0f172a, #020617); border: 1px solid #1e293b; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .gold-text { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.3); }
+        .row-item:hover { background: rgba(30, 41, 59, 0.5); border-left: 4px solid #fbbf24; transition: 0.2s; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="min-h-screen p-4 md:p-8">
 
-    <header class="max-w-7xl mx-auto mb-8 flex justify-between items-center">
-        <div class="flex items-center gap-4">
-            <div class="p-3 bg-amber-500 rounded-lg">
-                <i class="fa-solid fa-tower-observation text-black text-2xl"></i>
-            </div>
-            <div>
-                <h1 class="header-mando text-xl md:text-2xl gold-text">CONTROL DE OPERACIONES</h1>
-                <p class="text-[10px] text-slate-500 uppercase tracking-[4px]">Lions-Gold Strategic Division</p>
-            </div>
+    <header class="max-w-6xl mx-auto mb-8 flex justify-between items-end border-b border-slate-800 pb-6">
+        <div>
+            <h1 class="font-rpg text-3xl gold-text tracking-tighter flex items-center gap-3">
+                <i class="fa-solid fa-crown"></i> REGISTROS DE MANDO
+            </h1>
+            <p class="text-xs font-mono text-slate-500 uppercase mt-1 tracking-widest">LIONS-GOLD | Inteligencia y Logística</p>
         </div>
-        
         <div class="flex gap-4">
-            <button onclick="refreshData()" class="bg-slate-800 hover:bg-slate-700 px-4 py-2 rounded border border-slate-600 text-xs font-bold transition-all">
-                <i class="fa-solid fa-sync-alt mr-2"></i> REFRESCAR RADAR
-            </button>
-            <button onclick="logout()" class="bg-red-900/50 hover:bg-red-600 px-4 py-2 rounded border border-red-500 text-xs font-bold transition-all">
-                SALIR
+            <button onclick="sincronizarMando()" class="bg-slate-800 hover:bg-amber-600 text-white px-4 py-2 rounded text-xs font-bold transition-all flex items-center gap-2">
+                <i class="fa-solid fa-rotate"></i> ACTUALIZAR PERGAMINOS
             </button>
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto space-y-6">
-        
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="panel-tactico p-4 rounded-xl border-l-4 border-amber-500">
-                <span class="text-[10px] text-slate-500 font-bold uppercase">Usuarios en Censo</span>
-                <p class="text-2xl font-black font-mono" id="stat-total">0</p>
+    <main class="max-w-6xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="panel-mando p-6 rounded-lg">
+                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Total Operado (Silver)</span>
+                <div class="text-2xl font-mono gold-text mt-1" id="statTotal">0</div>
             </div>
-            <div class="panel-tactico p-4 rounded-xl border-l-4 border-red-500">
-                <span class="text-[10px] text-slate-500 font-bold uppercase">Amenazas (Blacklist)</span>
-                <p class="text-2xl font-black font-mono text-red-500" id="stat-banned">0</p>
+            <div class="panel-mando p-6 rounded-lg">
+                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Impuestos de Gremio</span>
+                <div class="text-2xl font-mono text-emerald-500 mt-1" id="statTax">0</div>
             </div>
-            <div class="panel-tactico p-4 rounded-xl border-l-4 border-emerald-500">
-                <span class="text-[10px] text-slate-500 font-bold uppercase">Volumen de Operaciones</span>
-                <p class="text-2xl font-black font-mono text-emerald-500" id="stat-vol">0.00</p>
-            </div>
-            <div class="panel-tactico p-4 rounded-xl border-l-4 border-blue-500">
-                <span class="text-[10px] text-slate-500 font-bold uppercase">Impuestos Recaudados</span>
-                <p class="text-2xl font-black font-mono text-blue-400" id="stat-fees">0.00</p>
+            <div class="panel-mando p-6 rounded-lg">
+                <span class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Contratos Sellados</span>
+                <div class="text-2xl font-mono text-sky-500 mt-1" id="statCount">0</div>
             </div>
         </div>
 
-        <div class="panel-tactico rounded-2xl overflow-hidden shadow-2xl">
-            <div class="p-6 border-b border-slate-800 bg-slate-900/50 flex justify-between items-center">
-                <h3 class="font-bold uppercase text-sm tracking-widest italic"><i class="fa-solid fa-list-check gold-text mr-2"></i> Registro General de Personal</h3>
-                <div class="relative">
-                    <input type="text" placeholder="Filtrar IGN..." class="bg-black/50 border border-slate-700 rounded-lg px-4 py-1 text-xs outline-none focus:border-amber-500">
-                </div>
+        <div class="panel-mando rounded-xl overflow-hidden">
+            <div class="bg-black/40 p-4 border-b border-slate-800 grid grid-cols-5 text-[10px] font-black uppercase text-slate-400 tracking-widest">
+                <span class="col-span-2">Mercader / Item</span>
+                <span class="text-right">Plata Neta</span>
+                <span class="text-right">Ubicación</span>
+                <span class="text-right">Estatus</span>
             </div>
-
-            <div class="overflow-x-auto">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-950 text-[10px] text-slate-500 uppercase tracking-tighter">
-                        <tr>
-                            <th class="p-4">Jugador (IGN)</th>
-                            <th class="p-4">Última Carga</th>
-                            <th class="p-4">Cantidad</th>
-                            <th class="p-4">Sector (Lugar)</th>
-                            <th class="p-4">Reputación</th>
-                            <th class="p-4">Estatus</th>
-                            <th class="p-4 text-right">Protocolo Disciplinario</th>
-                        </tr>
-                    </thead>
-                    <tbody id="adminBody" class="divide-y divide-slate-800/40 text-sm">
-                        </tbody>
-                </table>
+            
+            <div id="contenedorRegistros" class="divide-y divide-slate-800/50 min-h-[400px]">
+                <div class="p-20 text-center text-slate-600 italic text-sm">
+                    <i class="fa-solid fa-lock mb-3 block text-2xl opacity-20"></i>
+                    Esperando autorización de Mando...
+                </div>
             </div>
         </div>
     </main>
 
     <script>
-        const API_BASE = 'http://localhost:3000/api/admin';
-        let adminToken = localStorage.getItem('lg_admin_token');
+        // CONFIGURACIÓN TÁCTICA
+        const API_URL = "https://script.google.com/macros/s/AKfycbwQbVXd7_k_l0sESDEGLbLS1sBEVHiQTJXOvJxFLDnTmmmcDhbsaXAXPKh9g2b_pGph/exec";
+        let CLAVE_ACCESO = "";
 
-        // Verificación Inicial de Rango
-        if (!adminToken) {
-            const pass = prompt("🔐 ACCESO RESTRINGIDO. INGRESE CLAVE DE MANDO:");
-            if (pass) {
-                adminToken = pass;
-                localStorage.setItem('lg_admin_token', pass);
-            } else {
-                window.location.href = "index.html"; 
-            }
-        }
+        // Al cargar la página pedimos la clave
+        window.onload = () => {
+            CLAVE_ACCESO = prompt("🔐 INGRESE CLAVE DE ACCESO NIVEL SARGENTO:");
+            if(CLAVE_ACCESO) sincronizarMando();
+            else document.getElementById('contenedorRegistros').innerHTML = "<p class='p-10 text-center text-red-500'>ACCESO DENEGADO</p>";
+        };
 
-        async function refreshData() {
-            try {
-                const res = await fetch(`${API_BASE}/users`, {
-                    headers: { 'x-admin-token': adminToken }
-                });
+        function sincronizarMando() {
+            const container = document.getElementById('contenedorRegistros');
+            container.innerHTML = '<div class="p-20 text-center text-amber-500 font-mono text-xs uppercase animate-pulse">Sincronizando con HQ de Google...</div>';
 
-                if (res.status === 401) {
-                    alert("Token Expirado o Inválido.");
-                    localStorage.removeItem('lg_admin_token');
-                    location.reload();
-                    return;
-                }
-
-                const users = await res.json();
-                renderUsers(users);
-            } catch (e) {
-                console.error("Error en el radar de administración:", e);
-            }
-        }
-
-        function renderUsers(users) {
-            const tbody = document.getElementById('adminBody');
-            tbody.innerHTML = '';
+            // Canal JSONP para evitar bloqueos de seguridad (CORS)
+            const script = document.createElement('script');
+            script.src = `${API_URL}?callback=procesarDatosMando&token=${encodeURIComponent(CLAVE_ACCESO)}&t=${new Date().getTime()}`;
+            document.body.appendChild(script);
             
-            let banned = 0;
-            let totalVol = 0;
-            let totalFees = 0;
-
-            users.forEach(u => {
-                if(u.status === 'blacklisted') banned++;
-                totalVol += parseFloat(u.last_amount || 0);
-                totalFees += parseFloat(u.last_fee || 0);
-
-                tbody.innerHTML += `
-                    <tr class="hover:bg-white/5 transition-colors">
-                        <td class="p-4 font-black text-white uppercase tracking-tight">${u.username}</td>
-                        <td class="p-4 font-mono text-xs text-slate-400">${u.last_item || '---'}</td>
-                        <td class="p-4 font-mono text-emerald-400 font-bold">${u.last_amount || '0.00'}</td>
-                        <td class="p-4"><span class="text-amber-500/80 text-xs italic">${u.last_location || '---'}</span></td>
-                        <td class="p-4 text-amber-500 font-bold">${u.reputation} ⭐</td>
-                        <td class="p-4">
-                            <span class="status-${u.status} text-[9px] font-black uppercase tracking-widest">${u.status}</span>
-                        </td>
-                        <td class="p-4 text-right space-x-2">
-                            <button onclick="updateRep('${u.username}', 5)" class="btn-accion bg-emerald-600/20 text-emerald-500 border border-emerald-500/50 px-2 py-1 rounded">Promover</button>
-                            <button onclick="toggleBan('${u.username}', '${u.status}')" class="btn-accion ${u.status === 'blacklisted' ? 'bg-blue-600/20 text-blue-500 border-blue-500/50' : 'bg-red-600/20 text-red-500 border-red-500/50'} px-2 py-1 rounded">
-                                ${u.status === 'blacklisted' ? 'Perdonar' : 'Degradar/Ban'}
-                            </button>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            document.getElementById('stat-total').innerText = users.length;
-            document.getElementById('stat-banned').innerText = banned;
-            document.getElementById('stat-vol').innerText = totalVol.toLocaleString();
-            document.getElementById('stat-fees').innerText = totalFees.toLocaleString();
+            // Limpiar el script después de usarlo
+            script.onload = () => script.remove();
         }
 
-        async function updateRep(username, points) {
-            await fetch(`${API_BASE}/reputation`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
-                body: JSON.stringify({ username, points })
-            });
-            refreshData();
-        }
+        // Esta función recibe los datos del Excel
+        window.procesarDatosMando = function(data) {
+            const container = document.getElementById('contenedorRegistros');
+            
+            if(!data || data.error) {
+                container.innerHTML = `<div class="p-20 text-center text-red-500 font-bold uppercase tracking-widest">
+                    <i class="fa-solid fa-triangle-exclamation text-3xl mb-4 block"></i>
+                    Error de Autenticación o Enlace Inválido
+                </div>`;
+                return;
+            }
 
-        async function toggleBan(username, currentStatus) {
-            const newStatus = currentStatus === 'blacklisted' ? 'active' : 'blacklisted';
-            if(!confirm(`¿Ejecutar protocolo ${newStatus.toUpperCase()} para ${username}?`)) return;
+            if(data.length === 0) {
+                container.innerHTML = '<div class="p-20 text-center text-slate-500 italic">No hay registros en el libro mayor.</div>';
+                return;
+            }
 
-            await fetch(`${API_BASE}/update-status`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'x-admin-token': adminToken },
-                body: JSON.stringify({ username, newStatus })
-            });
-            refreshData();
-        }
+            // Cálculos de estadísticas
+            let totalSilver = 0;
+            let totalTax = 0;
 
-        function logout() {
-            localStorage.removeItem('lg_admin_token');
-            location.reload();
-        }
+            // Inyectar filas
+            container.innerHTML = data.reverse().map(reg => {
+                const monto = parseInt(reg.amount || reg.monto || 0);
+                const neto = parseInt(reg.net || reg.neta || 0);
+                const impuesto = monto - neto;
+                
+                totalSilver += monto;
+                totalTax += impuesto;
 
-        window.onload = refreshData;
+                return `
+                <div class="grid grid-cols-5 p-4 items-center row-item transition-all">
+                    <div class="col-span-2">
+                        <span class="block font-bold text-slate-200 text-sm">${reg.seller || reg.mercader || 'Desconocido'}</span>
+                        <span class="text-[10px] text-amber-600 font-mono uppercase">${reg.item || 'S/D'}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="block font-mono text-sm text-emerald-400 font-bold">${neto.toLocaleString()}</span>
+                        <span class="text-[9px] text-slate-600 italic">Fee: ${impuesto.toLocaleString()}</span>
+                    </div>
+                    <div class="text-right text-[10px] font-mono text-slate-400">
+                        <i class="fa-solid fa-map-pin mr-1 text-red-500 opacity-50"></i> ${reg.location || 'N/A'}
+                    </div>
+                    <div class="text-right">
+                        <span class="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-500 text-[8px] font-black border border-emerald-500/20">VERIFICADO</span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            // Actualizar Widgets superiores
+            document.getElementById('statTotal').innerText = totalSilver.toLocaleString();
+            document.getElementById('statTax').innerText = totalTax.toLocaleString();
+            document.getElementById('statCount').innerText = data.length;
+        };
     </script>
 </body>
 </html>
