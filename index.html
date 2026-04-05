@@ -8,71 +8,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&family=Inter:wght@400;700&display=swap');
-        
-        :root {
-            --gold: #c5a059;
-            --gold-glow: rgba(197, 160, 89, 0.4);
-        }
-
-        body { 
-            background: #050505; 
-            color: #d1d1d1; 
-            font-family: 'Inter', sans-serif;
-            background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg');
-            background-attachment: fixed;
-            background-size: cover;
-        }
-
+        :root { --gold: #c5a059; --gold-glow: rgba(197, 160, 89, 0.4); }
+        body { background: #050505; color: #d1d1d1; font-family: 'Inter', sans-serif; background-image: linear-gradient(rgba(0,0,0,0.85), rgba(0,0,0,0.85)), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg'); background-attachment: fixed; background-size: cover; }
         .font-mythic { font-family: 'Cinzel Decorative', serif; }
         .font-medieval { font-family: 'MedievalSharp', cursive; }
-
-        .mythic-title {
-            color: var(--gold);
-            text-shadow: 0 0 10px var(--gold-glow), 2px 2px 5px black;
-            letter-spacing: 0.2rem;
-        }
-
-        .tavern-panel {
-            background: rgba(20, 22, 26, 0.95);
-            border: 2px solid #332b1e;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.8);
-            position: relative;
-        }
-
-        .input-mythic {
-            background: #1a1d21;
-            border: 1px solid #3d3423;
-            color: #fff;
-            padding: 14px;
-            transition: 0.3s;
-        }
-
-        .input-mythic:focus {
-            border-color: var(--gold);
-            box-shadow: 0 0 10px var(--gold-glow);
-            outline: none;
-        }
-
-        .btn-gold {
-            background: linear-gradient(135deg, #8b6b23 0%, #c5a059 50%, #8b6b23 100%);
-            color: black;
-            font-weight: 900;
-            text-transform: uppercase;
-            transition: 0.3s;
-            border: 1px solid #4a3a1a;
-        }
-
-        .btn-gold:hover {
-            filter: brightness(1.2);
-            transform: scale(1.02);
-            box-shadow: 0 0 20px var(--gold-glow);
-        }
-
-        .activity-card {
-            background: rgba(0,0,0,0.6);
-            border-bottom: 2px solid var(--gold);
-            transition: 0.3s;
-        }
+        .mythic-title { color: var(--gold); text-shadow: 0 0 10px var(--gold-glow), 2px 2px 5px black; letter-spacing: 0.2rem; }
+        .tavern-panel { background: rgba(20, 22, 26, 0.95); border: 2px solid #332b1e; box-shadow: inset 0 0 20px rgba(0,0,0,0.8); position: relative; }
+        .input-mythic { background: #1a1d21; border: 1px solid #3d3423; color: #fff; padding: 14px; transition: 0.3s; }
+        .input-mythic:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-glow); outline: none; }
+        .btn-gold { background: linear-gradient(135deg, #8b6b23 0%, #c5a059 50%, #8b6b23 100%); color: black; font-weight: 900; text-transform: uppercase; border: 1px solid #4a3a1a; transition: 0.3s; cursor: pointer; }
+        .btn-gold:hover { filter: brightness(1.2); transform: scale(1.01); box-shadow: 0 0 20px var(--gold-glow); }
+        .activity-card { background: rgba(0,0,0,0.6); border-bottom: 2px solid var(--gold); }
     </style>
 </head>
 <body class="min-h-screen">
@@ -80,43 +26,30 @@
     <header class="py-12 text-center">
         <h1 class="font-mythic text-4xl md:text-6xl mythic-title mb-2">TABERNA LIONS-GOLD</h1>
         <p class="font-medieval text-amber-600 text-lg tracking-widest uppercase">Por la riqueza, la justicia y la gloria, la hermandad prevalecerá</p>
-        
-        <div class="max-w-2xl mx-auto mt-6 px-4">
-            <p class="text-gray-400 italic text-sm">
-                "Bajo el rugido del león, forjamos el acero y el oro. Somos la vanguardia de las Tierras Negras, donde el comercio se sella con honor."
-            </p>
-        </div>
-
         <div class="mt-8">
-            <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="btn-gold px-8 py-3 rounded-sm text-sm tracking-tighter">
-                <i class="fa-brands fa-discord mr-2"></i> Clic para comercio en Albion
+            <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="btn-gold px-8 py-3 rounded-sm text-sm">
+                <i class="fa-brands fa-discord mr-2"></i> CLIC PARA COMERCIO EN ALBION
             </a>
+            <button onclick="resetKey()" class="ml-4 text-[10px] text-gray-600 underline uppercase hover:text-amber-500 transition-colors">Configurar Nuevo Webhook</button>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 p-4">
-        
         <div class="lg:col-span-5">
             <div class="tavern-panel p-8 rounded-sm">
-                <div class="mb-6 text-center border-b border-amber-900 pb-4">
-                    <h2 class="font-mythic text-amber-500 text-xl">INTERMEDIARIO SEGURO</h2>
-                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Seguridad de transacción garantizada</p>
+                <h2 class="font-mythic text-amber-500 text-xl text-center border-b border-amber-900 pb-4">INTERMEDIARIO SEGURO</h2>
+                <p class="text-[10px] text-center text-gray-500 mt-2 uppercase">Seguridad de Transacción y Verificación Scarface</p>
+                <div class="mt-6 flex gap-2 mb-6">
+                    <button id="typeBtn" onclick="toggleType()" class="w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 uppercase tracking-widest">MODO: VENTA</button>
                 </div>
-
-                <div class="flex gap-2 mb-6">
-                    <button id="typeBtn" onclick="toggleType()" class="w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 transition-all uppercase tracking-widest">MODO ACTUAL: VENTA</button>
-                </div>
-
                 <div class="space-y-4 font-medieval">
                     <input type="text" id="trader" placeholder="Nombre en Albion Online" class="input-mythic w-full">
                     <input type="text" id="item" placeholder="Item (Ej: Buey T8)" class="input-mythic w-full">
                     <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full text-amber-500 font-bold">
-                    
                     <div class="grid grid-cols-2 gap-4">
                         <input type="text" id="start" placeholder="Ciudad Origen" class="input-mythic text-xs">
                         <input type="text" id="end" placeholder="Ciudad Destino" class="input-mythic text-xs">
                     </div>
-
                     <button onclick="scarfaceVerify()" id="btnAction" class="w-full btn-gold py-5 mt-4 rounded-sm shadow-2xl">
                         <i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO
                     </button>
@@ -130,25 +63,15 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="activity-card p-4">
                         <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-map-location-dot mr-2"></i> Sede Central</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Ubicados en el corazón de **Lymhurst**, con alcance y dominio en todos los reinos y ciudades de Albion.</p>
+                        <p class="text-[11px] text-gray-400 mt-1">Ubicados en **Lymhurst**, operando con dominio en todos los reinos.</p>
                     </div>
                     <div class="activity-card p-4">
-                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-shield-halved mr-2"></i> Anti-Estafas</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Verificación por Capitán SCARFACE. Mercaderes falsos son reportados manualmente a soporte.</p>
-                    </div>
-                    <div class="activity-card p-4">
-                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-khanda mr-2"></i> Escolta Armada</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Protección de caravanas en Zona Roja y Negra con vigilancia de élite.</p>
-                    </div>
-                    <div class="activity-card p-4">
-                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-coins mr-2"></i> Riqueza Global</h4>
-                        <p class="text-[11px] text-gray-400 mt-1">Controlamos rutas comerciales estratégicas para asegurar la prosperidad de nuestros aliados.</p>
+                        <h4 class="text-amber-500 text-xs font-bold uppercase"><i class="fa-solid fa-shield-halved mr-2"></i> Protección Scarface</h4>
+                        <p class="text-[11px] text-gray-400 mt-1">Verificación directa contra los registros oficiales de Albion.</p>
                     </div>
                 </div>
             </div>
-
             <div class="tavern-panel p-4 text-center border-dashed border-amber-900">
-                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Estado del Bot de Verificación</p>
                 <p class="text-green-500 font-bold text-xs"><i class="fa-solid fa-circle-check animate-pulse mr-2"></i> CAPITÁN SCARFACE: ONLINE</p>
             </div>
         </div>
@@ -159,23 +82,41 @@
     </footer>
 
     <script>
-        const DISCORD_WEBHOOK = "https://discord.com/api/webhooks/1490396123313995836/x7iIrSmVz0JQghNgm6TxP9IUgQ8CB6r8R4R2E5UvzUzhVUUQWW51SfkIFQqvErE8iEdJ";
-        let currentType = 'VENTA';
+        // 🛡️ PROTOCOLO DE LLAVE SECRETA (LOCAL STORAGE)
+        let DISCORD_WEBHOOK = localStorage.getItem('LG_WEBHOOK_KEY') || "";
 
-        function toggleType() {
-            const btn = document.getElementById('typeBtn');
-            if(currentType === 'VENTA') {
-                currentType = 'COMPRA';
-                btn.innerText = "MODO ACTUAL: COMPRA";
-                btn.className = "w-full py-3 text-xs font-black rounded bg-green-900/40 border border-green-700 text-green-500 transition-all uppercase tracking-widest";
-            } else {
-                currentType = 'VENTA';
-                btn.innerText = "MODO ACTUAL: VENTA";
-                btn.className = "w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 transition-all uppercase tracking-widest";
+        function checkKey() {
+            if (!DISCORD_WEBHOOK) {
+                const key = prompt("🛑 ACCESO RESTRINGIDO: Ingrese la URL de su Webhook de Discord:");
+                if (key && key.includes("discord.com/api/webhooks")) {
+                    localStorage.setItem('LG_WEBHOOK_KEY', key);
+                    DISCORD_WEBHOOK = key;
+                    alert("✅ Conexión establecida. La llave se ha guardado localmente.");
+                } else {
+                    alert("❌ Acceso denegado. Las notificaciones no funcionarán.");
+                }
             }
         }
 
+        function resetKey() {
+            if(confirm("¿Desea cambiar la llave de acceso de Discord?")) {
+                localStorage.removeItem('LG_WEBHOOK_KEY');
+                location.reload();
+            }
+        }
+
+        let currentType = 'VENTA';
+        function toggleType() {
+            const btn = document.getElementById('typeBtn');
+            currentType = currentType === 'VENTA' ? 'COMPRA' : 'VENTA';
+            btn.innerText = `MODO: ${currentType}`;
+            btn.className = currentType === 'VENTA' ? "w-full py-3 text-xs font-black rounded bg-red-900/40 border border-red-700 text-red-500 uppercase tracking-widest" : "w-full py-3 text-xs font-black rounded bg-green-900/40 border border-green-700 text-green-500 uppercase tracking-widest";
+        }
+
         async function scarfaceVerify() {
+            checkKey(); 
+            if (!DISCORD_WEBHOOK) return;
+
             const btn = document.getElementById('btnAction');
             const name = document.getElementById('trader').value.trim();
             const item = document.getElementById('item').value;
@@ -189,41 +130,27 @@
             btn.innerHTML = '<i class="fa-solid fa-skull animate-spin mr-2"></i> VERIFICANDO...';
 
             try {
-                // Proxy para evitar bloqueo CORS de la API oficial de Albion
                 const proxyUrl = "https://corsproxy.io/?";
                 const targetUrl = `https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(name)}`;
-                
-                const albionRes = await fetch(proxyUrl + targetUrl);
-                const albionData = await albionRes.json();
-                
-                const playerMatch = albionData.players && albionData.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
-                
-                let verificationText = "";
-                let statusColor = 0;
-
-                if (playerMatch) {
-                    verificationText = `✅ **USUARIO VERIFICADO**\nEl jugador existe en los registros.\n**Gremio:** ${playerMatch.GuildName || 'Sin Gremio'}`;
-                    statusColor = 3066993; // Verde
-                } else {
-                    verificationText = `⚠️ **ALERTA: USUARIO NO ENCONTRADO**\n¡Posible estafador! El nombre no existe en Albion.`;
-                    statusColor = 15158332; // Rojo
-                }
+                const res = await fetch(proxyUrl + targetUrl);
+                const data = await res.json();
+                const playerMatch = data.players && data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
                 const payload = {
                     username: "CAPITÁN SCARFACE | SEGURIDAD LIONS-GOLD",
                     embeds: [{
                         title: `🔔 NUEVO REPORTE DE TABERNA: ${currentType}`,
-                        description: verificationText,
-                        color: statusColor,
+                        color: playerMatch ? 3066993 : 15158332,
+                        description: playerMatch ? `✅ **USUARIO VERIFICADO**\nEl jugador existe.\n**Gremio:** ${playerMatch.GuildName || 'Sin Gremio'}` : `⚠️ **ALERTA: USUARIO NO ENCONTRADO**\n¡Posible estafador! El nombre no existe en Albion.`,
                         fields: [
                             { name: "👤 Mercader", value: name, inline: true },
-                            { name: "📝 Tipo de Trato", value: currentType, inline: true },
+                            { name: "📝 Tipo", value: currentType, inline: true },
                             { name: "📦 Item", value: item, inline: true },
                             { name: "💰 Precio", value: `${parseInt(price).toLocaleString()} Silver`, inline: true },
                             { name: "🚩 Origen", value: locStart, inline: true },
                             { name: "🏁 Destino", value: locEnd, inline: true }
                         ],
-                        footer: { text: "Sistema de Intermediario Seguro | Smith Business Solutions" },
+                        footer: { text: "Sistema de Intermediario Seguro | LIONS-GOLD" },
                         timestamp: new Date().toISOString()
                     }]
                 };
@@ -234,9 +161,8 @@
                     body: JSON.stringify(payload)
                 });
 
-                alert(playerMatch ? "Contrato sellado. Información enviada al Discord." : "¡Alerta enviada! El jugador no existe.");
+                alert(playerMatch ? "Contrato enviado al Discord." : "¡Alerta enviada! El jugador no existe en Albion.");
                 
-                // Reset
                 document.getElementById('trader').value = '';
                 document.getElementById('item').value = '';
                 document.getElementById('price').value = '';
@@ -248,6 +174,7 @@
                 btn.innerHTML = '<i class="fa-solid fa-scroll mr-2"></i> SELLAR CONTRATO MÍTICO';
             }
         }
+        window.onload = checkKey;
     </script>
 </body>
 </html>
