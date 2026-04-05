@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | PANEL DE CONTROL</title>
+    <title>LIONS-GOLD | TABERNA NATIVA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -11,22 +11,19 @@
         body { background: #0b0e11; color: #eaecef; font-family: 'Inter', sans-serif; }
         .font-rpg { font-family: 'Cinzel', serif; }
         .panel { background: #161a1e; border: 1px solid #2b3139; }
-        .input-lions { background: #2b3139; border: 1px solid #363c44; color: white; padding: 10px; border-radius: 4px; font-size: 14px; }
+        .input-lions { background: #2b3139; border: 1px solid #363c44; color: white; padding: 12px; border-radius: 4px; font-size: 14px; width: 100%; }
         .input-lions:focus { border-color: #c5a059; outline: none; }
-        /* Animación para nuevas órdenes */
-        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
-        .order-card { animation: fade 0.5s ease-in; }
     </style>
 </head>
 <body class="min-h-screen p-4">
 
-    <header class="max-w-6xl mx-auto mb-6 flex justify-between items-end border-b border-gray-800 pb-4">
+    <header class="max-w-6xl mx-auto mb-6 flex justify-between items-center border-b border-gray-800 pb-4">
         <div>
             <h1 class="font-rpg text-2xl text-amber-500 tracking-widest"><i class="fa-solid fa-lion"></i> LIONS-GOLD</h1>
-            <p class="text-[10px] text-gray-500 uppercase tracking-tighter">Sistema de Intercambio P2P - Cuartel General</p>
+            <p class="text-[10px] text-gray-500 uppercase">Base de Datos Nativa GitHub</p>
         </div>
-        <button onclick="loadOrders()" class="bg-amber-600/10 text-amber-500 px-4 py-2 rounded border border-amber-600/20 text-xs font-bold hover:bg-amber-600/20 transition-all">
-            <i class="fa-solid fa-sync-alt mr-2"></i> ACTUALIZAR PERGAMINO
+        <button onclick="loadOrders()" class="text-amber-500 text-xs font-bold px-3 py-2 border border-amber-500/20 rounded hover:bg-amber-500/10">
+            <i class="fa-solid fa-sync-alt"></i> ACTUALIZAR
         </button>
     </header>
 
@@ -34,165 +31,125 @@
         
         <div class="lg:col-span-4">
             <div class="panel p-6 rounded-lg border-t-4 border-amber-600">
-                <h2 class="font-rpg text-amber-500 text-sm mb-6 uppercase tracking-widest text-center">Sellar Nuevo Contrato</h2>
-                
                 <div class="flex gap-2 mb-6 bg-black/40 p-1 rounded">
-                    <button onclick="setType('VENTA')" id="btnVenta" class="flex-1 py-2 text-xs font-bold rounded bg-red-600 text-white transition-all">VENTA</button>
-                    <button onclick="setType('COMPRA')" id="btnCompra" class="flex-1 py-2 text-xs font-bold rounded text-gray-500 transition-all">COMPRA</button>
+                    <button onclick="currentType='VENTA'" class="flex-1 py-2 text-[10px] font-bold rounded bg-red-600 text-white">VENTA</button>
+                    <button onclick="currentType='COMPRA'" class="flex-1 py-2 text-[10px] font-bold rounded text-gray-500">COMPRA</button>
                 </div>
-
-                <div class="flex flex-col gap-4">
-                    <input type="text" id="trader" placeholder="Nombre del Comerciante" class="input-lions">
-                    <div class="grid grid-cols-3 gap-2">
-                        <input type="text" id="item" placeholder="Item" class="col-span-2 input-lions">
-                        <input type="number" id="qty" placeholder="Cant." value="1" class="input-lions text-center">
-                    </div>
-                    <input type="number" id="price" placeholder="Precio Silver Total" class="input-lions text-amber-400 font-bold">
-                    
-                    <div class="grid grid-cols-2 gap-2">
-                        <input type="text" id="start" placeholder="Desde" class="input-lions text-[11px]">
-                        <input type="text" id="end" placeholder="Hacia" class="input-lions text-[11px]">
-                    </div>
-
-                    <button onclick="sendData()" id="sendBtn" class="w-full py-4 mt-2 rounded font-black text-sm bg-amber-600 hover:bg-amber-500 text-white shadow-lg transition-all uppercase tracking-widest">
-                        Publicar en el Tablón
+                <div class="space-y-4">
+                    <input type="text" id="trader" placeholder="Tu Nombre" class="input-lions">
+                    <input type="text" id="item" placeholder="Item / Recurso" class="input-lions">
+                    <input type="number" id="price" placeholder="Precio Silver" class="input-lions text-amber-400 font-bold">
+                    <button onclick="sendToGithub()" id="btnAction" class="w-full py-4 rounded font-black text-xs bg-amber-600 text-white uppercase tracking-widest">
+                        Sellar en GitHub
                     </button>
                 </div>
             </div>
         </div>
 
         <div class="lg:col-span-8">
-            <div class="panel rounded-lg overflow-hidden flex flex-col min-h-[500px]">
-                <div class="bg-black/40 p-4 border-b border-gray-800 flex justify-between">
-                    <span class="text-[11px] font-bold uppercase text-gray-400 tracking-widest">Contratos Activos en el Mercado</span>
-                    <span id="statusMsg" class="text-[10px] text-green-500 animate-pulse">Sincronizado</span>
-                </div>
-
-                <div id="orderList" class="p-4 space-y-3 overflow-y-auto max-h-[600px]">
-                    <div class="text-center py-20 text-gray-600 italic text-sm">Consultando registros...</div>
-                </div>
+            <div id="orderList" class="space-y-3">
+                <div class="text-center py-20 text-gray-600 italic">Cargando órdenes desde el repositorio...</div>
             </div>
         </div>
     </main>
 
-    <iframe name="target_frame" id="target_frame" style="display:none;"></iframe>
-
     <script>
-        const API_URL = "https://script.google.com/macros/s/AKfycbyqrS5VQzB3BceC4S6hE0qFJgXEkmHRcwgA84dPRy3VaAIIQXgCcdPhdcYQ6LqcQc4/exec";
+        // CONFIGURACIÓN GLOBAL
+        const TOKEN = "TU_TOKEN_GHP_AQUÍ"; // PEGA TU TOKEN AQUÍ
+        const REPO = "zambranogonzalezsmith-blip/LA-TABERNA-LIONS-GOLD-";
+        const FILE = "orders.json";
         let currentType = 'VENTA';
 
-        function setType(t) {
-            currentType = t;
-            const bv = document.getElementById('btnVenta');
-            const bc = document.getElementById('btnCompra');
-            const sb = document.getElementById('sendBtn');
-            
-            if(t === 'VENTA') {
-                bv.className = "flex-1 py-2 text-xs font-bold rounded bg-red-600 text-white";
-                bc.className = "flex-1 py-2 text-xs font-bold rounded text-gray-500";
-                sb.classList.replace('bg-green-600', 'bg-amber-600');
-            } else {
-                bc.className = "flex-1 py-2 text-xs font-bold rounded bg-green-600 text-white";
-                bv.className = "flex-1 py-2 text-xs font-bold rounded text-gray-500";
-                sb.classList.replace('bg-amber-600', 'bg-green-600');
-            }
-        }
-
-        // 1. CARGAR ÓRDENES DESDE GOOGLE
-        function loadOrders() {
-            document.getElementById('statusMsg').innerText = "Cargando...";
-            const script = document.createElement('script');
-            script.src = `${API_URL}?callback=drawOrders&t=${Date.now()}`;
-            document.body.appendChild(script);
-            script.onload = () => script.remove();
-        }
-
-        // 2. DIBUJAR LAS ÓRDENES EN EL HTML
-        window.drawOrders = function(data) {
+        // 1. CARGAR DESDE GITHUB
+        async function loadOrders() {
             const list = document.getElementById('orderList');
-            document.getElementById('statusMsg').innerText = "Sincronizado";
-            
-            if(!data || data.length === 0) {
-                list.innerHTML = '<p class="text-center text-gray-700 py-10">No hay contratos activos.</p>';
-                return;
-            }
+            try {
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}?t=${Date.now()}`, {
+                    headers: { "Authorization": `token ${TOKEN}` }
+                });
+                const data = await res.json();
+                const orders = JSON.parse(atob(data.content));
 
-            // Invertimos para que la última orden salga arriba
-            list.innerHTML = data.reverse().map(o => {
-                const isVenta = (o.type === 'VENTA');
-                const color = isVenta ? 'red' : 'green';
-                const silver = parseInt(o.price || 0).toLocaleString();
-                const usd = ((o.price/1000000)*0.52).toFixed(2);
+                if (orders.length === 0) {
+                    list.innerHTML = '<p class="text-center text-gray-700 py-10 italic">El pergamino está vacío.</p>';
+                    return;
+                }
 
-                return `
-                <div class="order-card p-4 rounded bg-black/20 border-l-4 border-${color}-600 flex justify-between items-center hover:bg-black/40 transition-all">
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <span class="text-[8px] px-1.5 py-0.5 rounded font-black bg-${color}-600/10 text-${color}-500 border border-${color}-600/20">${o.type}</span>
-                            <span class="text-xs font-bold text-amber-500 tracking-tight">${o.trader}</span>
+                list.innerHTML = orders.reverse().map(o => `
+                    <div class="panel p-4 rounded border-l-4 border-${o.type === 'VENTA' ? 'red' : 'green'}-600 flex justify-between items-center">
+                        <div>
+                            <span class="text-[9px] font-bold text-amber-500 uppercase">${o.trader}</span>
+                            <h3 class="text-sm font-bold text-white uppercase">${o.item}</h3>
                         </div>
-                        <h3 class="text-sm font-bold text-white uppercase">${o.qty}x ${o.item}</h3>
-                        <p class="text-[10px] text-gray-500 font-mono italic">${o.locStart} <i class="fa-solid fa-arrow-right mx-1 text-gray-700"></i> ${o.locEnd}</p>
+                        <div class="text-right font-mono">
+                            <p class="text-sm font-bold">${parseInt(o.price).toLocaleString()} Silver</p>
+                            <p class="text-[9px] text-gray-500">${new Date(o.date).toLocaleString()}</p>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <p class="text-lg font-black text-${color}-400 font-mono leading-none">${silver}</p>
-                        <p class="text-[10px] text-gray-500 font-mono mt-1">$${usd} USD</p>
-                        <button class="mt-2 text-[9px] text-amber-600 border border-amber-600/30 px-2 py-0.5 rounded hover:bg-amber-600/10">CERRAR TRATO</button>
-                    </div>
-                </div>`;
-            }).join('');
-        };
+                `).join('');
+            } catch (e) {
+                list.innerHTML = `<p class="text-red-500 text-center py-10">Error de conexión: Verifica el Token o el Repositorio.</p>`;
+            }
+        }
 
-        // 3. ENVIAR NUEVA ORDEN
-        function sendData() {
-            const t = document.getElementById('trader').value;
-            const i = document.getElementById('item').value;
-            const p = document.getElementById('price').value;
-            const btn = document.getElementById('sendBtn');
+        // 2. ENVIAR A GITHUB (COMMIT)
+        async function sendToGithub() {
+            const btn = document.getElementById('btnAction');
+            const trader = document.getElementById('trader').value;
+            const item = document.getElementById('item').value;
+            const price = document.getElementById('price').value;
 
-            if(!t || !i || !p) return alert("Sargento, complete los datos del contrato.");
+            if (!trader || !item || !price) return alert("Completa los datos.");
 
             btn.disabled = true;
-            btn.innerText = "SELLANDO CONTRATO...";
+            btn.innerText = "ESCRIBIENDO EN EL REPO...";
 
-            const form = document.createElement('form');
-            form.method = 'POST';
-            form.action = API_URL;
-            form.target = 'target_frame';
+            try {
+                // Paso A: Obtener el archivo actual y su SHA
+                const res = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
+                    headers: { "Authorization": `token ${TOKEN}` }
+                });
+                const data = await res.json();
+                const currentOrders = JSON.parse(atob(data.content));
 
-            const fields = {
-                type: currentType,
-                trader: t,
-                item: i,
-                qty: document.getElementById('qty').value,
-                price: p,
-                locStart: document.getElementById('start').value || 'Lymhurst',
-                locEnd: document.getElementById('end').value || 'Caerleon'
-            };
+                // Paso B: Añadir nueva orden
+                const newOrder = {
+                    type: currentType,
+                    trader: trader,
+                    item: item,
+                    price: price,
+                    date: new Date().toISOString()
+                };
+                currentOrders.push(newOrder);
 
-            for (let key in fields) {
-                let inp = document.createElement('input');
-                inp.type = 'hidden';
-                inp.name = key;
-                inp.value = fields[key];
-                form.appendChild(inp);
-            }
+                // Paso C: Subir actualización (Commit)
+                const updateRes = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
+                    method: "PUT",
+                    headers: {
+                        "Authorization": `token ${TOKEN}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: `Nueva orden de ${trader}`,
+                        content: btoa(JSON.stringify(currentOrders, null, 2)),
+                        sha: data.sha
+                    })
+                });
 
-            document.body.appendChild(form);
-            form.submit();
-
-            // Limpiar y Recargar automáticamente después de 2 segundos
-            setTimeout(() => {
-                document.getElementById('item').value = '';
-                document.getElementById('price').value = '';
-                form.remove();
+                if (updateRes.ok) {
+                    alert("¡Orden grabada en el repositorio!");
+                    loadOrders();
+                } else {
+                    alert("Error al grabar en GitHub.");
+                }
+            } catch (e) {
+                alert("Error crítico de API.");
+            } finally {
                 btn.disabled = false;
-                btn.innerText = "Publicar en el Tablón";
-                loadOrders(); 
-            }, 2000);
+                btn.innerText = "Sellar en GitHub";
+            }
         }
 
-        // Carga inicial al abrir la página
         window.onload = loadOrders;
     </script>
 </body>
