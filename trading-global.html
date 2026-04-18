@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | CALCULADORA DE CARGAMENTO GLOBAL</title>
+    <title>LIONS-GOLD | ACCESO TOTAL AL MERCADO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -20,13 +20,14 @@
         .glass-panel { background: rgba(15, 17, 20, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(197, 160, 89, 0.2); }
         .mythic-border { border: 2px solid; border-image: linear-gradient(to bottom, #c5a059, #4a3a1a) 1; }
         
-        .city-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); transition: 0.3s; }
+        .city-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); transition: 0.3s; position: relative;}
         .city-card:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.08); transform: translateY(-3px); }
         
-        .input-gold { background: rgba(0, 0, 0, 0.6); border: 1px solid #3d3423; color: white; padding: 12px; outline: none; }
+        .input-gold { background: rgba(0, 0, 0, 0.6); border: 1px solid #3d3423; color: white; padding: 12px; outline: none; transition: 0.3s; }
         .input-gold:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-glow); }
         
-        .best-option { border-left: 4px solid #10b981 !important; background: rgba(16, 185, 129, 0.05) !important; }
+        .best-option { border-top: 4px solid #10b981 !important; background: rgba(16, 185, 129, 0.05) !important; }
+        .black-market-style { border-top: 4px solid #7c3aed !important; }
     </style>
 </head>
 <body class="min-h-screen">
@@ -34,11 +35,11 @@
     <nav class="bg-black/90 border-b border-[#c5a059]/30 p-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <i class="fa-solid fa-calculator text-[#c5a059] text-xl"></i>
-                <span class="font-mythic text-[#c5a059] tracking-widest text-lg uppercase">Inteligencia de Carga LIONS</span>
+                <i class="fa-solid fa-eye text-[#c5a059] text-xl"></i>
+                <span class="font-mythic text-[#c5a059] tracking-widest text-lg uppercase">Visión Total LIONS-GOLD</span>
             </div>
-            <a href="index.html" target="_self" class="font-medieval text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase">
-                <i class="fa-solid fa-arrow-left"></i> Regresar
+            <a href="index.html" class="font-medieval text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase">
+                <i class="fa-solid fa-chevron-left"></i> Panel Principal
             </a>
         </div>
     </nav>
@@ -46,137 +47,150 @@
     <main class="max-w-6xl mx-auto p-6">
         
         <section class="glass-panel mythic-border p-8 mb-10">
-            <h1 class="font-mythic text-2xl text-center text-[#c5a059] mb-8 uppercase">Configurador de Manifiesto</h1>
+            <h1 class="font-mythic text-2xl text-center text-[#c5a059] mb-8 uppercase tracking-widest">Calculadora de Mercancía Universal</h1>
             
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div class="flex flex-col gap-2">
-                    <label class="text-[10px] text-amber-600 uppercase font-bold">Mercancía</label>
-                    <select id="baseItem" class="input-gold text-sm">
-                        <option value="BAG">Bolsa (Bag)</option>
-                        <option value="CAPE">Capa (Cape)</option>
-                        <option value="MOUNT_OX">Buey (Ox)</option>
-                        <option value="MOUNT_HORSE">Caballo (Horse)</option>
-                        <option value="HEAD_PLATE_SET1">Casco de Placas</option>
-                        <option value="ARMOR_PLATE_SET1">Armadura de Placas</option>
-                        <option value="SHOES_PLATE_SET1">Botas de Placas</option>
-                        <option value="MAIN_BROADSWORD">Espada Ancha</option>
-                        <option value="MAIN_AXE">Hacha</option>
-                    </select>
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <div class="md:col-span-4 flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-bold tracking-widest">Nombre Técnico del Objeto</label>
+                    <input type="text" id="itemName" placeholder="Ej: MAIN_BROADSWORD o BAG" class="input-gold text-sm font-mono uppercase w-full">
                 </div>
 
-                <div class="flex flex-col gap-2">
-                    <label class="text-[10px] text-amber-600 uppercase font-bold">Tier & Encantamiento</label>
+                <div class="md:col-span-3 flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-bold tracking-widest">Tier / Encant.</label>
                     <div class="flex gap-1">
                         <select id="tier" class="input-gold text-sm flex-1">
-                            <option value="T4">T4</option>
-                            <option value="T5">T5</option>
-                            <option value="T6">T6</option>
-                            <option value="T7">T7</option>
-                            <option value="T8">T8</option>
+                            <option value="T1">T1</option><option value="T2">T2</option><option value="T3">T3</option>
+                            <option value="T4" selected>T4</option><option value="T5">T5</option><option value="T6">T6</option>
+                            <option value="T7">T7</option><option value="T8">T8</option>
                         </select>
                         <select id="enchant" class="input-gold text-sm flex-1">
-                            <option value="">.0</option>
-                            <option value="@1">.1</option>
-                            <option value="@2">.2</option>
-                            <option value="@3">.3</option>
-                            <option value="@4">.4</option>
+                            <option value="">.0</option><option value="@1">.1</option>
+                            <option value="@2">.2</option><option value="@3">.3</option><option value="@4">.4</option>
                         </select>
                     </div>
                 </div>
 
-                <div class="flex flex-col gap-2">
-                    <label class="text-[10px] text-amber-600 uppercase font-bold">Cantidad de Unidades</label>
+                <div class="md:col-span-2 flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-bold tracking-widest">Unidades</label>
                     <input type="number" id="quantity" value="1" min="1" class="input-gold text-sm font-bold">
                 </div>
 
-                <div class="flex flex-col justify-end">
-                    <button onclick="calculateGlobalTrade()" class="bg-[#c5a059] text-black font-black py-3 hover:brightness-110 transition-all uppercase text-sm tracking-widest">
-                        Calcular Valor
+                <div class="md:col-span-3 flex flex-col justify-end">
+                    <button onclick="fetchGlobalMarket()" class="bg-[#c5a059] text-black font-black py-3.5 hover:bg-[#d4b57a] transition-all uppercase text-xs tracking-[0.2em] shadow-lg shadow-black">
+                        Escanear Mercados
                     </button>
                 </div>
             </div>
 
-            <div class="mt-6 p-4 bg-black/40 border border-amber-900/30">
-                <p class="text-[10px] text-gray-500 uppercase">ID Generado automáticamente: <span id="generatedId" class="text-amber-500 font-mono">-</span></p>
+            <div class="mt-4 flex flex-wrap gap-4 text-[9px] text-gray-500 uppercase font-bold border-t border-white/5 pt-4">
+                <span><i class="fa-solid fa-info-circle text-amber-600"></i> Tip: Escribe <span class="text-white">MOUNT_OX</span> para Bueyes o <span class="text-white">CAPE</span> para Capas.</span>
+                <span id="fullIdDisplay" class="ml-auto text-amber-500 font-mono tracking-tighter">ID: -</span>
             </div>
         </section>
 
         <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div class="col-span-full text-center py-24 opacity-20">
+                <i class="fa-solid fa-magnifying-glass-chart text-7xl mb-6"></i>
+                <p class="font-medieval text-xl uppercase tracking-widest">Esperando parámetros de carga...</p>
             </div>
+        </div>
 
     </main>
+
+    <footer class="text-center py-12 opacity-40 text-[9px] font-mythic tracking-[0.5em] uppercase">
+        Smith Business Solutions | Lions-Gold Intelligence Division
+    </footer>
 
     <script>
         const CITIES = ["Caerleon", "Black Market", "Lymhurst", "Bridgewatch", "Martlock", "Thetford", "Fort Sterling", "Brecilien"];
 
-        async function calculateGlobalTrade() {
-            const base = document.getElementById('baseItem').value;
+        async function fetchGlobalMarket() {
+            const name = document.getElementById('itemName').value.trim().toUpperCase();
             const tier = document.getElementById('tier').value;
             const enchant = document.getElementById('enchant').value;
             const qty = parseInt(document.getElementById('quantity').value) || 1;
             const grid = document.getElementById('resultsGrid');
             
-            // Construcción del ID: T4_BAG@1
-            const fullId = `${tier}_${base}${enchant}`;
-            document.getElementById('generatedId').innerText = fullId;
+            if (!name) return alert("Ingresa el nombre del objeto");
 
-            grid.innerHTML = '<div class="col-span-full text-center py-10 animate-pulse font-medieval text-amber-600">Consultando registros de las ciudades...</div>';
+            const fullId = `${tier}_${name}${enchant}`;
+            document.getElementById('fullIdDisplay').innerText = `ID: ${fullId}`;
+
+            grid.innerHTML = `
+                <div class="col-span-full flex flex-col items-center py-20">
+                    <div class="w-8 h-8 border-4 border-[#c5a059]/20 border-t-[#c5a059] rounded-full animate-spin mb-4"></div>
+                    <p class="font-medieval text-amber-600 animate-pulse uppercase text-xs tracking-widest">Interceptando precios de las subastas...</p>
+                </div>`;
 
             try {
                 const url = `https://west.albion-online-data.com/api/v2/stats/prices/${fullId}?locations=${CITIES.join(',')}`;
                 const response = await fetch(url);
                 const data = await response.json();
 
-                if (!data || data.length === 0) {
-                    grid.innerHTML = '<div class="col-span-full text-center text-red-500">No hay datos de mercado recientes para esta combinación.</div>';
+                if (!data || data.length === 0 || data.every(d => d.sell_price_min === 0)) {
+                    grid.innerHTML = `
+                        <div class="col-span-full glass-panel p-12 text-center border-red-900/40">
+                            <i class="fa-solid fa-ghost text-red-500/50 text-5xl mb-4"></i>
+                            <p class="font-mythic text-red-500 uppercase tracking-widest">Sin datos en el registro actual</p>
+                            <p class="text-[10px] text-gray-500 mt-2 uppercase">Intenta con otro Tier o verifica que el nombre técnico sea correcto.</p>
+                        </div>`;
                     return;
                 }
 
                 grid.innerHTML = '';
                 
-                // Ordenar para encontrar el mejor precio
+                // Ordenar: Más rentable primero (precio de venta más alto)
                 data.sort((a, b) => b.sell_price_min - a.sell_price_min);
 
                 data.forEach((stat, index) => {
                     if (stat.sell_price_min === 0) return;
 
-                    const unitPrice = stat.sell_price_min;
-                    const totalPrice = unitPrice * qty;
+                    const isBlackMarket = stat.city === "Black Market";
                     const isBest = index === 0;
+                    const unitPrice = stat.sell_price_min;
+                    const totalValue = unitPrice * qty;
 
                     const card = document.createElement('div');
-                    card.className = `city-card p-6 rounded-sm ${isBest ? 'best-option' : ''}`;
+                    card.className = `city-card p-6 rounded-sm flex flex-col justify-between ${isBest ? 'best-option' : ''} ${isBlackMarket ? 'black-market-style' : ''}`;
+                    
                     card.innerHTML = `
-                        <div class="flex justify-between items-start mb-4">
-                            <h3 class="font-mythic text-amber-500">${stat.city}</h3>
-                            ${isBest ? '<span class="text-[8px] bg-green-900 text-green-400 px-2 py-1 rounded-full uppercase font-bold">Mejor Venta</span>' : ''}
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-end border-b border-white/5 pb-2">
-                                <span class="text-[10px] text-gray-500 uppercase">Precio Unitario</span>
-                                <span class="font-bold text-white">${unitPrice.toLocaleString()} <i class="fa-solid fa-coins text-[10px] text-amber-500"></i></span>
+                        <div>
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="font-mythic text-amber-500 text-lg uppercase tracking-tighter">${stat.city}</h3>
+                                    <span class="text-[8px] ${isBlackMarket ? 'text-purple-400' : 'text-gray-500'} font-black uppercase">
+                                        ${isBlackMarket ? 'Mercado Negro' : 'Mercado Real'}
+                                    </span>
+                                </div>
+                                <i class="fa-solid ${isBlackMarket ? 'fa-skull-crossbones' : 'fa-landmark'} text-amber-900 opacity-30 text-xl"></i>
                             </div>
-                            
-                            <div class="flex justify-between items-end bg-black/30 p-2">
-                                <span class="text-[10px] text-amber-600 uppercase font-black">Valor del Lote (${qty})</span>
-                                <span class="font-black text-xl text-green-500">${totalPrice.toLocaleString()} <i class="fa-solid fa-coins text-sm"></i></span>
+
+                            <div class="space-y-4">
+                                <div class="flex justify-between border-b border-white/5 pb-2 items-center">
+                                    <span class="text-[9px] text-gray-500 uppercase">Unidad</span>
+                                    <span class="font-bold text-white text-sm">${unitPrice.toLocaleString()} <i class="fa-solid fa-coins text-amber-600 text-[10px]"></i></span>
+                                </div>
+                                <div class="bg-black/50 p-3 border border-white/5">
+                                    <div class="text-[9px] text-amber-600 font-black uppercase mb-1">Cargamento Total (${qty} uds)</div>
+                                    <div class="text-2xl font-black text-green-500 tracking-tighter">
+                                        ${totalValue.toLocaleString()} <span class="text-xs">S</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="mt-4 text-[9px] text-gray-600 uppercase flex justify-between">
-                            <span>Sinc: ${new Date(stat.sell_price_min_date + 'Z').toLocaleTimeString()}</span>
-                            <span>Q${stat.quality}</span>
+                        <div class="mt-8 flex justify-between items-center opacity-60">
+                            <span class="text-[8px] font-mono"><i class="fa-regular fa-clock"></i> ${new Date(stat.sell_price_min_date + 'Z').toLocaleTimeString()}</span>
+                            <span class="text-[8px] bg-amber-900/40 px-2 py-0.5 rounded border border-amber-500/20 text-amber-500 font-bold">Q${stat.quality}</span>
                         </div>
                     `;
                     grid.appendChild(card);
                 });
 
             } catch (err) {
-                grid.innerHTML = '<div class="col-span-full text-center text-red-500">Error de conexión con la red de datos.</div>';
+                grid.innerHTML = `<div class="col-span-full text-center text-red-500 uppercase font-bold py-10">Fallo en la conexión con la Gran Logia de Datos</div>`;
             }
         }
     </script>
-
 </body>
 </html>
