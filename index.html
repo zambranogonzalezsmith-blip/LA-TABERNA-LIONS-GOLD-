@@ -12,6 +12,8 @@
         :root { 
             --gold: #c5a059; 
             --gold-glow: rgba(197, 160, 89, 0.5);
+            --crimson: #8b0000;
+            --emerald: #065f46;
         }
 
         body { 
@@ -49,17 +51,23 @@
             text-transform: uppercase; 
             font-weight: 900; 
             letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
         }
         .btn-venta { background: linear-gradient(135deg, #450a0a 0%, #991b1b 100%); border: 1px solid #f87171; color: #fecaca; }
         .btn-compra { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); border: 1px solid #34d399; color: #d1fae5; }
-        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.3); }
+        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.3); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
         .objective-card {
             border-left: 3px solid var(--gold);
             background: rgba(197, 160, 89, 0.05);
             padding: 1rem;
             margin-bottom: 1rem;
+            transition: 0.3s;
         }
+        .objective-card:hover { background: rgba(197, 160, 89, 0.1); transform: translateX(5px); }
+
+        select.input-mythic option { background: #1a1d21; color: white; }
     </style>
 </head>
 <body class="min-h-screen pb-10">
@@ -69,24 +77,27 @@
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0 flex items-center gap-3">
                     <i class="fa-solid fa-crown text-[#c5a059] text-2xl"></i>
-                    <span class="font-mythic text-[#c5a059] text-xl tracking-widest">LIONS-GOLD</span>
+                    <span class="font-mythic text-[#c5a059] text-xl tracking-widest drop-shadow-[0_0_8px_rgba(197,160,89,0.5)]">LIONS-GOLD</span>
                 </div>
                 <div class="flex items-baseline space-x-6 font-medieval">
-                    <a href="index.html" class="text-amber-500 hover:text-white px-3 py-2 text-sm uppercase"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
-                    <a href="trading-global.html" class="text-gray-300 hover:text-white px-3 py-2 text-sm uppercase"><i class="fa-solid fa-chart-line mr-1"></i> Trading Global</a>
+                    <a href="index.html" class="text-amber-500 hover:text-white px-3 py-2 text-sm uppercase transition-all"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
+                    <a href="trading-global.html" class="text-gray-300 hover:text-white px-3 py-2 text-sm uppercase transition-all"><i class="fa-solid fa-chart-line mr-1"></i> Trading Global</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <header class="py-16 text-center">
-        <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">TABERNA DE COMERCIO</h1>
+        <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">TABERNA LIONS-GOLD</h1>
         <div class="max-w-2xl mx-auto px-4">
             <p class="font-medieval text-amber-500 text-xl tracking-[0.3em] uppercase mb-4">Riqueza • Justicia • Gloria</p>
+            <p class="text-sm text-gray-400 italic leading-relaxed">
+                "En las tierras de Lymhurst nació una leyenda. No somos solo guerreros, somos el motor que mueve la economía de Albion."
+            </p>
         </div>
         <div class="mt-10">
-            <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="bg-[#c5a059] text-black font-black px-10 py-4 rounded-sm hover:scale-105 transition-transform inline-flex items-center">
-                <i class="fa-brands fa-discord mr-3 text-xl"></i> SALÓN DEL GREMIO
+            <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="bg-[#c5a059] text-black font-black px-10 py-4 rounded-sm hover:scale-105 transition-transform inline-flex items-center shadow-[0_0_20px_rgba(197,160,89,0.3)]">
+                <i class="fa-brands fa-discord mr-3 text-xl"></i> ENTRAR AL SALÓN DEL GREMIO
             </a>
         </div>
     </header>
@@ -96,26 +107,49 @@
             <div class="tavern-panel mythic-border p-8">
                 <h2 class="font-mythic text-amber-500 text-2xl text-center border-b border-amber-900/50 pb-4 mb-8 uppercase tracking-widest">Forjar Contrato</h2>
                 <div class="space-y-5 font-medieval">
-                    <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-mythic w-full uppercase">
-                    <input type="text" id="item" placeholder="Mercancía (Ej: Mamut T8)" class="input-mythic w-full">
-                    <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full text-amber-500 font-bold">
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-4 top-4 text-amber-700"></i>
+                        <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-mythic w-full pl-12 uppercase">
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-box-open absolute left-4 top-4 text-amber-700"></i>
+                        <input type="text" id="item" placeholder="Mercancía (Ej: Mamut T8)" class="input-mythic w-full pl-12">
+                    </div>
+                    <div class="relative">
+                        <i class="fa-solid fa-coins absolute left-4 top-4 text-amber-700"></i>
+                        <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full pl-12 text-amber-500 font-bold">
+                    </div>
                     
                     <div class="grid grid-cols-2 gap-4">
                         <select id="start" class="input-mythic w-full text-xs">
                             <option value="Lymhurst">Lymhurst</option>
-                            <option value="Caerleon">Caerleon</option>
                             <option value="Bridgewatch">Bridgewatch</option>
+                            <option value="Martlock">Martlock</option>
+                            <option value="Thetford">Thetford</option>
+                            <option value="Fort Sterling">Fort Sterling</option>
+                            <option value="Caerleon">Caerleon</option>
+                            <option value="Brecilien">Brecilien</option>
+                            <option value="Isla de Gremio">Isla de Gremio</option>
                         </select>
                         <select id="end" class="input-mythic w-full text-xs">
                             <option value="Lymhurst">Lymhurst</option>
-                            <option value="Caerleon">Caerleon</option>
                             <option value="Bridgewatch">Bridgewatch</option>
+                            <option value="Martlock">Martlock</option>
+                            <option value="Thetford">Thetford</option>
+                            <option value="Fort Sterling">Fort Sterling</option>
+                            <option value="Caerleon">Caerleon</option>
+                            <option value="Brecilien">Brecilien</option>
+                            <option value="Isla de Gremio">Isla de Gremio</option>
                         </select>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 pt-4">
-                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm">Vender</button>
-                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded-sm">Comprar</button>
+                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-tags"></i> Vender
+                        </button>
+                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-cart-shopping"></i> Comprar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -124,11 +158,18 @@
         <div class="lg:col-span-7 space-y-6">
             <div class="tavern-panel mythic-border p-8">
                 <h3 class="font-mythic text-amber-500 text-xl mb-6 border-b border-amber-900/50 pb-2 uppercase">Manifiesto LIONS-GOLD</h3>
-                <div class="objective-card">
-                    <h4 class="font-mythic text-sm text-[#34d399] uppercase tracking-widest">Justicia en el Comercio</h4>
-                    <p class="text-xs text-gray-400 mt-2">A través del Capitán Scarface, verificamos la identidad de cada mercader para evitar estafas en las Rutas Reales.</p>
+                <div class="space-y-4">
+                    <div class="objective-card">
+                        <h4 class="font-mythic text-sm text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-gem mr-2"></i> Riqueza</h4>
+                        <p class="text-xs text-gray-400 mt-2">Controlamos el flujo de recursos T8 y aseguramos la prosperidad del gremio.</p>
+                    </div>
+                    <div class="objective-card">
+                        <h4 class="font-mythic text-sm text-[#34d399] uppercase tracking-widest"><i class="fa-solid fa-scale-balanced mr-2"></i> Justicia</h4>
+                        <p class="text-xs text-gray-400 mt-2">A través del Capitán Scarface, verificamos la identidad de cada mercader para evitar estafas.</p>
+                    </div>
                 </div>
-                <a href="trading-global.html" class="block bg-amber-900/20 border border-amber-600/40 p-6 hover:bg-amber-900/40 transition-all group">
+                
+                <a href="trading-global.html" class="block bg-amber-900/20 border border-amber-600/40 p-6 hover:bg-amber-900/40 transition-all group mt-6">
                     <div class="flex justify-between items-center">
                         <div>
                             <h4 class="font-mythic text-amber-500 group-hover:text-white transition-colors">TRADING GLOBAL <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></h4>
@@ -138,6 +179,13 @@
                     </div>
                 </a>
             </div>
+            
+            <div class="tavern-panel p-6 border-2 border-dashed border-green-900/50 flex items-center justify-between">
+                <div>
+                    <p class="text-green-500 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-check animate-pulse mr-2"></i> Scanner Scarface Online</p>
+                </div>
+                <img src="https://i.imgur.com/8n06IUp.png" class="w-12 opacity-50 grayscale hover:grayscale-0 transition-all">
+            </div>
         </div>
     </main>
 
@@ -146,7 +194,6 @@
     </footer>
 
     <script>
-        // 🛡️ PROTOCOLO DE SEGURIDAD MANTENIDO
         const _p1 = "https://discord.com/api/webhooks/";
         const _p2 = "1490405678253346857";
         const _p3 = "vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
@@ -157,39 +204,52 @@
             const name = document.getElementById('trader').value.trim();
             const item = document.getElementById('item').value;
             const price = document.getElementById('price').value;
+            const locStart = document.getElementById('start').value;
+            const locEnd = document.getElementById('end').value;
 
             if (!name || !item || !price) return alert("Completa los datos del contrato.");
 
             const originalHTML = btn.innerHTML;
             btn.disabled = true;
-            btn.innerHTML = 'VERIFICANDO...';
+            btn.innerHTML = '<i class="fa-solid fa-skull animate-spin mr-2"></i> VERIFICANDO...';
 
             try {
                 const res = await fetch(`https://corsproxy.io/?https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(name)}`);
                 const data = await res.json();
                 const playerMatch = data.players && data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
+                const payload = {
+                    username: "CAPITÁN SCARFACE",
+                    embeds: [{
+                        title: `📜 NUEVO CONTRATO: ${tipo}`,
+                        color: playerMatch ? 3066993 : 15158332,
+                        description: playerMatch ? 
+                            `✅ **VERIFICADO**\n**Gremio:** ${playerMatch.GuildName || 'Independiente'}` : 
+                            `⚠️ **¡ALERTA!**\nEl sujeto **"${name}"** no figura en los registros.`,
+                        fields: [
+                            { name: "👤 Mercader", value: name, inline: true },
+                            { name: "📦 Item", value: item, inline: true },
+                            { name: "💰 Monto", value: price, inline: true },
+                            { name: "🚩 Ruta", value: `${locStart} ➔ ${locEnd}`, inline: false }
+                        ],
+                        footer: { text: "Protocolo LIONS-GOLD" },
+                        timestamp: new Date().toISOString()
+                    }]
+                };
+
                 await fetch(HQ_SECURE_LINK, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        username: "CAPITÁN SCARFACE",
-                        embeds: [{
-                            title: `📜 CONTRATO: ${tipo}`,
-                            color: playerMatch ? 3066993 : 15158332,
-                            fields: [
-                                { name: "👤 Mercader", value: name, inline: true },
-                                { name: "📦 Item", value: item, inline: true },
-                                { name: "💰 Monto", value: price, inline: true }
-                            ],
-                            footer: { text: playerMatch ? "REGISTRO ENCONTRADO" : "¡USUARIO NO REGISTRADO!" }
-                        }]
-                    })
+                    body: JSON.stringify(payload)
                 });
 
-                alert("Contrato enviado al Discord del Gremio.");
+                alert("Contrato procesado y enviado al gremio.");
+                document.getElementById('trader').value = '';
+                document.getElementById('item').value = '';
+                document.getElementById('price').value = '';
+
             } catch (error) {
-                alert("Error de conexión.");
+                alert("Error en la conexión con los registros.");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalHTML;
