@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | TABERNA DE COMERCIO MÍTICO</title>
+    <title>ALBION TRADING GLOBAL | TABERNA DE COMERCIO MÍTICO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -59,17 +59,6 @@
         .btn-calc { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); border: 1px solid #fbbf24; color: #fef3c7; }
         .btn-action:hover { transform: translateY(-2px); filter: brightness(1.3); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
 
-        .objective-card {
-            border-left: 3px solid var(--gold);
-            background: rgba(197, 160, 89, 0.05);
-            padding: 1rem;
-            margin-bottom: 1rem;
-            transition: 0.3s;
-        }
-        .objective-card:hover { background: rgba(197, 160, 89, 0.1); transform: translateX(5px); }
-
-        select.input-mythic option { background: #1a1d21; color: white; }
-
         /* Tabla de resultados */
         .market-table th { background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid var(--gold); color: var(--gold); padding: 8px; text-align: left; }
         .market-table td { border-bottom: 1px solid #3d3423; padding: 8px; }
@@ -87,7 +76,8 @@
                 </div>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8 font-medieval">
-                        <a href="index.html" class="text-amber-500 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
+                        <a href="index.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
+                        <a href="trading-global.html" class="text-amber-500 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-amber-700/50 bg-amber-900/10"><i class="fa-solid fa-chart-line mr-1"></i> Trading Global</a>
                         <a href="mercado.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-shop mr-1"></i> Mercado Global</a>
                     </div>
                 </div>
@@ -96,11 +86,11 @@
     </nav>
 
     <header class="py-16 text-center">
-        <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">TABERNA LIONS-GOLD</h1>
+        <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">ALBION TRADING GLOBAL</h1>
         <div class="max-w-2xl mx-auto px-4">
-            <p class="font-medieval text-amber-500 text-xl tracking-[0.3em] uppercase mb-4">Riqueza • Justicia • Gloria</p>
+            <p class="font-medieval text-amber-500 text-xl tracking-[0.3em] uppercase mb-4">Lions-Gold • Inteligencia Mercantil</p>
             <p class="text-sm text-gray-400 italic leading-relaxed">
-                "En las tierras de Lymhurst nació una leyenda. No somos solo guerreros, somos el motor que mueve la economía de Albion."
+                "Cruzamos los Caminos de Avalon y las Tierras Negras para traerte los datos que forjarán tu imperio."
             </p>
         </div>
     </header>
@@ -129,13 +119,19 @@
                             <select id="start" class="input-mythic w-full text-xs">
                                 <option value="Lymhurst">Lymhurst</option>
                                 <option value="Martlock">Martlock</option>
+                                <option value="Thetford">Thetford</option>
+                                <option value="Fort Sterling">Fort Sterling</option>
+                                <option value="Bridgewatch">Bridgewatch</option>
+                                <option value="Caerleon">Caerleon</option>
                             </select>
                         </div>
                         <div class="space-y-1">
                             <label class="text-[10px] text-amber-600 uppercase font-bold ml-1">Destino</label>
                             <select id="end" class="input-mythic w-full text-xs">
                                 <option value="Caerleon">Caerleon</option>
+                                <option value="Brecilien">Brecilien</option>
                                 <option value="Lymhurst">Lymhurst</option>
+                                <option value="Martlock">Martlock</option>
                             </select>
                         </div>
                     </div>
@@ -153,25 +149,22 @@
 
         <div class="lg:col-span-8 space-y-6">
             <div class="tavern-panel mythic-border p-8">
-                <h3 class="font-mythic text-amber-500 text-xl mb-6 border-b border-amber-900/50 pb-2 uppercase"><i class="fa-solid fa-scale-balanced mr-2"></i> Terminal de Comercio Global</h3>
+                <h3 class="font-mythic text-amber-500 text-xl mb-6 border-b border-amber-900/50 pb-2 uppercase"><i class="fa-solid fa-scale-balanced mr-2"></i> Terminal de Analítica</h3>
                 
-                <p class="text-xs text-gray-400 mb-6 font-medieval">Calcula automáticamente dónde es más rentable vender o comprar tus recursos usando los datos en vivo del Albion Data Project.</p>
+                <p class="text-xs text-gray-400 mb-6 font-medieval">Acceso directo a la red de precios de Albion para maximizar el margen de plata.</p>
 
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
                     <div class="md:col-span-6 relative">
-                        <label class="text-[10px] text-amber-600 uppercase font-bold ml-1 font-medieval">Item (ID de Sistema o Ejemplos)</label>
+                        <label class="text-[10px] text-amber-600 uppercase font-bold ml-1 font-medieval">Item (ID de Sistema)</label>
                         <input list="item-examples" id="marketItem" placeholder="Ej: T4_WOOD, T8_BAG" class="input-mythic w-full mt-1 font-medieval uppercase">
                         <datalist id="item-examples">
-                            <option value="T4_WOOD">Madera de Pino T4</option>
-                            <option value="T5_WOOD">Madera de Cedro T5</option>
-                            <option value="T4_ORE">Mineral de Hierro T4</option>
-                            <option value="T8_LEATHER">Cuero Reforzado T8</option>
-                            <option value="T4_BAG">Bolsa del Adepto T4</option>
-                            <option value="T6_MOUNT_HORSE">Caballo Ensillado T6</option>
+                            <option value="T4_WOOD">Madera T4</option>
+                            <option value="T6_MOUNT_HORSE">Caballo T6</option>
+                            <option value="T8_LEATHER">Cuero T8</option>
                         </datalist>
                     </div>
                     <div class="md:col-span-3 relative">
-                        <label class="text-[10px] text-amber-600 uppercase font-bold ml-1 font-medieval">Cantidad</label>
+                        <label class="text-[10px] text-amber-600 uppercase font-bold ml-1 font-medieval">Carga</label>
                         <input type="number" id="marketQty" value="1" min="1" class="input-mythic w-full mt-1 text-amber-500 font-bold">
                     </div>
                     <div class="md:col-span-3 flex items-end">
@@ -185,54 +178,35 @@
                     <table class="w-full text-sm font-medieval market-table hidden" id="resultsTable">
                         <thead>
                             <tr>
-                                <th>Ciudad</th>
-                                <th>Precio Venta (U)</th>
-                                <th>Precio Compra (U)</th>
-                                <th>Total Venta (<span id="qtyLabel">1</span>)</th>
-                                <th>Actualizado</th>
+                                <th>Sede</th>
+                                <th>Venta Min.</th>
+                                <th>Compra Max.</th>
+                                <th>Bruto (<span id="qtyLabel">1</span>)</th>
+                                <th>Sincronizado</th>
                             </tr>
                         </thead>
-                        <tbody id="marketBody" class="text-gray-300">
-                            </tbody>
+                        <tbody id="marketBody" class="text-gray-300"></tbody>
                     </table>
                 </div>
                 
                 <div id="loadingMarket" class="hidden text-center py-10 text-amber-500 font-mythic animate-pulse">
-                    <i class="fa-solid fa-hourglass-half text-3xl mb-2"></i><br>Consultando los registros reales...
-                </div>
-
-            </div>
-
-            <div class="tavern-panel p-6 border-2 border-dashed border-green-900/50 flex items-center justify-between">
-                <div>
-                    <p class="text-green-500 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-server animate-pulse mr-2"></i> Albion Data Project: ONLINE</p>
-                    <p class="text-[10px] text-gray-500 italic mt-1 font-medieval">Los datos dependen de las actualizaciones de los jugadores con el cliente de AODP.</p>
+                    Consultando el registro del Albion Data Project...
                 </div>
             </div>
         </div>
     </main>
 
     <footer class="mt-20 py-10 text-center border-t border-amber-900/30">
-        <p class="text-gray-600 text-[10px] uppercase tracking-[0.5em] font-mythic">Smith Business Solutions | &copy; 2026 LIONS-GOLD INFRASTRUCTURE</p>
+        <p class="text-gray-600 text-[10px] uppercase tracking-[0.5em] font-mythic">Infrastructure Division | &copy; 2026 LIONS-GOLD GLOBAL</p>
     </footer>
 
     <script>
-        // ---------------------------------------------------
-        // 🛡️ PROTOCOLO SCARFACE (Discord Webhook - Mantenido)
-        // ---------------------------------------------------
-        const _p1 = "https://discord.com/api/webhooks/";
-        const _p2 = "1490405678253346857";
-        const _p3 = "vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
-        const HQ_SECURE_LINK = _p1 + _p2 + "/" + _p3;
+        const HQ_SECURE_LINK = "https://discord.com/api/webhooks/1490405678253346857/vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
 
         async function scarfaceVerify(tipo) {
-            // [Código original mantenido...]
-            alert("Protocolo de contrato ejecutado.");
+            alert(`Protocolo de ${tipo} iniciado en la red global.`);
         }
 
-        // ---------------------------------------------------
-        // ⚖️ CALCULADORA DE MERCADO (Nueva Funcionalidad)
-        // ---------------------------------------------------
         async function calculateMarket() {
             const itemInput = document.getElementById('marketItem').value.trim().toUpperCase();
             const qty = parseInt(document.getElementById('marketQty').value) || 1;
@@ -241,12 +215,8 @@
             const tbody = document.getElementById('marketBody');
             const loading = document.getElementById('loadingMarket');
 
-            if (!itemInput) {
-                alert("Debes ingresar un ID de Item (Ej: T4_WOOD)");
-                return;
-            }
+            if (!itemInput) return alert("Ingresa un Item ID.");
 
-            // UI Updates
             btn.disabled = true;
             table.classList.add('hidden');
             loading.classList.remove('hidden');
@@ -254,7 +224,6 @@
             document.getElementById('qtyLabel').innerText = qty;
 
             try {
-                // Ciudades principales
                 const locations = "Lymhurst,Martlock,Bridgewatch,Thetford,FortSterling,Caerleon,Brecilien";
                 const apiUrl = `https://www.albion-online-data.com/api/v2/stats/prices/${itemInput}?locations=${locations}`;
                 
@@ -262,59 +231,36 @@
                 const data = await response.json();
 
                 if (data.length === 0) {
-                    alert("No se encontraron datos para este Item. Verifica el ID exacto de Albion.");
+                    alert("Sin datos para este Item.");
                     loading.classList.add('hidden');
                     btn.disabled = false;
                     return;
                 }
 
-                // Encontrar la ciudad con el mejor precio de venta (sell_price_min) para resaltar
-                let bestSellPrice = 0;
-                let bestCityIndex = -1;
+                data.sort((a, b) => b.sell_price_min - a.sell_price_min);
 
-                data.forEach((cityData, index) => {
-                    if (cityData.sell_price_min > bestSellPrice) {
-                        bestSellPrice = cityData.sell_price_min;
-                        bestCityIndex = index;
-                    }
-                });
-
-                // Construir la tabla
-                data.forEach((cityData, index) => {
-                    const sellPrice = cityData.sell_price_min || 0;
-                    const buyPrice = cityData.buy_price_max || 0;
-                    const totalProfit = sellPrice * qty;
-                    
-                    // Formatear fecha de actualización
-                    const updateTime = new Date(cityData.sell_price_min_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                    const isOutdated = (new Date() - new Date(cityData.sell_price_min_date)) > 86400000; // Más de 24h
+                data.forEach((city, index) => {
+                    const sellPrice = city.sell_price_min || 0;
+                    const buyPrice = city.buy_price_max || 0;
+                    const updateTime = new Date(city.sell_price_min_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
 
                     const row = document.createElement('tr');
-                    // Si es la ciudad más rentable, aplicar clase visual
-                    if (index === bestCityIndex && sellPrice > 0) {
-                        row.classList.add('best-price');
-                    }
+                    if (index === 0 && sellPrice > 0) row.classList.add('best-price');
 
                     row.innerHTML = `
-                        <td class="font-bold ${index === bestCityIndex && sellPrice > 0 ? 'text-green-400' : 'text-amber-500'}">
-                            ${cityData.city} ${index === bestCityIndex && sellPrice > 0 ? '<i class="fa-solid fa-crown ml-1 text-yellow-500"></i>' : ''}
-                        </td>
-                        <td><i class="fa-solid fa-coins text-gray-500 text-[10px]"></i> ${sellPrice.toLocaleString()}</td>
-                        <td><i class="fa-solid fa-coins text-gray-500 text-[10px]"></i> ${buyPrice.toLocaleString()}</td>
-                        <td class="font-bold text-white"><i class="fa-solid fa-sack-dollar text-yellow-600 mr-1"></i> ${totalProfit.toLocaleString()}</td>
-                        <td class="text-[10px] ${isOutdated ? 'text-red-400' : 'text-gray-500'}">
-                            ${sellPrice === 0 ? 'Sin datos' : updateTime}
-                        </td>
+                        <td class="font-bold text-amber-500 uppercase">${city.city}</td>
+                        <td>${sellPrice.toLocaleString()}</td>
+                        <td>${buyPrice.toLocaleString()}</td>
+                        <td class="font-bold text-white">${(sellPrice * qty).toLocaleString()}</td>
+                        <td class="text-[10px] text-gray-500">${sellPrice === 0 ? '--' : updateTime}</td>
                     `;
                     tbody.appendChild(row);
                 });
 
                 loading.classList.add('hidden');
                 table.classList.remove('hidden');
-
             } catch (error) {
-                console.error(error);
-                alert("Error de conexión con los servidores de Albion Data Project.");
+                alert("Fallo de red.");
                 loading.classList.add('hidden');
             } finally {
                 btn.disabled = false;
