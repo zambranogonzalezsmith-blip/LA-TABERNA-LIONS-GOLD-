@@ -59,7 +59,6 @@
         .btn-compra { background: linear-gradient(135deg, #064e3b 0%, #059669 100%); border: 1px solid #10b981; color: #d1fae5; }
         .btn-action:hover { transform: scale(1.02); filter: brightness(1.2); cursor: pointer; }
 
-        /* Mejora del enlace de Trading Global */
         .trading-card {
             background: linear-gradient(135deg, rgba(197, 160, 89, 0.1) 0%, rgba(0,0,0,0.4) 100%);
             border: 1px solid rgba(197, 160, 89, 0.3);
@@ -76,7 +75,6 @@
 
         .gold-text { color: var(--gold); text-shadow: 0 0 10px rgba(197, 160, 89, 0.4); }
         
-        /* Animación de pulso para el estado del servidor */
         .pulse-gold { animation: pulse 2s infinite; }
         @keyframes pulse {
             0% { opacity: 0.4; }
@@ -100,7 +98,7 @@
                     <a href="index.html" class="text-amber-500 hover:text-white transition-all text-sm uppercase flex items-center gap-2">
                         <i class="fa-solid fa-beer-mug-empty"></i> Taberna
                     </a>
-                    <a href="trading-global.html" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-4 py-2 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-sm uppercase flex items-center gap-2 rounded-sm">
+                    <a href="trading-global.html" target="_self" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-4 py-2 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-sm uppercase flex items-center gap-2 rounded-sm">
                         <i class="fa-solid fa-chart-line"></i> Trading Global
                     </a>
                 </div>
@@ -180,7 +178,7 @@
 
         <div class="lg:col-span-7 space-y-8">
             
-            <a href="trading-global.html" class="trading-card p-10 mythic-border group">
+            <a href="trading-global.html" target="_self" class="trading-card p-10 mythic-border group block">
                 <div class="flex justify-between items-center">
                     <div class="space-y-4">
                         <h3 class="font-mythic text-3xl text-amber-500 group-hover:text-white transition-colors">CENTRAL DE TRADING</h3>
@@ -273,7 +271,6 @@
                 });
 
                 alert("⚔️ Contrato sellado y enviado al Gremio.");
-                // Limpiar campos tras éxito
                 document.getElementById('trader').value = '';
                 document.getElementById('item').value = '';
                 document.getElementById('price').value = '';
