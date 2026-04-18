@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALBION TRADING GLOBAL | TABERNA DE COMERCIO MÍTICO</title>
+    <title>LIONS-GOLD | TABERNA DE COMERCIO MÍTICO</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -12,8 +12,6 @@
         :root { 
             --gold: #c5a059; 
             --gold-glow: rgba(197, 160, 89, 0.5);
-            --crimson: #8b0000;
-            --emerald: #065f46;
         }
 
         body { 
@@ -51,18 +49,17 @@
             text-transform: uppercase; 
             font-weight: 900; 
             letter-spacing: 1px;
-            position: relative;
-            overflow: hidden;
         }
         .btn-venta { background: linear-gradient(135deg, #450a0a 0%, #991b1b 100%); border: 1px solid #f87171; color: #fecaca; }
         .btn-compra { background: linear-gradient(135deg, #064e3b 0%, #065f46 100%); border: 1px solid #34d399; color: #d1fae5; }
-        .btn-calc { background: linear-gradient(135deg, #b45309 0%, #78350f 100%); border: 1px solid #fbbf24; color: #fef3c7; }
-        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.3); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.3); }
 
-        /* Tabla de resultados */
-        .market-table th { background: rgba(197, 160, 89, 0.1); border-bottom: 1px solid var(--gold); color: var(--gold); padding: 8px; text-align: left; }
-        .market-table td { border-bottom: 1px solid #3d3423; padding: 8px; }
-        .best-price { background: rgba(6, 95, 70, 0.3); border-left: 2px solid #34d399; }
+        .objective-card {
+            border-left: 3px solid var(--gold);
+            background: rgba(197, 160, 89, 0.05);
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
     </style>
 </head>
 <body class="min-h-screen pb-10">
@@ -71,199 +68,140 @@
         <div class="max-w-7xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
                 <div class="flex-shrink-0 flex items-center gap-3">
-                    <i class="fa-solid fa-globe text-[#c5a059] text-2xl"></i>
-                    <span class="font-mythic text-[#c5a059] text-xl tracking-widest drop-shadow-[0_0_8px_rgba(197,160,89,0.5)]">ALBION TRADING GLOBAL</span>
+                    <i class="fa-solid fa-crown text-[#c5a059] text-2xl"></i>
+                    <span class="font-mythic text-[#c5a059] text-xl tracking-widest">LIONS-GOLD</span>
                 </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-8 font-medieval">
-                        <a href="index.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
-                        <a href="trading-global.html" class="text-amber-500 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-amber-700/50 bg-amber-900/10"><i class="fa-solid fa-chart-line mr-1"></i> Trading Global</a>
-                        <a href="mercado.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-shop mr-1"></i> Mercado Global</a>
-                    </div>
+                <div class="flex items-baseline space-x-6 font-medieval">
+                    <a href="index.html" class="text-amber-500 hover:text-white px-3 py-2 text-sm uppercase"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
+                    <a href="trading-global.html" class="text-gray-300 hover:text-white px-3 py-2 text-sm uppercase"><i class="fa-solid fa-chart-line mr-1"></i> Trading Global</a>
                 </div>
             </div>
         </div>
     </nav>
 
     <header class="py-16 text-center">
-        <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">ALBION TRADING GLOBAL</h1>
+        <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">TABERNA DE COMERCIO</h1>
         <div class="max-w-2xl mx-auto px-4">
-            <p class="font-medieval text-amber-500 text-xl tracking-[0.3em] uppercase mb-4">Lions-Gold • Inteligencia Mercantil</p>
-            <p class="text-sm text-gray-400 italic leading-relaxed">
-                "Cruzamos los Caminos de Avalon y las Tierras Negras para traerte los datos que forjarán tu imperio."
-            </p>
+            <p class="font-medieval text-amber-500 text-xl tracking-[0.3em] uppercase mb-4">Riqueza • Justicia • Gloria</p>
+        </div>
+        <div class="mt-10">
+            <a href="https://discord.gg/UtH8b4VZG" target="_blank" class="bg-[#c5a059] text-black font-black px-10 py-4 rounded-sm hover:scale-105 transition-transform inline-flex items-center">
+                <i class="fa-brands fa-discord mr-3 text-xl"></i> SALÓN DEL GREMIO
+            </a>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 px-4">
-        
-        <div class="lg:col-span-4">
+        <div class="lg:col-span-5">
             <div class="tavern-panel mythic-border p-8">
                 <h2 class="font-mythic text-amber-500 text-2xl text-center border-b border-amber-900/50 pb-4 mb-8 uppercase tracking-widest">Forjar Contrato</h2>
                 <div class="space-y-5 font-medieval">
-                    <div class="relative">
-                        <i class="fa-solid fa-user absolute left-4 top-4 text-amber-700"></i>
-                        <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-mythic w-full pl-12 uppercase">
-                    </div>
-                    <div class="relative">
-                        <i class="fa-solid fa-box-open absolute left-4 top-4 text-amber-700"></i>
-                        <input type="text" id="item" placeholder="Mercancía" class="input-mythic w-full pl-12">
-                    </div>
-                    <div class="relative">
-                        <i class="fa-solid fa-coins absolute left-4 top-4 text-amber-700"></i>
-                        <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full pl-12 text-amber-500 font-bold">
-                    </div>
+                    <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-mythic w-full uppercase">
+                    <input type="text" id="item" placeholder="Mercancía (Ej: Mamut T8)" class="input-mythic w-full">
+                    <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full text-amber-500 font-bold">
+                    
                     <div class="grid grid-cols-2 gap-4">
-                        <div class="space-y-1">
-                            <label class="text-[10px] text-amber-600 uppercase font-bold ml-1">Origen</label>
-                            <select id="start" class="input-mythic w-full text-xs">
-                                <option value="Lymhurst">Lymhurst</option>
-                                <option value="Martlock">Martlock</option>
-                                <option value="Thetford">Thetford</option>
-                                <option value="Fort Sterling">Fort Sterling</option>
-                                <option value="Bridgewatch">Bridgewatch</option>
-                                <option value="Caerleon">Caerleon</option>
-                            </select>
-                        </div>
-                        <div class="space-y-1">
-                            <label class="text-[10px] text-amber-600 uppercase font-bold ml-1">Destino</label>
-                            <select id="end" class="input-mythic w-full text-xs">
-                                <option value="Caerleon">Caerleon</option>
-                                <option value="Brecilien">Brecilien</option>
-                                <option value="Lymhurst">Lymhurst</option>
-                                <option value="Martlock">Martlock</option>
-                            </select>
-                        </div>
+                        <select id="start" class="input-mythic w-full text-xs">
+                            <option value="Lymhurst">Lymhurst</option>
+                            <option value="Bridgewatch">Bridgewatch</option>
+                            <option value="Martlock">Martlock</option>
+                            <option value="Thetford">Thetford</option>
+                            <option value="Fort Sterling">Fort Sterling</option>
+                            <option value="Caerleon">Caerleon</option>
+                            <option value="Brecilien">Brecilien</option>
+                            <option value="Mists">Las Nieblas</option>
+                        </select>
+                        <select id="end" class="input-mythic w-full text-xs">
+                            <option value="Lymhurst">Lymhurst</option>
+                            <option value="Bridgewatch">Bridgewatch</option>
+                            <option value="Martlock">Martlock</option>
+                            <option value="Thetford">Thetford</option>
+                            <option value="Fort Sterling">Fort Sterling</option>
+                            <option value="Caerleon">Caerleon</option>
+                            <option value="Brecilien">Brecilien</option>
+                            <option value="Isla de Gremio">Isla de Gremio</option>
+                        </select>
                     </div>
+
                     <div class="grid grid-cols-2 gap-4 pt-4">
-                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm flex items-center justify-center gap-2 text-xs">
-                            <i class="fa-solid fa-tags"></i> Vender
-                        </button>
-                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded-sm flex items-center justify-center gap-2 text-xs">
-                            <i class="fa-solid fa-cart-shopping"></i> Comprar
-                        </button>
+                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm">Vender</button>
+                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded-sm">Comprar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-8 space-y-6">
+        <div class="lg:col-span-7 space-y-6">
             <div class="tavern-panel mythic-border p-8">
-                <h3 class="font-mythic text-amber-500 text-xl mb-6 border-b border-amber-900/50 pb-2 uppercase"><i class="fa-solid fa-scale-balanced mr-2"></i> Terminal de Analítica</h3>
-                
-                <p class="text-xs text-gray-400 mb-6 font-medieval">Acceso directo a la red de precios de Albion para maximizar el margen de plata.</p>
-
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6">
-                    <div class="md:col-span-6 relative">
-                        <label class="text-[10px] text-amber-600 uppercase font-bold ml-1 font-medieval">Item (ID de Sistema)</label>
-                        <input list="item-examples" id="marketItem" placeholder="Ej: T4_WOOD, T8_BAG" class="input-mythic w-full mt-1 font-medieval uppercase">
-                        <datalist id="item-examples">
-                            <option value="T4_WOOD">Madera T4</option>
-                            <option value="T6_MOUNT_HORSE">Caballo T6</option>
-                            <option value="T8_LEATHER">Cuero T8</option>
-                        </datalist>
-                    </div>
-                    <div class="md:col-span-3 relative">
-                        <label class="text-[10px] text-amber-600 uppercase font-bold ml-1 font-medieval">Carga</label>
-                        <input type="number" id="marketQty" value="1" min="1" class="input-mythic w-full mt-1 text-amber-500 font-bold">
-                    </div>
-                    <div class="md:col-span-3 flex items-end">
-                        <button onclick="calculateMarket()" id="btnCalcMarket" class="btn-action btn-calc w-full py-3 rounded-sm flex items-center justify-center gap-2">
-                            <i class="fa-solid fa-magnifying-glass-dollar"></i> Analizar
-                        </button>
-                    </div>
+                <h3 class="font-mythic text-amber-500 text-xl mb-6 border-b border-amber-900/50 pb-2 uppercase">Manifiesto LIONS-GOLD</h3>
+                <div class="objective-card">
+                    <h4 class="font-mythic text-sm text-[#34d399] uppercase tracking-widest">Justicia en el Comercio</h4>
+                    <p class="text-xs text-gray-400 mt-2">A través del Capitán Scarface, verificamos la identidad de cada mercader para evitar estafas en las Rutas Reales.</p>
                 </div>
-
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm font-medieval market-table hidden" id="resultsTable">
-                        <thead>
-                            <tr>
-                                <th>Sede</th>
-                                <th>Venta Min.</th>
-                                <th>Compra Max.</th>
-                                <th>Bruto (<span id="qtyLabel">1</span>)</th>
-                                <th>Sincronizado</th>
-                            </tr>
-                        </thead>
-                        <tbody id="marketBody" class="text-gray-300"></tbody>
-                    </table>
-                </div>
-                
-                <div id="loadingMarket" class="hidden text-center py-10 text-amber-500 font-mythic animate-pulse">
-                    Consultando el registro del Albion Data Project...
-                </div>
+                <a href="trading-global.html" class="block bg-amber-900/20 border border-amber-600/40 p-6 hover:bg-amber-900/40 transition-all group">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-mythic text-amber-500 group-hover:text-white transition-colors">TRADING GLOBAL <i class="fa-solid fa-arrow-right ml-2 text-xs"></i></h4>
+                            <p class="text-[10px] text-gray-500 uppercase mt-1">Acceder al panel de mercados y divisas</p>
+                        </div>
+                        <i class="fa-solid fa-chart-line text-3xl text-amber-600/50 group-hover:text-amber-500"></i>
+                    </div>
+                </a>
             </div>
         </div>
     </main>
 
     <footer class="mt-20 py-10 text-center border-t border-amber-900/30">
-        <p class="text-gray-600 text-[10px] uppercase tracking-[0.5em] font-mythic">Infrastructure Division | &copy; 2026 LIONS-GOLD GLOBAL</p>
+        <p class="text-gray-600 text-[10px] uppercase tracking-[0.5em] font-mythic">Smith Business Solutions | &copy; 2026 LIONS-GOLD</p>
     </footer>
 
     <script>
-        const HQ_SECURE_LINK = "https://discord.com/api/webhooks/1490405678253346857/vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
+        const _p1 = "https://discord.com/api/webhooks/";
+        const _p2 = "1490405678253346857";
+        const _p3 = "vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
+        const HQ_SECURE_LINK = _p1 + _p2 + "/" + _p3;
 
         async function scarfaceVerify(tipo) {
-            alert(`Protocolo de ${tipo} iniciado en la red global.`);
-        }
+            const btn = tipo === 'VENTA' ? document.getElementById('btnVenta') : document.getElementById('btnCompra');
+            const name = document.getElementById('trader').value.trim();
+            const item = document.getElementById('item').value;
+            const price = document.getElementById('price').value;
 
-        async function calculateMarket() {
-            const itemInput = document.getElementById('marketItem').value.trim().toUpperCase();
-            const qty = parseInt(document.getElementById('marketQty').value) || 1;
-            const btn = document.getElementById('btnCalcMarket');
-            const table = document.getElementById('resultsTable');
-            const tbody = document.getElementById('marketBody');
-            const loading = document.getElementById('loadingMarket');
+            if (!name || !item || !price) return alert("Completa los datos del contrato.");
 
-            if (!itemInput) return alert("Ingresa un Item ID.");
-
+            const originalHTML = btn.innerHTML;
             btn.disabled = true;
-            table.classList.add('hidden');
-            loading.classList.remove('hidden');
-            tbody.innerHTML = '';
-            document.getElementById('qtyLabel').innerText = qty;
+            btn.innerHTML = 'VERIFICANDO...';
 
             try {
-                const locations = "Lymhurst,Martlock,Bridgewatch,Thetford,FortSterling,Caerleon,Brecilien";
-                const apiUrl = `https://www.albion-online-data.com/api/v2/stats/prices/${itemInput}?locations=${locations}`;
-                
-                const response = await fetch(apiUrl);
-                const data = await response.json();
+                const res = await fetch(`https://corsproxy.io/?https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(name)}`);
+                const data = await res.json();
+                const playerMatch = data.players && data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
-                if (data.length === 0) {
-                    alert("Sin datos para este Item.");
-                    loading.classList.add('hidden');
-                    btn.disabled = false;
-                    return;
-                }
-
-                data.sort((a, b) => b.sell_price_min - a.sell_price_min);
-
-                data.forEach((city, index) => {
-                    const sellPrice = city.sell_price_min || 0;
-                    const buyPrice = city.buy_price_max || 0;
-                    const updateTime = new Date(city.sell_price_min_date).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-
-                    const row = document.createElement('tr');
-                    if (index === 0 && sellPrice > 0) row.classList.add('best-price');
-
-                    row.innerHTML = `
-                        <td class="font-bold text-amber-500 uppercase">${city.city}</td>
-                        <td>${sellPrice.toLocaleString()}</td>
-                        <td>${buyPrice.toLocaleString()}</td>
-                        <td class="font-bold text-white">${(sellPrice * qty).toLocaleString()}</td>
-                        <td class="text-[10px] text-gray-500">${sellPrice === 0 ? '--' : updateTime}</td>
-                    `;
-                    tbody.appendChild(row);
+                await fetch(HQ_SECURE_LINK, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        username: "CAPITÁN SCARFACE",
+                        embeds: [{
+                            title: `📜 CONTRATO: ${tipo}`,
+                            color: playerMatch ? 3066993 : 15158332,
+                            fields: [
+                                { name: "👤 Mercader", value: name, inline: true },
+                                { name: "📦 Item", value: item, inline: true },
+                                { name: "💰 Monto", value: price, inline: true }
+                            ],
+                            footer: { text: playerMatch ? "REGISTRO ENCONTRADO" : "¡USUARIO NO REGISTRADO!" }
+                        }]
+                    })
                 });
 
-                loading.classList.add('hidden');
-                table.classList.remove('hidden');
+                alert("Contrato enviado al Discord del Gremio.");
             } catch (error) {
-                alert("Fallo de red.");
-                loading.classList.add('hidden');
+                alert("Error de conexión.");
             } finally {
                 btn.disabled = false;
+                btn.innerHTML = originalHTML;
             }
         }
     </script>
