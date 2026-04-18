@@ -201,6 +201,28 @@
                     <p class="text-xs text-gray-500 font-medieval italic">Protección Anti-Bot y Sanitización activada.</p>
                 </div>
             </div>
+
+            <div class="tavern-panel mythic-border p-8 relative overflow-hidden">
+                <div class="flex flex-col md:flex-row items-center gap-6">
+                    <div class="relative">
+                        <div class="w-20 h-20 bg-[#5865F2]/20 rounded-full flex items-center justify-center border-2 border-[#5865F2]/50 shadow-[0_0_20px_rgba(88,101,242,0.3)]">
+                            <i class="fa-brands fa-discord text-4xl text-[#5865F2]"></i>
+                        </div>
+                        <div class="absolute -top-2 -right-2 text-amber-500 animate-bounce">
+                            <i class="fa-solid fa-cross"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h3 class="font-mythic text-2xl text-white mb-2 tracking-wide">COMUNIDAD GAMER LIONS-GOLD</h3>
+                        <p class="font-medieval text-sm text-gray-400 mb-4">
+                            Únete a nuestro bastión de comercio. Aquí no importa tu gremio ni tu alianza, solo el intercambio justo, el comercio sano y el honor entre mercaderes.
+                        </p>
+                        <a href="https://discord.gg/um9dMh7GV" target="_blank" class="inline-flex items-center gap-3 bg-gradient-to-r from-[#5865F2] to-[#404EED] px-8 py-3 rounded-sm font-mythic text-sm text-white hover:scale-105 transition-transform shadow-lg border border-[#5865F2]/50">
+                            <i class="fa-brands fa-discord text-lg"></i> ENTRAR AL SALÓN
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -209,7 +231,6 @@
     </footer>
 
     <script>
-        // WEBHOOK ACTUALIZADO Y OFUSCADO
         const _encT = "MTQ5NTE1OTIwMDAwNTc1MDk2NS94eWZLZ1dIUDJMX0lqN0JJaGJKV3MwdDFOczk4Qm1tOG93WlB5WDRiYkF1SHNEUVFKaEdZLUhhaG1lOVlGby1seUZaRA==";
         const HQ_SECURE_LINK = "https://discord.com/api/webhooks/" + atob(_encT);
 
@@ -231,7 +252,6 @@
             btn.innerHTML = "<i class='fa-solid fa-spinner animate-spin'></i>";
 
             try {
-                // VERIFICACIÓN OBLIGATORIA
                 const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name)}`);
                 const data = await res.json();
                 const parsed = JSON.parse(data.contents);
@@ -244,7 +264,6 @@
                     return;
                 }
 
-                // ENVÍO A DISCORD
                 await fetch(HQ_SECURE_LINK, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
