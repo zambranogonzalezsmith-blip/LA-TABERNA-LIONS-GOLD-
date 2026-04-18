@@ -3,29 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | MONITOR DE RECOLECCIÓN</title>
+    <title>LIONS-GOLD | TERMINAL COMERCIAL</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=MedievalSharp&family=Inter:wght@400;700&display=swap');
         
         :root { --gold: #c5a059; --gold-glow: rgba(197, 160, 89, 0.4); }
         body { 
             background: #050505; color: #e2e2e2; font-family: 'Inter', sans-serif;
-            background-image: linear-gradient(to bottom, rgba(0,0,0,0.9), rgba(0,0,0,0.98)), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg');
+            background-image: linear-gradient(to bottom, rgba(0,0,0,0.92), rgba(0,0,0,0.98)), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg');
             background-attachment: fixed; background-size: cover;
         }
         .font-mythic { font-family: 'Cinzel Decorative', serif; }
         .font-medieval { font-family: 'MedievalSharp', cursive; }
         .glass-panel { background: rgba(15, 17, 20, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(197, 160, 89, 0.2); }
         
-        .input-gold { background: rgba(0, 0, 0, 0.6); border: 1px solid #3d3423; color: white; padding: 12px; outline: none; transition: 0.3s; }
+        .input-gold { background: rgba(0, 0, 0, 0.6); border: 1px solid #3d3423; color: white; padding: 12px; outline: none; transition: 0.3s; width: 100%; }
         .input-gold:focus { border-color: var(--gold); box-shadow: 0 0 10px var(--gold-glow); }
         
         .city-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(197, 160, 89, 0.1); transition: 0.3s; }
         .city-card:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.08); }
-        
         .best-city { border-top: 4px solid #10b981 !important; }
+
+        /* Pestañas */
+        .tab-btn { transition: all 0.3s; border-bottom: 2px solid transparent; }
+        .tab-btn.active { border-bottom: 2px solid var(--gold); color: var(--gold); background: rgba(197, 160, 89, 0.1); }
+        .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body class="min-h-screen">
@@ -33,22 +40,36 @@
     <nav class="bg-black/90 border-b border-[#c5a059]/30 p-4 sticky top-0 z-50">
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <i class="fa-solid fa-pickaxe text-[#c5a059] text-xl"></i>
-                <span class="font-mythic text-[#c5a059] tracking-widest text-lg uppercase">Logística de Recolección</span>
+                <i class="fa-solid fa-feather-pointed text-[#c5a059] text-xl"></i>
+                <span class="font-mythic text-[#c5a059] tracking-widest text-lg uppercase">Terminal Comercial</span>
             </div>
-            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">LIONS-GOLD Intelligence</span>
+            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">LIONS-GOLD Intelligence 🦅</span>
         </div>
     </nav>
 
     <main class="max-w-6xl mx-auto p-6">
         
-        <section class="glass-panel p-8 mb-10 border-2 border-[#c5a059]/20">
-            <h1 class="font-mythic text-xl text-center text-[#c5a059] mb-8 uppercase tracking-[0.3em]">Evaluador de Materias Primas</h1>
-            
+        <div class="flex flex-wrap gap-2 mb-8 glass-panel p-2 rounded-sm">
+            <button onclick="switchTab('gather')" id="btn-gather" class="tab-btn active flex-1 py-3 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white">
+                <i class="fa-solid fa-pickaxe mr-2"></i> Materias Primas
+            </button>
+            <button onclick="switchTab('fish')" id="btn-fish" class="tab-btn flex-1 py-3 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white">
+                <i class="fa-solid fa-fish mr-2"></i> Pesca
+            </button>
+            <button onclick="switchTab('equip')" id="btn-equip" class="tab-btn flex-1 py-3 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white">
+                <i class="fa-solid fa-shield-halved mr-2"></i> Equipamiento
+            </button>
+            <button onclick="switchTab('gold')" id="btn-gold" class="tab-btn flex-1 py-3 text-xs uppercase tracking-widest font-bold text-gray-400 hover:text-white">
+                <i class="fa-solid fa-coins mr-2"></i> Mercado de Oro
+            </button>
+        </div>
+
+        <section id="tab-gather" class="tab-content active glass-panel p-8 mb-10 border-2 border-[#c5a059]/20">
+            <h1 class="font-mythic text-xl text-center text-[#c5a059] mb-8 uppercase tracking-[0.3em]">Evaluador de Recolección</h1>
             <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                 <div class="flex flex-col gap-2">
-                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Tipo de Recurso</label>
-                    <select id="resourceType" class="input-gold text-sm">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Recurso</label>
+                    <select id="res-gather" class="input-gold text-sm">
                         <option value="WOOD">Madera (Logs)</option>
                         <option value="ORE">Mineral (Ore)</option>
                         <option value="FIBER">Fibra (Fiber)</option>
@@ -56,43 +77,136 @@
                         <option value="ROCK">Piedra (Rock)</option>
                     </select>
                 </div>
-
                 <div class="flex flex-col gap-2">
                     <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Tier / Encant.</label>
                     <div class="flex gap-1">
-                        <select id="tier" class="input-gold text-sm flex-1">
-                            <option value="T2">T2</option><option value="T3">T3</option><option value="T4" selected>T4</option>
-                            <option value="T5">T5</option><option value="T6">T6</option><option value="T7">T7</option><option value="T8">T8</option>
+                        <select id="tier-gather" class="input-gold text-sm flex-1">
+                            <option value="T4" selected>T4</option><option value="T5">T5</option>
+                            <option value="T6">T6</option><option value="T7">T7</option><option value="T8">T8</option>
                         </select>
-                        <select id="enchant" class="input-gold text-sm flex-1">
+                        <select id="ench-gather" class="input-gold text-sm flex-1">
                             <option value="">.0</option><option value="_LEVEL1">.1</option>
-                            <option value="_LEVEL2">.2</option><option value="_LEVEL3">.3</option><option value="_LEVEL4">.4</option>
+                            <option value="_LEVEL2">.2</option><option value="_LEVEL3">.3</option>
                         </select>
                     </div>
                 </div>
-
                 <div class="flex flex-col gap-2">
-                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Cant. en Inventario</label>
-                    <input type="number" id="quantity" value="100" min="1" class="input-gold text-sm font-bold">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Cantidad</label>
+                    <input type="number" id="qty-gather" value="100" min="1" class="input-gold text-sm font-bold">
                 </div>
-
                 <div class="flex flex-col justify-end">
-                    <button onclick="calculateResources()" class="bg-[#c5a059] text-black font-black py-3.5 hover:bg-white transition-all uppercase text-[10px] tracking-widest">
-                        Calcular Valor de Carga
+                    <button onclick="fetchData('gather')" class="bg-[#c5a059] text-black font-black py-3.5 hover:bg-white transition-all uppercase text-[10px] tracking-widest">
+                        Calcular Rutas
                     </button>
                 </div>
             </div>
-            
-            <div class="mt-4 flex justify-between items-center border-t border-white/5 pt-4">
-                <span id="resouceId" class="text-[9px] font-mono text-gray-500 uppercase tracking-tighter">ID: -</span>
-                <span class="text-[9px] text-green-500 font-bold uppercase tracking-widest animate-pulse">Servidor Americas Online</span>
+        </section>
+
+        <section id="tab-fish" class="tab-content glass-panel p-8 mb-10 border-2 border-[#c5a059]/20">
+            <h1 class="font-mythic text-xl text-center text-[#c5a059] mb-8 uppercase tracking-[0.3em]">Lonja de Pescadores</h1>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Especie</label>
+                    <select id="res-fish" class="input-gold text-sm">
+                        <option value="FISH_FRESHWATER_ALL_COMMON">Pescado de Agua Dulce</option>
+                        <option value="FISH_SALTWATER_ALL_COMMON">Pescado de Agua Salada</option>
+                        <option value="SEAWEED">Algas (Seaweed)</option>
+                        <option value="FISHCHOP">Pescado Troceado (Chopped)</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Tier</label>
+                    <select id="tier-fish" class="input-gold text-sm">
+                        <option value="T3">T3</option><option value="T4" selected>T4</option><option value="T5">T5</option>
+                        <option value="T6">T6</option><option value="T7">T7</option><option value="T8">T8</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Cantidad</label>
+                    <input type="number" id="qty-fish" value="100" min="1" class="input-gold text-sm font-bold">
+                </div>
+                <div class="flex flex-col justify-end">
+                    <button onclick="fetchData('fish')" class="bg-[#c5a059] text-black font-black py-3.5 hover:bg-white transition-all uppercase text-[10px] tracking-widest">
+                        Cotizar Carga
+                    </button>
+                </div>
             </div>
         </section>
 
-        <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="col-span-full text-center py-20 opacity-20 border-2 border-dashed border-white/10">
-                <i class="fa-solid fa-boxes-stacked text-6xl mb-4"></i>
-                <p class="font-medieval text-lg uppercase tracking-[0.2em]">Configura el recurso para ver la comparativa de ciudades</p>
+        <section id="tab-equip" class="tab-content glass-panel p-8 mb-10 border-2 border-[#c5a059]/20">
+            <h1 class="font-mythic text-xl text-center text-[#c5a059] mb-8 uppercase tracking-[0.3em]">Arsenal y Armería</h1>
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                <div class="flex flex-col gap-2 col-span-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Item Comercial</label>
+                    <select id="res-equip" class="input-gold text-sm">
+                        <option value="MAIN_SWORD">Espada Ancha (Broadsword)</option>
+                        <option value="MAIN_DAGGER">Daga (Dagger)</option>
+                        <option value="2H_BOW">Arco (Bow)</option>
+                        <option value="ARMOR_LEATHER_MERCENARY">Chaqueta de Mercenario</option>
+                        <option value="HEAD_CLOTH_SCHOLAR">Hábito de Erudito</option>
+                        <option value="SHOES_PLATE_SOLDIER">Botas de Soldado</option>
+                        <option value="BAG">Bolsa (Bag)</option>
+                        <option value="CAPE">Capa (Cape)</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Tier / Encant.</label>
+                    <div class="flex gap-1">
+                        <select id="tier-equip" class="input-gold text-sm flex-1">
+                            <option value="T4" selected>T4</option><option value="T5">T5</option>
+                            <option value="T6">T6</option><option value="T7">T7</option><option value="T8">T8</option>
+                        </select>
+                        <select id="ench-equip" class="input-gold text-sm flex-1">
+                            <option value="">.0</option><option value="@1">.1</option>
+                            <option value="@2">.2</option><option value="@3">.3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-2">
+                    <label class="text-[10px] text-amber-600 uppercase font-black tracking-widest">Calidad</label>
+                    <select id="quality-equip" class="input-gold text-sm">
+                        <option value="1">Normal</option>
+                        <option value="2">Bueno</option>
+                        <option value="3">Notable</option>
+                        <option value="4">Sobresaliente</option>
+                        <option value="5">Obra Maestra</option>
+                    </select>
+                </div>
+                <div class="flex flex-col justify-end">
+                    <button onclick="fetchData('equip')" class="bg-[#c5a059] text-black font-black py-3.5 hover:bg-white transition-all uppercase text-[10px] tracking-widest">
+                        Buscar Compradores
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="tab-gold" class="tab-content glass-panel p-8 mb-10 border-2 border-[#c5a059]/20">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="font-mythic text-xl text-[#c5a059] uppercase tracking-[0.3em]">Wall Street de Albion</h1>
+                <div id="gold-signal" class="px-4 py-2 text-xs font-bold uppercase tracking-widest border rounded-sm animate-pulse">
+                    Analizando mercado...
+                </div>
+            </div>
+            
+            <div class="w-full h-[400px] relative">
+                <canvas id="goldChart"></canvas>
+            </div>
+            <div class="mt-4 flex justify-between items-center border-t border-white/5 pt-4">
+                <span class="text-[9px] font-mono text-gray-500 uppercase tracking-tighter">Basado en datos de los últimos 30 días</span>
+                <button onclick="loadGoldChart()" class="text-[10px] text-amber-500 hover:text-white uppercase tracking-widest"><i class="fa-solid fa-rotate-right"></i> Actualizar Gráfica</button>
+            </div>
+        </section>
+
+        <div id="results-area">
+            <div class="flex justify-between items-center mb-4 px-2">
+                <span id="activeId" class="text-[10px] font-mono text-amber-600/50 uppercase tracking-widest">Esperando orden de escaneo...</span>
+                <span class="text-[9px] text-green-500 font-bold uppercase tracking-widest animate-pulse">Servidor Americas (West)</span>
+            </div>
+            <div id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="col-span-full text-center py-20 opacity-20 border-2 border-dashed border-white/10">
+                    <i class="fa-solid fa-radar text-6xl mb-4"></i>
+                    <p class="font-medieval text-lg uppercase tracking-[0.2em]">Configura el radar y lanza la búsqueda</p>
+                </div>
             </div>
         </div>
 
@@ -100,75 +214,190 @@
 
     <script>
         const CITIES = ["Caerleon", "Lymhurst", "Bridgewatch", "Martlock", "Thetford", "Fort Sterling", "Brecilien"];
+        let goldChartInstance = null;
 
-        async function calculateResources() {
-            const res = document.getElementById('resourceType').value;
-            const tier = document.getElementById('tier').value;
-            const enchant = document.getElementById('enchant').value;
-            const qty = parseInt(document.getElementById('quantity').value) || 1;
-            const grid = document.getElementById('resultsGrid');
+        // Gestión de Pestañas
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
             
-            // Construcción del ID para recursos: T4_WOOD o T4_WOOD_LEVEL1
-            const fullId = `${tier}_${res}${enchant}`;
-            document.getElementById('resouceId').innerText = `ID REGISTRADO: ${fullId}`;
+            document.getElementById(`tab-${tabId}`).classList.add('active');
+            document.getElementById(`btn-${tabId}`).classList.add('active');
 
-            grid.innerHTML = '<div class="col-span-full text-center py-12 font-medieval text-amber-500 animate-pulse">Sincronizando con los mercados de las ciudades...</div>';
+            const resultsArea = document.getElementById('results-area');
+            if(tabId === 'gold') {
+                resultsArea.style.display = 'none';
+                if(!goldChartInstance) loadGoldChart();
+            } else {
+                resultsArea.style.display = 'block';
+            }
+        }
+
+        // Construcción Dinámica de IDs
+        async function fetchData(type) {
+            let fullId = "";
+            let qty = 1;
+            let quality = "";
+
+            if (type === 'gather') {
+                const res = document.getElementById('res-gather').value;
+                const tier = document.getElementById('tier-gather').value;
+                const enchant = document.getElementById('ench-gather').value;
+                qty = parseInt(document.getElementById('qty-gather').value) || 1;
+                fullId = `${tier}_${res}${enchant}`;
+            } 
+            else if (type === 'fish') {
+                const res = document.getElementById('res-fish').value;
+                const tier = document.getElementById('tier-fish').value;
+                qty = parseInt(document.getElementById('qty-fish').value) || 1;
+                // Excepciones de nombrado en Albion
+                if(res === 'SEAWEED' || res === 'FISHCHOP') fullId = res;
+                else fullId = `${tier}_${res}`;
+            } 
+            else if (type === 'equip') {
+                const res = document.getElementById('res-equip').value;
+                const tier = document.getElementById('tier-equip').value;
+                const enchant = document.getElementById('ench-equip').value;
+                qty = 1; // Equipos se venden por unidad generalmente
+                quality = document.getElementById('quality-equip').value;
+                fullId = `${tier}_${res}${enchant}`;
+            }
+
+            document.getElementById('activeId').innerText = `Rastreando: ${fullId} ${quality ? '| Calidad: '+quality : ''}`;
+            renderMarketData(fullId, qty, quality);
+        }
+
+        // Renderizado del Grid de Precios
+        async function renderMarketData(itemId, qty, quality) {
+            const grid = document.getElementById('resultsGrid');
+            grid.innerHTML = '<div class="col-span-full text-center py-12 font-medieval text-amber-500 animate-pulse">Desencriptando libros de contabilidad...</div>';
 
             try {
-                const url = `https://west.albion-online-data.com/api/v2/stats/prices/${fullId}?locations=${CITIES.join(',')}`;
+                let url = `https://west.albion-online-data.com/api/v2/stats/prices/${itemId}?locations=${CITIES.join(',')}`;
+                if (quality) url += `&qualities=${quality}`;
+
                 const response = await fetch(url);
                 const data = await response.json();
 
                 if (!data || data.length === 0 || data.every(d => d.sell_price_min === 0)) {
-                    grid.innerHTML = '<div class="col-span-full text-center py-10 glass-panel border-red-900/30 font-mythic text-red-500 uppercase">Sin datos recientes para este recurso.</div>';
+                    grid.innerHTML = '<div class="col-span-full text-center py-10 glass-panel border-red-900/30 font-mythic text-red-500 uppercase">Oferta colapsada. Sin datos para este ítem.</div>';
                     return;
                 }
 
                 grid.innerHTML = '';
-                
-                // Ordenar: Ciudad con mejor precio de compra primero
-                data.sort((a, b) => b.sell_price_min - a.sell_price_min);
+                data.sort((a, b) => b.sell_price_min - a.sell_price_min); // Mejor precio primero
 
                 data.forEach((stat, index) => {
                     if (stat.sell_price_min === 0) return;
 
-                    const unitPrice = stat.sell_price_min;
-                    const totalValue = unitPrice * qty;
+                    const totalValue = stat.sell_price_min * qty;
                     const isBest = index === 0;
 
                     const card = document.createElement('div');
-                    card.className = `city-card p-6 rounded-sm flex flex-col justify-between ${isBest ? 'best-city' : ''}`;
+                    card.className = `city-card p-6 rounded-sm flex flex-col justify-between ${isBest ? 'best-city shadow-[0_0_15px_rgba(16,185,129,0.2)]' : ''}`;
                     card.innerHTML = `
                         <div>
                             <div class="flex justify-between items-center mb-6">
                                 <h3 class="font-mythic text-amber-500 text-lg uppercase">${stat.city}</h3>
-                                ${isBest ? '<i class="fa-solid fa-crown text-amber-500 text-xs animate-bounce"></i>' : ''}
+                                ${isBest ? '<i class="fa-solid fa-crown text-[#10b981] text-sm animate-bounce"></i>' : ''}
                             </div>
-                            
                             <div class="space-y-4">
                                 <div class="flex justify-between items-center text-xs pb-2 border-b border-white/5">
-                                    <span class="text-gray-500 uppercase">Precio Unidad</span>
-                                    <span class="text-white font-bold">${unitPrice.toLocaleString()} <i class="fa-solid fa-coins text-[10px] text-amber-600"></i></span>
+                                    <span class="text-gray-500 uppercase">Venta Mínima</span>
+                                    <span class="text-white font-bold">${stat.sell_price_min.toLocaleString()} <i class="fa-solid fa-coins text-[10px] text-amber-600"></i></span>
                                 </div>
                                 <div class="bg-black/60 p-4 rounded-sm border border-white/5">
-                                    <p class="text-[9px] text-amber-600 font-black uppercase mb-1 tracking-widest">Valor de tu Inventario</p>
+                                    <p class="text-[9px] text-amber-600 font-black uppercase mb-1 tracking-widest">Potencial de Venta</p>
                                     <p class="text-2xl font-black text-green-500 tracking-tighter">
                                         ${totalValue.toLocaleString()} <span class="text-[10px] uppercase font-bold text-green-700">Silver</span>
                                     </p>
                                 </div>
                             </div>
                         </div>
-
                         <div class="mt-8 flex justify-between items-center opacity-40 text-[8px] font-mono">
-                            <span>Sincronizado: ${new Date(stat.sell_price_min_date + 'Z').toLocaleTimeString()}</span>
-                            <span class="bg-amber-900 px-2 py-0.5 rounded text-amber-500 font-bold uppercase">${tier}.${enchant ? enchant.slice(-1) : '0'}</span>
+                            <span>Ping: ${new Date(stat.sell_price_min_date + 'Z').toLocaleTimeString()}</span>
+                            <span class="bg-amber-900 px-2 py-0.5 rounded text-amber-500 font-bold uppercase">STOCK: VENTA</span>
                         </div>
                     `;
                     grid.appendChild(card);
                 });
+            } catch (err) {
+                grid.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 uppercase font-black">Interferencia en la red. Intente nuevamente.</div>';
+            }
+        }
+
+        // Gráfica Pro de Mercado de Oro
+        async function loadGoldChart() {
+            const ctx = document.getElementById('goldChart').getContext('2d');
+            const signalBox = document.getElementById('gold-signal');
+            
+            try {
+                // Obtenemos historial real del servidor oeste (Americas)
+                const res = await fetch('https://west.albion-online-data.com/api/v2/stats/gold?count=30');
+                const rawData = await res.json();
+                
+                // Procesar datos para la gráfica (Invertir para que sea cronológico)
+                const chartData = rawData.reverse();
+                const labels = chartData.map(d => new Date(d.timestamp + 'Z').toLocaleDateString());
+                const prices = chartData.map(d => d.price);
+
+                // Algoritmo para la Señal de Compra
+                const currentPrice = prices[prices.length - 1];
+                const last7Days = prices.slice(-7);
+                const avg7Days = last7Days.reduce((a, b) => a + b, 0) / last7Days.length;
+                
+                if (currentPrice < avg7Days * 0.98) {
+                    signalBox.className = "px-4 py-2 text-xs font-bold uppercase tracking-widest border rounded-sm bg-green-900/30 border-green-500 text-green-400";
+                    signalBox.innerHTML = '<i class="fa-solid fa-arrow-trend-down"></i> OPORTUNIDAD DE COMPRA (Bajo Promedio)';
+                } else if (currentPrice > avg7Days * 1.02) {
+                    signalBox.className = "px-4 py-2 text-xs font-bold uppercase tracking-widest border rounded-sm bg-red-900/30 border-red-500 text-red-400";
+                    signalBox.innerHTML = '<i class="fa-solid fa-arrow-trend-up"></i> SOBREPRECIO (Mejor Esperar)';
+                } else {
+                    signalBox.className = "px-4 py-2 text-xs font-bold uppercase tracking-widest border rounded-sm bg-amber-900/30 border-amber-500 text-amber-400";
+                    signalBox.innerHTML = '<i class="fa-solid fa-minus"></i> MERCADO ESTABLE (Hold)';
+                }
+
+                if(goldChartInstance) goldChartInstance.destroy();
+
+                goldChartInstance = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Valor de 1 Oro en Silver',
+                            data: prices,
+                            borderColor: '#c5a059',
+                            backgroundColor: 'rgba(197, 160, 89, 0.1)',
+                            borderWidth: 2,
+                            pointBackgroundColor: '#fff',
+                            pointBorderColor: '#c5a059',
+                            pointRadius: 3,
+                            fill: true,
+                            tension: 0.3
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: { theme: 'dark', backgroundColor: 'rgba(0,0,0,0.9)', titleColor: '#c5a059' }
+                        },
+                        scales: {
+                            y: { 
+                                grid: { color: 'rgba(255,255,255,0.05)' }, 
+                                ticks: { color: '#888', font: { family: 'Inter' } } 
+                            },
+                            x: { 
+                                grid: { display: false }, 
+                                ticks: { color: '#888', maxTicksLimit: 7 } 
+                            }
+                        }
+                    }
+                });
 
             } catch (err) {
-                grid.innerHTML = '<div class="col-span-full text-center py-10 text-red-500 uppercase font-black">Error de conexión con el Gran Registro de Precios.</div>';
+                signalBox.innerHTML = 'Error conectando al mercado central';
             }
         }
     </script>
