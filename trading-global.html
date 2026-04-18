@@ -41,8 +41,13 @@
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid rgba(197, 160, 89, 0.1);
             transition: 0.3s;
+            position: relative;
+            overflow: hidden;
         }
         .city-card:hover { border-color: var(--gold); background: rgba(197, 160, 89, 0.05); }
+        
+        /* Especial para Caerleon / Mercado Negro */
+        .black-market { border-left: 4px solid #7c3aed !important; }
 
         .input-gold {
             background: rgba(0, 0, 0, 0.5);
@@ -65,6 +70,14 @@
         }
 
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .profit-badge {
+            background: linear-gradient(90deg, #064e3b, #059669);
+            font-weight: 900;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body class="min-h-screen">
@@ -73,10 +86,10 @@
         <div class="max-w-7xl mx-auto flex justify-between items-center">
             <div class="flex items-center gap-3">
                 <i class="fa-solid fa-chart-line text-[#c5a059] text-xl"></i>
-                <span class="font-mythic text-[#c5a059] tracking-widest text-lg">CENTRAL DE INTELIGENCIA</span>
+                <span class="font-mythic text-[#c5a059] tracking-widest text-lg uppercase">Central de Inteligencia LIONS</span>
             </div>
-            <a href="index.html" class="font-medieval text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm">
-                <i class="fa-solid fa-arrow-left"></i> VOLVER A LA TABERNA
+            <a href="index.html" target="_self" class="font-medieval text-gray-400 hover:text-white transition-colors flex items-center gap-2 text-sm uppercase">
+                <i class="fa-solid fa-arrow-left"></i> Volver a la Taberna
             </a>
         </div>
     </nav>
@@ -84,9 +97,12 @@
     <main class="max-w-6xl mx-auto p-6">
         
         <section class="glass-panel mythic-border p-8 mb-10">
-            <h1 class="font-mythic text-3xl text-center text-[#c5a059] mb-8">BUSCADOR DE MERCANCÍAS</h1>
+            <h1 class="font-mythic text-3xl text-center text-[#c5a059] mb-8 uppercase tracking-tighter">Buscador de Mercancías Globales</h1>
             <div class="flex flex-col md:flex-row gap-4">
-                <input type="text" id="itemName" placeholder="Ej: T8_HEAD_PLATE_SET1 (Usa IDs de objeto)" class="input-gold flex-1 font-mono text-sm uppercase">
+                <div class="flex-1 relative">
+                    <input type="text" id="itemName" placeholder="Ej: T8_HEAD_PLATE_SET1" class="input-gold w-full font-mono text-sm uppercase pl-10">
+                    <i class="fa-solid fa-sword absolute left-3 top-4 text-gray-600"></i>
+                </div>
                 <select id="quality" class="input-gold md:w-48 text-sm">
                     <option value="1">Calidad: Normal</option>
                     <option value="2">Calidad: Buena</option>
@@ -94,96 +110,130 @@
                     <option value="4">Calidad: Sobresaliente</option>
                     <option value="5">Calidad: Excelente</option>
                 </select>
-                <button onclick="fetchPrices()" class="bg-[#c5a059] text-black font-bold px-8 py-3 hover:brightness-110 transition-all flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-magnifying-glass"></i> CONSULTAR
+                <button onclick="fetchPrices()" class="bg-[#c5a059] text-black font-bold px-8 py-3 hover:brightness-110 transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+                    <i class="fa-solid fa-magnifying-glass"></i> Consultar
                 </button>
             </div>
-            <p class="text-[10px] text-gray-500 mt-4 uppercase tracking-widest">Nota: Debes usar el ID técnico (ej: T4_BAG) para resultados precisos.</p>
+            <div class="flex justify-between items-center mt-4">
+                <p class="text-[10px] text-gray-500 uppercase tracking-widest">Servidor: AMERICAS (WEST) | Smith Business Systems v2.0</p>
+                <div class="flex gap-4">
+                    <span class="text-[10px] text-purple-400 uppercase"><i class="fa-solid fa-circle text-[6px]"></i> Mercado Negro Incluido</span>
+                </div>
+            </div>
         </section>
 
-        <div id="loading" class="flex justify-center mb-10 hidden">
-            <div class="loader"></div>
+        <div id="loading" class="flex flex-col items-center mb-10 hidden">
+            <div class="loader mb-2"></div>
+            <p class="text-xs font-medieval text-amber-600 animate-pulse">Sincronizando con los Libros de Albion...</p>
         </div>
 
         <section id="resultsGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="col-span-full text-center py-20 opacity-30">
-                <i class="fa-solid fa-box-open text-6xl mb-4"></i>
-                <p class="font-medieval text-xl">Ingresa un ID de objeto para comparar precios entre ciudades</p>
+            <div class="col-span-full text-center py-20 opacity-30 border-2 border-dashed border-gray-800">
+                <i class="fa-solid fa-scroll text-6xl mb-4 text-amber-900"></i>
+                <p class="font-medieval text-xl">Introduce un ID técnico para desplegar el mapa de precios.</p>
             </div>
         </section>
 
     </main>
 
-    <footer class="text-center py-10 opacity-50 text-[10px] font-mythic">
-        SMITH BUSINESS SOLUTIONS | DATOS PROVISTOS POR ALBION ONLINE DATA PROJECT
+    <footer class="text-center py-12 opacity-50 text-[10px] font-mythic tracking-[0.4em]">
+        LIONS-GOLD LOGISTICS | DATA VIA ALBION ONLINE DATA PROJECT | 2026
     </footer>
 
     <script>
-        const CITIES = ["Caerleon", "Lymhurst", "Bridgewatch", "Martlock", "Thetford", "Fort Sterling", "Brecilien"];
+        // Ciudades incluyendo el Mercado Negro (Black Market)
+        const CITIES = ["Caerleon", "Black Market", "Lymhurst", "Bridgewatch", "Martlock", "Thetford", "Fort Sterling", "Brecilien"];
 
         async function fetchPrices() {
-            const item = document.getElementById('itemName').value.trim().toUpperCase();
+            const itemInput = document.getElementById('itemName').value.trim().toUpperCase();
             const quality = document.getElementById('quality').value;
             const grid = document.getElementById('resultsGrid');
             const loader = document.getElementById('loading');
 
-            if (!item) return alert("Escribe un ID de objeto");
+            if (!itemInput) {
+                alert("⚠️ Se requiere un ID de objeto válido.");
+                return;
+            }
 
-            loader.style.display = 'block';
+            loader.classList.remove('hidden');
             grid.innerHTML = '';
 
             try {
-                // Endpoint de Albion Online Data Project
-                const url = `https://west.albion-online-data.com/api/v2/stats/prices/${item}?locations=${CITIES.join(',')}&qualities=${quality}`;
-                
+                // Petición a la API West
+                const url = `https://west.albion-online-data.com/api/v2/stats/prices/${itemInput}?locations=${CITIES.join(',')}&qualities=${quality}`;
                 const response = await fetch(url);
                 const data = await response.json();
 
-                loader.style.display = 'none';
+                loader.classList.add('hidden');
 
                 if (!data || data.length === 0) {
-                    grid.innerHTML = `<div class="col-span-full text-center text-red-500 font-medieval">No se encontraron datos para este objeto. Verifica el ID.</div>`;
+                    grid.innerHTML = `
+                        <div class="col-span-full glass-panel p-10 text-center border-red-900/50">
+                            <i class="fa-solid fa-circle-exclamation text-red-500 text-4xl mb-4"></i>
+                            <p class="font-mythic text-red-500">Mercancía no encontrada en el registro.</p>
+                            <p class="text-xs text-gray-500 mt-2 font-medieval">Verifica que el ID sea correcto (Ej: T4_BAG en lugar de 'Bolsa T4')</p>
+                        </div>`;
                     return;
                 }
 
-                // Ordenar por precio de venta mínimo (más barato primero)
-                data.sort((a, b) => (a.sell_price_min || Infinity) - (b.sell_price_min || Infinity));
+                // Filtrar solo las ciudades que tienen precio y ordenar
+                const filteredData = data.filter(stat => stat.sell_price_min > 0);
+                filteredData.sort((a, b) => a.sell_price_min - b.sell_price_min);
 
-                data.forEach(stat => {
-                    const priceMin = stat.sell_price_min ? stat.sell_price_min.toLocaleString() : "N/D";
-                    const priceMax = stat.sell_price_max ? stat.sell_price_max.toLocaleString() : "N/D";
-                    const lastUpdate = new Date(stat.sell_price_min_date).toLocaleTimeString();
+                filteredData.forEach(stat => {
+                    const isBlackMarket = stat.city === "Black Market";
+                    const priceMin = stat.sell_price_min.toLocaleString();
+                    const priceMax = stat.sell_price_max.toLocaleString();
+                    
+                    // Calcular tiempo desde la última actualización
+                    const updateDate = new Date(stat.sell_price_min_date + 'Z');
+                    const timeStr = updateDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
                     const card = document.createElement('div');
-                    card.className = 'city-card p-6 rounded-sm flex flex-col justify-between';
+                    card.className = `city-card p-6 rounded-sm flex flex-col justify-between ${isBlackMarket ? 'black-market' : ''}`;
+                    
                     card.innerHTML = `
                         <div>
                             <div class="flex justify-between items-start mb-4">
-                                <h3 class="font-mythic text-amber-500 text-lg">${stat.city}</h3>
-                                <i class="fa-solid fa-location-dot text-amber-900"></i>
-                            </div>
-                            <div class="space-y-3 font-medieval">
-                                <div class="flex justify-between border-b border-white/5 pb-2">
-                                    <span class="text-gray-500 text-xs uppercase">Precio Mín</span>
-                                    <span class="text-green-500 font-bold">${priceMin} <i class="fa-solid fa-coins text-[10px]"></i></span>
+                                <div>
+                                    <h3 class="font-mythic text-amber-500 text-lg uppercase">${stat.city}</h3>
+                                    ${isBlackMarket ? '<span class="text-[9px] text-purple-400 font-bold uppercase tracking-tighter">Zona de Riesgo</span>' : ''}
                                 </div>
-                                <div class="flex justify-between border-b border-white/5 pb-2">
-                                    <span class="text-gray-500 text-xs uppercase">Precio Máx</span>
-                                    <span class="text-amber-200">${priceMax} <i class="fa-solid fa-coins text-[10px]"></i></span>
+                                <i class="fa-solid ${isBlackMarket ? 'fa-mask' : 'fa-building-columns'} text-amber-900 opacity-40 text-xl"></i>
+                            </div>
+                            
+                            <div class="space-y-4 font-medieval">
+                                <div class="bg-black/40 p-3 border border-white/5">
+                                    <div class="flex justify-between items-center mb-1">
+                                        <span class="text-gray-500 text-[10px] uppercase">Precio de Venta</span>
+                                        <span class="text-green-500 font-bold text-lg">${priceMin} <i class="fa-solid fa-coins text-[10px]"></i></span>
+                                    </div>
+                                    <div class="w-full bg-gray-800 h-1 rounded-full overflow-hidden">
+                                        <div class="bg-green-600 h-full" style="width: 70%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="flex justify-between text-xs px-1">
+                                    <span class="text-gray-500 uppercase">Orden de Compra</span>
+                                    <span class="text-amber-200">${stat.buy_price_max.toLocaleString()} <i class="fa-solid fa-coins text-[9px]"></i></span>
                                 </div>
                             </div>
                         </div>
-                        <div class="mt-6 flex justify-between items-center">
-                            <span class="text-[9px] text-gray-600 uppercase">Actualizado: ${lastUpdate}</span>
-                            <span class="text-[10px] bg-amber-900/30 text-amber-500 px-2 py-1">Q${stat.quality}</span>
+
+                        <div class="mt-6 pt-4 border-t border-white/5 flex justify-between items-center">
+                            <div class="flex items-center gap-2">
+                                <i class="fa-regular fa-clock text-gray-600 text-[10px]"></i>
+                                <span class="text-[9px] text-gray-600 uppercase">Sinc: ${timeStr}</span>
+                            </div>
+                            <span class="text-[10px] font-bold bg-amber-900/30 text-amber-500 px-2 py-0.5 border border-amber-500/20">CALIDAD ${stat.quality}</span>
                         </div>
                     `;
                     grid.appendChild(card);
                 });
 
             } catch (error) {
-                loader.style.display = 'none';
-                alert("Error al conectar con la base de datos de Albion.");
+                loader.classList.add('hidden');
+                alert("❌ Error crítico de red. La base de datos de Albion no responde.");
                 console.error(error);
             }
         }
