@@ -58,24 +58,21 @@
         .btn-venta { background: linear-gradient(135deg, #450a0a 0%, #b91c1c 100%); border: 1px solid #ef4444; color: #fee2e2; }
         .btn-compra { background: linear-gradient(135deg, #064e3b 0%, #059669 100%); border: 1px solid #10b981; color: #d1fae5; }
         .btn-action:hover { transform: scale(1.02); filter: brightness(1.2); cursor: pointer; }
-        .btn-action:disabled { filter: grayscale(1); cursor: not-allowed; transform: none; }
+        .btn-action:disabled { filter: grayscale(1); cursor: not-allowed; transform: none; opacity: 0.7; }
 
         .trading-card {
             background: linear-gradient(135deg, rgba(197, 160, 89, 0.1) 0%, rgba(0,0,0,0.4) 100%);
             border: 1px solid rgba(197, 160, 89, 0.3);
             transition: 0.5s;
-            text-decoration: none !important;
             display: block;
         }
         .trading-card:hover {
             border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(197, 160, 89, 0.2) 0%, rgba(197, 160, 89, 0.05) 100%);
             box-shadow: 0 0 30px rgba(197, 160, 89, 0.2);
             transform: translateY(-5px);
         }
 
         .gold-text { color: var(--gold); text-shadow: 0 0 10px rgba(197, 160, 89, 0.4); }
-        
         .pulse-gold { animation: pulse 2s infinite; }
         @keyframes pulse {
             0% { opacity: 0.4; }
@@ -83,7 +80,6 @@
             100% { opacity: 0.4; }
         }
 
-        /* Ocultar el Honeypot de los usuarios humanos */
         .h-trap { position: absolute; left: -9999px; opacity: 0; }
     </style>
 </head>
@@ -102,7 +98,7 @@
                     <a href="index.html" class="text-amber-500 hover:text-white transition-all text-sm uppercase flex items-center gap-2">
                         <i class="fa-solid fa-beer-mug-empty"></i> Taberna
                     </a>
-                    <a href="trading-global.html" target="_self" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-4 py-2 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-sm uppercase flex items-center gap-2 rounded-sm">
+                    <a href="trading-global.html" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-4 py-2 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-sm uppercase flex items-center gap-2 rounded-sm">
                         <i class="fa-solid fa-chart-line"></i> Trading Global
                     </a>
                 </div>
@@ -125,21 +121,21 @@
                 <h2 class="font-mythic text-amber-500 text-3xl mb-10 border-b border-amber-900/50 pb-4 text-center">FORJAR CONTRATO</h2>
                 
                 <div class="space-y-6 font-medieval">
-                    <input type="text" id="guild_trap" class="h-trap" tabindex="-1" autocomplete="off" placeholder="Deja esto vacío">
+                    <input type="text" id="guild_trap" class="h-trap" tabindex="-1" autocomplete="off">
 
                     <div class="flex flex-col gap-2">
                         <label class="text-xs text-amber-700 uppercase ml-1">Mercader Identificado</label>
-                        <input type="text" id="trader" placeholder="NOMBRE DEL SUJETO" maxlength="30" class="input-mythic w-full uppercase placeholder:text-gray-700">
+                        <input type="text" id="trader" placeholder="NOMBRE DEL SUJETO" maxlength="30" class="input-mythic w-full uppercase">
                     </div>
                     
                     <div class="flex flex-col gap-2">
                         <label class="text-xs text-amber-700 uppercase ml-1">Cargamento Mítico</label>
-                        <input type="text" id="item" placeholder="EJ: MAMUT DE TRANSPORTE T8" maxlength="50" class="input-mythic w-full placeholder:text-gray-700">
+                        <input type="text" id="item" placeholder="EJ: MAMUT DE TRANSPORTE T8" maxlength="50" class="input-mythic w-full">
                     </div>
 
                     <div class="flex flex-col gap-2">
                         <label class="text-xs text-amber-700 uppercase ml-1">Tesoro en Plata</label>
-                        <input type="number" id="price" placeholder="0" min="1" max="9999999999" class="input-mythic w-full text-amber-500 font-bold text-xl">
+                        <input type="number" id="price" placeholder="0" class="input-mythic w-full text-amber-500 font-bold text-xl">
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
@@ -178,7 +174,7 @@
         </div>
 
         <div class="lg:col-span-7 space-y-8">
-            <a href="trading-global.html" target="_self" class="trading-card p-10 mythic-border group block">
+            <a href="trading-global.html" class="trading-card p-10 mythic-border group block">
                 <div class="flex justify-between items-center">
                     <div class="space-y-4">
                         <h3 class="font-mythic text-3xl text-amber-500 group-hover:text-white transition-colors">CENTRAL DE TRADING</h3>
@@ -193,15 +189,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="tavern-panel mythic-border p-6 border-l-4 border-l-green-600">
                     <h4 class="font-mythic text-green-500 text-sm mb-3">SISTEMA SCARFACE</h4>
-                    <p class="text-xs text-gray-500 font-medieval italic">"Verificamos cada nombre en el registro real de Albion. Si no existe, no hay trato."</p>
+                    <p class="text-xs text-gray-500 font-medieval italic">"Verificamos cada nombre en el registro real de Albion."</p>
                     <div class="mt-4 flex items-center gap-2">
                         <span class="w-2 h-2 bg-green-500 rounded-full pulse-gold"></span>
-                        <span class="text-[10px] text-green-700 uppercase font-bold">Protocolo Activo y Seguro</span>
+                        <span class="text-[10px] text-green-700 uppercase font-bold">Protocolo Activo</span>
                     </div>
                 </div>
                 <div class="tavern-panel mythic-border p-6 border-l-4 border-l-amber-600">
                     <h4 class="font-mythic text-amber-500 text-sm mb-3">SEGURIDAD LIONS</h4>
-                    <p class="text-xs text-gray-500 font-medieval italic">Protección Anti-Bot y Sanitización de Contratos activada.</p>
+                    <p class="text-xs text-gray-500 font-medieval italic">Protección Anti-Bot y Sanitización activada.</p>
                 </div>
             </div>
         </div>
@@ -212,71 +208,57 @@
     </footer>
 
     <script>
-        // CAPA 5: Ofuscación Básica (Base64) con el nuevo Webhook
+        // Ofuscación corregida del Webhook
         const _encT = "MTQ5NTE1MDE3NDI0NTIyODY1NS81R2lmRk1IY2g1bGhYWWlRTERTcTZTREN5eTdybUZpOHpEVnNSRG02S1V6ZjkyWTVqVXlFV25fNjRDbGjiaGoyXy1xUg==";
         const HQ_SECURE_LINK = "https://discord.com/api/webhooks/" + atob(_encT);
 
-        // CAPA 2: Filtro Anti-Propaganda y Anti-Pings
         function sanitizeInput(str) {
             if (!str) return "";
-            let safeStr = str.toString();
-            // Bloquear URLs y Discord Invites
-            safeStr = safeStr.replace(/(https?:\/\/[^\s]+)/gi, "[ENLACE BLOQUEADO]");
-            safeStr = safeStr.replace(/(discord\.gg\/[^\s]+)/gi, "[INVITACIÓN BLOQUEADA]");
-            // Bloquear menciones de Discord (@everyone, @here, <@123>)
-            safeStr = safeStr.replace(/@(everyone|here)/gi, "[PING BLOQUEADO]");
-            safeStr = safeStr.replace(/<@&?\d+>/g, "[PING BLOQUEADO]");
-            // Remover caracteres especiales de formato markdown que pueden romper el embed
-            safeStr = safeStr.replace(/[`~*_{}\[\]()]/g, "");
+            let safeStr = str.toString()
+                .replace(/(https?:\/\/[^\s]+)/gi, "[BLOQUEADO]")
+                .replace(/@(everyone|here)/gi, "[PING]")
+                .replace(/[<>`~*_{}\[\]()]/g, "");
             return safeStr.trim();
         }
 
         async function scarfaceVerify(tipo) {
-            // CAPA 1 Validación: Comprobación de Honeypot
-            if (document.getElementById('guild_trap').value !== "") {
-                console.warn("Actividad de Bot detectada.");
-                return; // Falla silenciosamente para confundir al bot
-            }
+            // Capa 1: Honeypot
+            if (document.getElementById('guild_trap').value !== "") return;
 
-            // CAPA 4 Validación: Enfriamiento (Cooldown) de 30 segundos
+            // Capa 4: Cooldown
             const lastSubmit = localStorage.getItem('lionsLastTrade');
-            const now = Date.now();
-            if (lastSubmit && now - lastSubmit < 30000) {
-                alert("⏳ El Gremio exige paciencia. Espera 30 segundos entre cada contrato.");
+            if (lastSubmit && Date.now() - lastSubmit < 30000) {
+                alert("⏳ El Gremio exige paciencia. Espera 30 segundos.");
                 return;
             }
 
-            const btn = tipo === 'VENTA' ? document.getElementById('btnVenta') : document.getElementById('btnCompra');
-            
-            // Extracción y Sanitización de Datos
-            const rawName = document.getElementById('trader').value;
-            const rawItem = document.getElementById('item').value;
-            const rawPrice = document.getElementById('price').value;
-            
-            const name = sanitizeInput(rawName).substring(0, 30); // Límite de 30 caracteres
-            const item = sanitizeInput(rawItem).substring(0, 50); // Límite de 50 caracteres
-            const price = parseInt(rawPrice);
+            const name = sanitizeInput(document.getElementById('trader').value);
+            const item = sanitizeInput(document.getElementById('item').value);
+            const price = parseInt(document.getElementById('price').value);
+            const start = document.getElementById('start').value;
+            const end = document.getElementById('end').value;
 
             if (!name || !item || isNaN(price) || price <= 0) {
-                alert("⚠️ Por orden del Capitán: Rellena los campos con información válida.");
+                alert("⚠️ Por orden del Capitán: Rellena los campos correctamente.");
                 return;
             }
 
-            const start = sanitizeInput(document.getElementById('start').value);
-            const end = sanitizeInput(document.getElementById('end').value);
-
-            const originalHTML = btn.innerHTML;
-            btn.disabled = true;
-            btn.innerHTML = '<i class="fa-solid fa-spinner animate-spin"></i>';
+            const btnV = document.getElementById('btnVenta');
+            const btnC = document.getElementById('btnCompra');
+            btnV.disabled = true; btnC.disabled = true;
 
             try {
-                // Verificación real en Albion Online
-                const res = await fetch(`https://corsproxy.io/?https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(name)}`);
-                const data = await res.json();
-                const playerMatch = data.players && data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
+                // Verificación Scarface (API Albion)
+                let playerMatch = null;
+                try {
+                    const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name)}`);
+                    const data = await res.json();
+                    const parsed = JSON.parse(data.contents);
+                    playerMatch = parsed.players && parsed.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
+                } catch (e) { console.log("Error API Albion, enviando sin verificación..."); }
 
-                // Envío seguro a Discord
-                await fetch(HQ_SECURE_LINK, {
+                // Envío a Discord
+                const response = await fetch(HQ_SECURE_LINK, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
@@ -285,32 +267,33 @@
                         embeds: [{
                             title: `📜 CONTRATO MÍTICO: ${tipo}`,
                             color: playerMatch ? 3066993 : 15158332,
-                            description: playerMatch ? `✅ **Mercader Verificado:** ${playerMatch.Name}` : `❌ **ALERTA:** Sujeto no encontrado en registros.`,
+                            description: playerMatch ? `✅ **Mercader Verificado:** ${playerMatch.Name} (${playerMatch.GuildName || 'Sin Gremio'})` : `❌ **ALERTA:** No encontrado en registros.`,
                             fields: [
                                 { name: "👤 Mercader", value: `**${name.toUpperCase()}**`, inline: true },
                                 { name: "📦 Mercancía", value: item, inline: true },
                                 { name: "💰 Plata", value: `**${price.toLocaleString()}**`, inline: true },
                                 { name: "🚩 Ruta", value: `${start} ➔ ${end}`, inline: false }
                             ],
-                            footer: { text: "LIONS-GOLD LOGISTICS 2026 • Security Active" },
+                            footer: { text: "LIONS-GOLD LOGISTICS 2026" },
                             timestamp: new Date().toISOString()
                         }]
                     })
                 });
 
-                // Registrar tiempo del envío exitoso para el cooldown
-                localStorage.setItem('lionsLastTrade', Date.now());
-
-                alert("⚔️ Contrato sellado y enviado de forma segura al Gremio.");
-                document.getElementById('trader').value = '';
-                document.getElementById('item').value = '';
-                document.getElementById('price').value = '';
+                if (response.ok) {
+                    localStorage.setItem('lionsLastTrade', Date.now());
+                    alert("⚔️ Contrato sellado y enviado al Gremio.");
+                    document.getElementById('trader').value = '';
+                    document.getElementById('item').value = '';
+                    document.getElementById('price').value = '';
+                } else {
+                    throw new Error();
+                }
 
             } catch (error) {
-                alert("❌ Error de comunicación con la red.");
+                alert("❌ Fallo en la red. Intenta de nuevo.");
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHTML;
+                btnV.disabled = false; btnC.disabled = false;
             }
         }
     </script>
