@@ -108,27 +108,22 @@
     </header>
 
     <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 px-4">
-        
         <div class="lg:col-span-5">
             <div class="tavern-panel mythic-border p-8">
                 <h2 class="font-mythic text-amber-500 text-2xl text-center border-b border-amber-900/50 pb-4 mb-8 uppercase tracking-widest">Forjar Contrato</h2>
-                
                 <div class="space-y-5 font-medieval">
                     <div class="relative">
                         <i class="fa-solid fa-user absolute left-4 top-4 text-amber-700"></i>
                         <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-mythic w-full pl-12 uppercase">
                     </div>
-
                     <div class="relative">
                         <i class="fa-solid fa-box-open absolute left-4 top-4 text-amber-700"></i>
                         <input type="text" id="item" placeholder="Mercancía (Ej: Mamut de Transporte T8)" class="input-mythic w-full pl-12">
                     </div>
-
                     <div class="relative">
                         <i class="fa-solid fa-coins absolute left-4 top-4 text-amber-700"></i>
                         <input type="number" id="price" placeholder="Precio en Plata" class="input-mythic w-full pl-12 text-amber-500 font-bold">
                     </div>
-                    
                     <div class="grid grid-cols-2 gap-4">
                         <div class="space-y-1">
                             <label class="text-[10px] text-amber-600 uppercase font-bold ml-1">Origen</label>
@@ -157,7 +152,6 @@
                             </select>
                         </div>
                     </div>
-
                     <div class="grid grid-cols-2 gap-4 pt-4">
                         <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm flex items-center justify-center gap-2">
                             <i class="fa-solid fa-tags"></i> Vender
@@ -166,7 +160,6 @@
                             <i class="fa-solid fa-cart-shopping"></i> Comprar
                         </button>
                     </div>
-                    
                     <p class="text-[9px] text-center text-gray-500 uppercase tracking-tighter mt-4 italic">Al sellar, el Capitán Scarface verificará tu honor en los registros de Albion.</p>
                 </div>
             </div>
@@ -175,40 +168,21 @@
         <div class="lg:col-span-7 space-y-6">
             <div class="tavern-panel mythic-border p-8">
                 <h3 class="font-mythic text-amber-500 text-xl mb-6 border-b border-amber-900/50 pb-2 uppercase">Manifiesto LIONS-GOLD</h3>
-                
                 <div class="space-y-4">
                     <div class="objective-card">
                         <h4 class="font-mythic text-sm text-amber-400 uppercase tracking-widest"><i class="fa-solid fa-gem mr-2"></i> Riqueza (2024 - 2025)</h4>
                         <p class="text-xs text-gray-400 mt-2 leading-relaxed">Establecimos la red de comercio más sólida de Lymhurst. Controlamos el flujo de recursos T8 y aseguramos que cada miembro del gremio nunca camine con los bolsillos vacíos.</p>
                     </div>
-
                     <div class="objective-card">
                         <h4 class="font-mythic text-sm text-[#34d399] uppercase tracking-widest"><i class="fa-solid fa-scale-balanced mr-2"></i> Justicia (Actualidad)</h4>
                         <p class="text-xs text-gray-400 mt-2 leading-relaxed">Nuestra palabra es ley. A través del Capitán Scarface, protegemos a nuestros socios de estafadores y ratas. Si comercias con LIONS-GOLD, comercias con seguridad absoluta.</p>
                     </div>
-
                     <div class="objective-card">
                         <h4 class="font-mythic text-sm text-white uppercase tracking-widest"><i class="fa-solid fa-crown mr-2"></i> Gloria (Objetivo 2026)</h4>
                         <p class="text-xs text-gray-400 mt-2 leading-relaxed">Dominio total de las Rutas Reales. No solo somos mercaderes; buscamos ser la entidad económica más influyente de todo Albion Online, dejando nuestra huella en la historia.</p>
                     </div>
                 </div>
-
-                <div class="mt-8 grid grid-cols-3 gap-4 text-center">
-                    <div class="p-3 bg-black/40 border border-amber-900/30">
-                        <p class="text-amber-500 font-bold text-lg">100%</p>
-                        <p class="text-[9px] uppercase text-gray-500">Lealtad</p>
-                    </div>
-                    <div class="p-3 bg-black/40 border border-amber-900/30">
-                        <p class="text-amber-500 font-bold text-lg">LYM</p>
-                        <p class="text-[9px] uppercase text-gray-500">Sede Global</p>
-                    </div>
-                    <div class="p-3 bg-black/40 border border-amber-900/30">
-                        <p class="text-amber-500 font-bold text-lg">ACT</p>
-                        <p class="text-[9px] uppercase text-gray-500">Estatus</p>
-                    </div>
-                </div>
             </div>
-
             <div class="tavern-panel p-6 border-2 border-dashed border-green-900/50 flex items-center justify-between">
                 <div>
                     <p class="text-green-500 font-bold text-xs uppercase tracking-widest"><i class="fa-solid fa-circle-check animate-pulse mr-2"></i> Scanner Scarface Online</p>
@@ -224,6 +198,7 @@
     </footer>
 
     <script>
+        // 🛡️ PROTOCOLO DE SEGURIDAD LIONS-GOLD
         const _p1 = "https://discord.com/api/webhooks/";
         const _p2 = "1490405678253346857";
         const _p3 = "vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
