@@ -67,7 +67,6 @@
         }
         .objective-card:hover { background: rgba(197, 160, 89, 0.1); transform: translateX(5px); }
 
-        /* Estilo para el select personalizado */
         select.input-mythic option { background: #1a1d21; color: white; }
     </style>
 </head>
@@ -83,7 +82,7 @@
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline space-x-8 font-medieval">
                         <a href="index.html" class="text-amber-500 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-house mr-1"></i> Taberna</a>
-                        <a href="albion_trading_global.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-shop mr-1"></i> Mercado Global</a>
+                        <a href="trading-global.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-chart-line mr-1"></i> Trading Global</a>
                         <a href="contratos.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-file-signature mr-1"></i> Contratos</a>
                         <a href="rutas.html" class="text-gray-300 hover:text-white hover:bg-amber-900/30 px-3 py-2 rounded-md text-sm uppercase transition-all border border-transparent hover:border-amber-700/50"><i class="fa-solid fa-map-location-dot mr-1"></i> Rutas Reales</a>
                     </div>
@@ -91,6 +90,7 @@
             </div>
         </div>
     </nav>
+
     <header class="py-16 text-center">
         <h1 class="font-mythic text-5xl md:text-7xl text-[#c5a059] mb-4 drop-shadow-[0_0_15px_rgba(197,160,89,0.6)]">TABERNA LIONS-GOLD</h1>
         <div class="max-w-2xl mx-auto px-4">
@@ -224,7 +224,6 @@
     </footer>
 
     <script>
-        // 🛡️ PROTOCOLO DE SEGURIDAD LIONS-GOLD
         const _p1 = "https://discord.com/api/webhooks/";
         const _p2 = "1490405678253346857";
         const _p3 = "vcoRorEQLgWG4tbdpg0C3TYmgFPzWjjDRcuQ4bjja-wohtOs8j5CPagcc5WnFLmdDA6p";
@@ -245,12 +244,10 @@
             btn.innerHTML = '<i class="fa-solid fa-skull animate-spin mr-2"></i> VERIFICANDO...';
 
             try {
-                // 🔎 Verificación en Albion Online
                 const res = await fetch(`https://corsproxy.io/?https://gameinfo.albiononline.com/api/gameinfo/search?q=${encodeURIComponent(name)}`);
                 const data = await res.json();
                 const playerMatch = data.players && data.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
-                // 📡 Preparar Mensaje para el Gremio
                 const payload = {
                     username: "CAPITÁN SCARFACE | LIONS-GOLD",
                     embeds: [{
@@ -279,7 +276,6 @@
 
                 alert(playerMatch ? "¡Contrato sellado! La orden ha sido enviada al Discord del Gremio." : "¡Alerta enviada! El sujeto es un fantasma en Albion.");
                 
-                // Limpiar
                 document.getElementById('trader').value = '';
                 document.getElementById('item').value = '';
                 document.getElementById('price').value = '';
