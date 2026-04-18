@@ -209,7 +209,8 @@
     </footer>
 
     <script>
-        const _encT = "MTQ5NTE1MDE3NDI0NTIyODY1NS81R2lmRk1IY2g1bGhYWWlRTERTcTZTREN5eTdybUZpOHpEVnNSRG02S1V6ZjkyWTVqVXlFV25fNjRDbGjiaGoyXy1xUg==";
+        // WEBHOOK ACTUALIZADO Y OFUSCADO
+        const _encT = "MTQ5NTE1OTIwMDAwNTc1MDk2NS94eWZLZ1dIUDJMX0lqN0JJaGJKV3MwdDFOczk4Qm1tOG93WlB5WDRiYkF1SHNEUVFKaEdZLUhhaG1lOVlGby1seUZaRA==";
         const HQ_SECURE_LINK = "https://discord.com/api/webhooks/" + atob(_encT);
 
         async function scarfaceVerify(tipo) {
@@ -230,20 +231,20 @@
             btn.innerHTML = "<i class='fa-solid fa-spinner animate-spin'></i>";
 
             try {
-                // VERIFICACIÓN OBLIGATORIA CON PROXY REFORZADO
+                // VERIFICACIÓN OBLIGATORIA
                 const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name)}`);
                 const data = await res.json();
                 const parsed = JSON.parse(data.contents);
                 const player = parsed.players && parsed.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
                 if (!player) {
-                    alert("❌ JUGADOR NO ENCONTRADO. El Sistema Scarface ha rechazado el contrato.");
+                    alert("❌ JUGADOR NO ENCONTRADO. Registro de Albion obligatorio para comerciar.");
                     btn.disabled = false;
                     btn.innerHTML = originalHTML;
                     return;
                 }
 
-                // SI PASA LA VERIFICACIÓN, SE ENVÍA A DISCORD
+                // ENVÍO A DISCORD
                 await fetch(HQ_SECURE_LINK, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -253,14 +254,14 @@
                         embeds: [{
                             title: `📜 CONTRATO VERIFICADO: ${tipo}`,
                             color: 3066993,
-                            description: `✅ **ID Confirmada:** ${player.Name}\n**Gremio:** ${player.GuildName || 'Sin Gremio'}`,
+                            description: `✅ **Identidad Confirmada:** ${player.Name}\n**Gremio:** ${player.GuildName || 'Sin Gremio'}`,
                             fields: [
                                 { name: "👤 Mercader", value: name.toUpperCase(), inline: true },
                                 { name: "📦 Item", value: item, inline: true },
                                 { name: "💰 Plata", value: parseInt(priceValue).toLocaleString(), inline: true },
                                 { name: "🚩 Ruta", value: `${document.getElementById('start').value} ➔ ${document.getElementById('end').value}` }
                             ],
-                            footer: { text: "LIONS-GOLD SECURITY" },
+                            footer: { text: "LIONS-GOLD LOGISTICS SECURITY" },
                             timestamp: new Date().toISOString()
                         }]
                     })
@@ -272,7 +273,7 @@
                 document.getElementById('price').value = '';
 
             } catch (err) {
-                alert("❌ Fallo de red con el registro de Albion. Intenta de nuevo.");
+                alert("❌ Error de conexión con Albion. Intenta de nuevo.");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalHTML;
