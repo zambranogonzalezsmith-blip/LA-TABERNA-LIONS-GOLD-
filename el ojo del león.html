@@ -1,4 +1,8 @@
-<section id="tab-radar" class="tab-content glass-panel p-8 mb-10 border-2 border-cyan-500/20">
+<!-- Cargar Dependencias si no las tienes en tu index -->
+<script src="https://tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cloudflare.com">
+
+<section id="tab-radar" class="tab-content glass-panel p-8 mb-10 border-2 border-cyan-500/20 bg-slate-900 text-white rounded-xl">
     <div class="flex justify-between items-center mb-6">
         <div class="flex flex-col">
             <h1 class="font-mythic text-xl text-cyan-400 uppercase tracking-[0.3em]">Scanner de Prospección 🦅</h1>
@@ -13,9 +17,10 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="space-y-4">
+            <!-- Bioma -->
             <div class="flex flex-col gap-2">
                 <label class="text-[10px] text-cyan-600 uppercase font-black tracking-widest">Bioma de Operación</label>
-                <select id="radar-biome" class="input-gold border-cyan-900/50 text-sm" onchange="updateRadar()">
+                <select id="radar-biome" class="bg-black/50 border border-cyan-900/50 text-cyan-100 p-2 rounded text-sm focus:outline-none focus:border-cyan-500" onchange="updateRadar()">
                     <option value="Steppe">Estepa (Bridgewatch) - Cueros</option>
                     <option value="Forest">Bosque (Lymhurst) - Madera</option>
                     <option value="Swamp">Pantano (Thetford) - Fibra</option>
@@ -24,14 +29,16 @@
                 </select>
             </div>
 
+            <!-- Riesgo -->
             <div class="flex flex-col gap-2">
                 <label class="text-[10px] text-cyan-600 uppercase font-black tracking-widest">Riesgo de Zona</label>
                 <div class="flex gap-1">
-                    <button onclick="setRisk('Safe')" class="flex-1 py-2 text-[10px] font-bold bg-blue-900/20 border border-blue-500/30 text-blue-400 rounded-sm">ZONA AZUL/AM</button>
-                    <button onclick="setRisk('Lethal')" class="flex-1 py-2 text-[10px] font-bold bg-red-900/20 border border-red-500/30 text-red-400 rounded-sm">ZONA ROJA/NEGRA</button>
+                    <button id="btn-risk-safe" onclick="setRisk('Safe')" class="risk-btn flex-1 py-2 text-[10px] font-bold bg-blue-900/20 border border-blue-500/30 text-blue-400 rounded-sm transition-all">ZONA AZUL/AM</button>
+                    <button id="btn-risk-lethal" onclick="setRisk('Lethal')" class="risk-btn flex-1 py-2 text-[10px] font-bold bg-red-900/20 border border-red-500/30 text-red-400 rounded-sm transition-all opacity-50">ZONA ROJA/NEGRA</button>
                 </div>
             </div>
 
+            <!-- Objetivos -->
             <div class="p-4 bg-black/40 border border-cyan-500/10 rounded-sm space-y-3">
                 <h4 class="text-[10px] font-black text-cyan-500 uppercase">Objetivos Especiales</h4>
                 <div class="flex items-center justify-between text-xs">
@@ -45,18 +52,21 @@
             </div>
         </div>
 
-        <div class="lg:col-span-2 relative min-h-[300px] bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] border border-cyan-500/20 rounded flex items-center justify-center overflow-hidden">
+        <!-- Pantalla de Radar -->
+        <div class="lg:col-span-2 relative min-h-[300px] bg-black/60 border border-cyan-500/20 rounded flex items-center justify-center overflow-hidden">
+            <!-- Capas de Radar (Círculos) -->
             <div class="absolute w-[250px] h-[250px] border border-cyan-500/10 rounded-full"></div>
             <div class="absolute w-[150px] h-[150px] border border-cyan-500/10 rounded-full"></div>
             <div class="absolute w-[50px] h-[50px] border border-cyan-500/20 rounded-full bg-cyan-500/5"></div>
             
-            <div class="absolute w-1/2 h-1 bg-gradient-to-r from-transparent to-cyan-500 origin-left animate-[spin_4s_linear_infinite]" style="top: 50%; left: 50%;"></div>
+            <!-- Barrido de Radar -->
+            <div class="absolute w-1/2 h-1 bg-gradient-to-r from-transparent to-cyan-500 origin-left animate-radar-sweep" style="top: 50%; left: 50%;"></div>
 
-            <div id="radar-points" class="relative w-full h-full">
-                </div>
+            <!-- Contenedor de Puntos -->
+            <div id="radar-points" class="absolute inset-0"></div>
 
             <div class="absolute bottom-4 left-4 bg-black/80 p-2 border border-cyan-500/30">
-                <p id="radar-status" class="text-[9px] font-mono text-cyan-400 uppercase tracking-tighter">Escaneando coordenadas...</p>
+                <p id="radar-status" class="text-[9px] font-mono text-cyan-400 uppercase tracking-tighter italic">Iniciando sistemas...</p>
             </div>
         </div>
     </div>
@@ -64,47 +74,89 @@
 
 <style>
     @keyframes spin-slow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes radar-sweep { 
+        from { transform: rotate(0deg); } 
+        to { transform: rotate(360deg); } 
+    }
+    
     .animate-spin-slow { animation: spin-slow 8s linear infinite; }
-    .radar-dot { position: absolute; transform: translate(-50%, -50%); border-radius: 50%; filter: blur(1px); }
+    .animate-radar-sweep { animation: radar-sweep 4s linear infinite; }
+    
+    .radar-dot { 
+        position: absolute; 
+        transform: translate(-50%, -50%); 
+        border-radius: 50%; 
+        transition: all 0.5s ease-in-out;
+    }
+
+    .glass-panel {
+        backdrop-filter: blur(12px);
+        background: rgba(15, 23, 42, 0.8);
+    }
 </style>
 
 <script>
-    // Inyectar en tu función switchTab la lógica del Radar
+    let currentRisk = 'Safe';
+
+    function setRisk(level) {
+        currentRisk = level;
+        const btnSafe = document.getElementById('btn-risk-safe');
+        const btnLethal = document.getElementById('btn-risk-lethal');
+
+        if(level === 'Safe') {
+            btnSafe.classList.remove('opacity-50');
+            btnLethal.classList.add('opacity-50');
+        } else {
+            btnLethal.classList.remove('opacity-50');
+            btnSafe.classList.add('opacity-50');
+        }
+        updateRadar();
+    }
+
     function updateRadar() {
         const pointsContainer = document.getElementById('radar-points');
         const biome = document.getElementById('radar-biome').value;
         const status = document.getElementById('radar-status');
         
+        // Limpiar puntos actuales
         pointsContainer.innerHTML = '';
-        status.innerText = `Calculando densidad de nodos en: ${biome.toUpperCase()}...`;
+        status.innerText = `[OK] ESCANEANDO ${biome.toUpperCase()} - RIESGO: ${currentRisk.toUpperCase()}`;
 
-        // Generación de puntos simulados basados en lógica de juego
-        for(let i=0; i<8; i++) {
+        // Densidad según riesgo (más puntos en zonas letales)
+        const density = currentRisk === 'Lethal' ? 12 : 6;
+
+        for(let i=0; i < density; i++) {
             const dot = document.createElement('div');
-            const type = Math.random() > 0.7 ? 'rare' : 'normal';
-            const x = Math.random() * 80 + 10;
-            const y = Math.random() * 80 + 10;
+            const isRare = Math.random() > 0.8;
+            
+            // Coordenadas aleatorias dentro del círculo (manteniendo margen)
+            const x = Math.random() * 70 + 15;
+            const y = Math.random() * 70 + 15;
             
             dot.className = 'radar-dot shadow-lg';
             dot.style.left = `${x}%`;
             dot.style.top = `${y}%`;
             
-            if(type === 'rare') {
-                dot.style.width = '8px';
-                dot.style.height = '8px';
-                dot.style.background = '#facc15'; // Oro/Raro
-                dot.style.boxShadow = '0 0 10px #facc15';
-                dot.innerHTML = '<span class="absolute -top-4 -left-2 text-[7px] text-yellow-400 font-black">ENCHANTED .4</span>';
+            if(isRare) {
+                dot.style.width = '10px';
+                dot.style.height = '10px';
+                dot.style.background = '#facc15';
+                dot.style.boxShadow = '0 0 15px #facc15';
+                dot.innerHTML = '<span class="absolute -top-5 -left-4 text-[7px] text-yellow-400 font-black whitespace-nowrap">NODE .4 DETECTED</span>';
             } else {
-                dot.style.width = '4px';
-                dot.style.height = '4px';
-                dot.style.background = '#22d3ee'; // Cyan/Normal
+                dot.style.width = '5px';
+                dot.style.height = '5px';
+                dot.style.background = '#22d3ee';
+                dot.style.boxShadow = '0 0 8px #22d3ee';
             }
             
-            pointsContainer.appendChild(dot);
+            // Retraso de aparición para efecto visual
+            setTimeout(() => {
+                pointsContainer.appendChild(dot);
+            }, i * 150);
         }
     }
 
-    // Inicializar radar al cargar pestaña
-    // (Asegúrate de agregar 'radar' a tus botones de navegación)
+    // Auto-ejecución al cargar
+    document.addEventListener('DOMContentLoaded', updateRadar);
 </script>
