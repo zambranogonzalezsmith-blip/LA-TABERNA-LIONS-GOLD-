@@ -18,7 +18,7 @@
             background: #030303; 
             color: #e2e2e2; 
             font-family: 'Inter', sans-serif; 
-            background-image: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, #030303 100%), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg'); 
+            background-image: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, #030303 100%), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg'); 
             background-attachment: fixed; 
             background-size: cover; 
             background-position: center;
@@ -34,7 +34,7 @@
         }
 
         .tavern-panel { 
-            background: linear-gradient(180deg, rgba(13, 15, 18, 0.98) 0%, rgba(5, 5, 5, 0.98) 100%); 
+            background: linear-gradient(180deg, rgba(13, 15, 18, 0.95) 0%, rgba(5, 5, 5, 0.98) 100%); 
             backdrop-filter: blur(12px); 
         }
 
@@ -83,6 +83,21 @@
         }
 
         .h-trap { position: absolute; left: -9999px; opacity: 0; }
+        
+        .epic-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .epic-list li::before {
+            content: '⚔️';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
     </style>
 </head>
 <body class="min-h-screen pb-10">
@@ -96,11 +111,15 @@
                     </div>
                     <span class="font-mythic text-[#c5a059] text-2xl tracking-[0.2em] hidden md:block">LIONS-GOLD</span>
                 </div>
-                <div class="flex items-center space-x-8 font-medieval">
-                    <a href="index.html" class="text-amber-500 hover:text-white transition-all text-sm uppercase flex items-center gap-2">
+                <div class="flex items-center space-x-4 md:space-x-8 font-medieval">
+                    <a href="el ojo del león.html" class="bg-red-900/20 border border-red-700/50 px-3 py-1.5 text-red-500 hover:bg-red-900/60 hover:text-white transition-all text-xs md:text-sm uppercase flex items-center gap-2 rounded-sm shadow-[0_0_10px_rgba(220,38,38,0.2)]">
+                        <i class="fa-solid fa-eye animate-pulse"></i> El Ojo del León
+                    </a>
+                    
+                    <a href="index.html" class="text-amber-500 hover:text-white transition-all text-xs md:text-sm uppercase flex items-center gap-2">
                         <i class="fa-solid fa-beer-mug-empty"></i> Taberna
                     </a>
-                    <a href="trading-global.html" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-4 py-2 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-sm uppercase flex items-center gap-2 rounded-sm">
+                    <a href="trading-global.html" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-3 py-1.5 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-xs md:text-sm uppercase flex items-center gap-2 rounded-sm hidden sm:flex">
                         <i class="fa-solid fa-chart-line"></i> Trading Global
                     </a>
                 </div>
@@ -108,18 +127,19 @@
         </div>
     </nav>
 
-    <header class="py-20 text-center relative">
-        <h1 class="font-mythic text-6xl md:text-8xl gold-text mb-6">TABERNA DE COMERCIO</h1>
-        <p class="font-medieval text-amber-600 text-2xl tracking-[0.4em] uppercase opacity-80">Legión de Élite • Lymhurst</p>
+    <header class="py-16 text-center relative">
+        <h1 class="font-mythic text-5xl md:text-7xl lg:text-8xl gold-text mb-4">TABERNA DE COMERCIO</h1>
+        <p class="font-medieval text-amber-600 text-xl md:text-2xl tracking-[0.4em] uppercase opacity-80">Legión de Élite • Lymhurst</p>
     </header>
 
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 px-6">
+    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 px-4 md:px-6">
+        
         <div class="lg:col-span-5">
-            <div class="tavern-panel mythic-border p-8 relative overflow-hidden">
+            <div class="tavern-panel mythic-border p-6 md:p-8 relative overflow-hidden">
                 <div class="absolute top-0 right-0 p-4 opacity-10">
                     <i class="fa-solid fa-scroll text-6xl text-[#c5a059]"></i>
                 </div>
-                <h2 class="font-mythic text-amber-500 text-3xl mb-10 border-b border-amber-900/50 pb-4 text-center">FORJAR CONTRATO</h2>
+                <h2 class="font-mythic text-amber-500 text-2xl md:text-3xl mb-8 border-b border-amber-900/50 pb-4 text-center">FORJAR CONTRATO</h2>
                 
                 <div class="space-y-6 font-medieval">
                     <input type="text" id="guild_trap" class="h-trap" tabindex="-1" autocomplete="off">
@@ -166,71 +186,95 @@
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-6 pt-6">
-                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-5 rounded-sm text-lg">Vender</button>
-                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-5 rounded-sm text-lg">Comprar</button>
+                    <div class="grid grid-cols-2 gap-4 pt-6">
+                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm text-lg">Vender</button>
+                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded-sm text-lg">Comprar</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="lg:col-span-7 space-y-8">
-            <a href="trading-global.html" class="trading-card p-10 mythic-border group block">
-                <div class="flex justify-between items-center">
-                    <div class="space-y-4">
-                        <h3 class="font-mythic text-3xl text-amber-500 group-hover:text-white transition-colors">CENTRAL DE TRADING</h3>
-                        <p class="text-sm text-gray-400 font-medieval leading-relaxed max-w-md">
-                            Accede a la inteligencia de mercado en tiempo real. Monitoreo de divisas, precios de mercado negro y rutas de alta rentabilidad.
-                        </p>
-                    </div>
-                    <i class="fa-solid fa-chart-column text-7xl text-amber-900/20 group-hover:text-[#c5a059]/30 transition-all"></i>
+        <div class="lg:col-span-7 space-y-6">
+            
+            <div class="tavern-panel mythic-border p-8 relative overflow-hidden group">
+                <div class="absolute -top-10 -right-10 opacity-5 group-hover:opacity-10 transition-opacity duration-700">
+                    <i class="fa-solid fa-dragon text-[12rem] text-[#c5a059]"></i>
                 </div>
-            </a>
+                
+                <h3 class="font-mythic text-3xl text-amber-500 mb-4 tracking-widest drop-shadow-md">LA SENDA DEL LEÓN DORADO</h3>
+                
+                <div class="font-medieval text-gray-300 text-sm md:text-base leading-relaxed mb-6 space-y-4 text-justify relative z-10">
+                    <p>
+                        <span class="text-amber-500 text-xl font-mythic">¡E</span>scuchad, forasteros y veteranos de las Tierras Lejanas! Las imponentes puertas de LIONS-GOLD están abiertas. No importa el estandarte que defiendas, el gremio al que sirvas o la alianza que te respalde. 
+                    </p>
+                    <p class="text-gray-400 italic">
+                        Buscamos guerreros, artesanos y mercaderes de espíritu noble que deseen aprender, crecer y forjar una comunidad sana y próspera en las implacables tierras de Albion.
+                    </p>
+                </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-black/50 border border-amber-900/30 p-4 rounded-sm">
+                    <h4 class="font-mythic text-amber-600 text-sm mb-3 text-center border-b border-amber-900/30 pb-2">Nuestras Disciplinas</h4>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-medieval text-xs text-gray-300 uppercase tracking-wider epic-list">
+                        <ul class="space-y-2">
+                            <li>PvE y Mazmorras Corruptas</li>
+                            <li>Arenas de Combate</li>
+                            <li>Rastreo y Farmeo Épico</li>
+                            <li>Crafteo y Forja de Equipamiento</li>
+                            <li>Guerras de Facciones</li>
+                        </ul>
+                        <ul class="space-y-2">
+                            <li>Agricultura y Botánica</li>
+                            <li>Pesca en Aguas Peligrosas</li>
+                            <li>Rutas de Comercio Seguro</li>
+                            <li>Economía y Mercado Negro</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div class="tavern-panel mythic-border p-6 border-l-4 border-l-green-600">
-                    <h4 class="font-mythic text-green-500 text-sm mb-3">SISTEMA SCARFACE</h4>
-                    <p class="text-xs text-gray-500 font-medieval italic">"Verificamos cada nombre en el registro real de Albion."</p>
-                    <div class="mt-4 flex items-center gap-2">
+                    <h4 class="font-mythic text-green-500 text-sm mb-2">SISTEMA SCARFACE</h4>
+                    <p class="text-[11px] text-gray-400 font-medieval italic">"Verificamos cada nombre en el registro de Albion."</p>
+                    <div class="mt-3 flex items-center gap-2">
                         <span class="w-2 h-2 bg-green-500 rounded-full pulse-gold"></span>
                         <span class="text-[10px] text-green-700 uppercase font-bold">Protocolo Activo</span>
                     </div>
                 </div>
                 <div class="tavern-panel mythic-border p-6 border-l-4 border-l-amber-600">
-                    <h4 class="font-mythic text-amber-500 text-sm mb-3">SEGURIDAD LIONS</h4>
-                    <p class="text-xs text-gray-500 font-medieval italic">Protección Anti-Bot y Sanitización activada.</p>
+                    <h4 class="font-mythic text-amber-500 text-sm mb-2">SEGURIDAD LIONS</h4>
+                    <p class="text-[11px] text-gray-400 font-medieval italic">Protección Anti-Bot y Sanitización activada.</p>
                 </div>
             </div>
 
-            <div class="tavern-panel mythic-border p-8 relative overflow-hidden">
+            <div class="tavern-panel mythic-border p-6 md:p-8 relative overflow-hidden bg-gradient-to-r from-[#1a1b26] to-[#0d0f12]">
                 <div class="flex flex-col md:flex-row items-center gap-6">
-                    <div class="relative">
-                        <div class="w-20 h-20 bg-[#5865F2]/20 rounded-full flex items-center justify-center border-2 border-[#5865F2]/50 shadow-[0_0_20px_rgba(88,101,242,0.3)]">
-                            <i class="fa-brands fa-discord text-4xl text-[#5865F2]"></i>
-                        </div>
-                        <div class="absolute -top-2 -right-2 text-amber-500 animate-bounce">
-                            <i class="fa-solid fa-cross"></i>
+                    <div class="relative shrink-0">
+                        <div class="w-20 h-20 bg-[#5865F2]/10 rounded-full flex items-center justify-center border-2 border-[#5865F2]/40 shadow-[0_0_25px_rgba(88,101,242,0.2)]">
+                            <i class="fa-brands fa-discord text-4xl text-[#5865F2] drop-shadow-[0_0_8px_rgba(88,101,242,0.8)]"></i>
                         </div>
                     </div>
                     <div class="flex-1 text-center md:text-left">
-                        <h3 class="font-mythic text-2xl text-white mb-2 tracking-wide">COMUNIDAD GAMER LIONS-GOLD</h3>
-                        <p class="font-medieval text-sm text-gray-400 mb-4">
-                            Únete a nuestro bastión de comercio. Aquí no importa tu gremio ni tu alianza, solo el intercambio justo, el comercio sano y el honor entre mercaderes.
+                        <h3 class="font-mythic text-xl text-white mb-2 tracking-wide text-shadow">SALÓN DE LOS ALIADOS (DISCORD)</h3>
+                        <p class="font-medieval text-xs md:text-sm text-gray-400 mb-4">
+                            Únete a nuestro bastión. Un refugio neutral donde el comercio sano y el honor prevalecen sobre las guerras territoriales.
                         </p>
-                        <a href="https://discord.gg/um9dMh7GV" target="_blank" class="inline-flex items-center gap-3 bg-gradient-to-r from-[#5865F2] to-[#404EED] px-8 py-3 rounded-sm font-mythic text-sm text-white hover:scale-105 transition-transform shadow-lg border border-[#5865F2]/50">
+                        <a href="https://discord.gg/um9dMh7GV" target="_blank" class="inline-flex items-center gap-3 bg-[#5865F2] hover:bg-[#4752C4] px-6 py-2.5 rounded-sm font-mythic text-xs md:text-sm text-white transition-all shadow-[0_0_15px_rgba(88,101,242,0.4)] border border-[#5865F2]/50 hover:-translate-y-1">
                             <i class="fa-brands fa-discord text-lg"></i> ENTRAR AL SALÓN
                         </a>
                     </div>
                 </div>
             </div>
+
         </div>
     </main>
 
-    <footer class="mt-20 py-12 text-center border-t border-[#c5a059]/20">
-        <p class="text-gray-700 text-[11px] uppercase tracking-[0.6em] font-mythic">Smith Business Solutions | &copy; 2026 LIONS-GOLD GLOBAL</p>
+    <footer class="mt-20 py-8 text-center border-t border-[#c5a059]/20 bg-black/80">
+        <p class="text-gray-600 text-[10px] uppercase tracking-[0.4em] font-mythic">Smith Business Solutions | &copy; 2026 LIONS-GOLD GLOBAL</p>
     </footer>
 
     <script>
+        // CÓDIGO WEBHOOK INTACTO SEGÚN INSTRUCCIONES
         const _encT = "MTQ5NTE1OTIwMDAwNTc1MDk2NS94eWZLZ1dIUDJMX0lqN0JJaGJKV3MwdDFOczk4Qm1tOG93WlB5WDRiYkF1SHNEUVFKaEdZLUhhaG1lOVlGby1seUZaRA==";
         const HQ_SECURE_LINK = "https://discord.com/api/webhooks/" + atob(_encT);
 
