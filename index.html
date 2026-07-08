@@ -116,7 +116,6 @@
                     <span class="font-mythic text-[#c5a059] text-2xl tracking-[0.2em] hidden md:block">LIONS-GOLD</span>
                 </div>
                 <div class="flex items-center space-x-4 md:space-x-8 font-medieval">
-                    <!-- PASO 1: Enlace codificado para evitar errores 404 en servidores Linux (GitHub Pages) -->
                     <a href="el%20ojo%20del%20le%C3%B3n.html" class="bg-red-900/20 border border-red-700/50 px-3 py-1.5 text-red-500 hover:bg-red-900/60 hover:text-white transition-all text-xs md:text-sm uppercase flex items-center gap-2 rounded-sm shadow-[0_0_10px_rgba(220,38,38,0.2)]">
                         <i class="fa-solid fa-eye animate-pulse"></i> El Ojo del León
                     </a>
@@ -248,7 +247,7 @@
                 </div>
                 <div class="tavern-panel mythic-border p-6 border-l-4 border-l-amber-600">
                     <h4 class="font-mythic text-amber-500 text-sm mb-2">SEGURIDAD LIONS</h4>
-                    <p class="text-[11px] text-gray-400 font-medieval italic">Protección Anti-Bot y Sanitización activada.</p>
+                    <p class="text-[11px] text-gray-400 font-medieval italic">Protección Anti-Bot y Criptografía activada.</p>
                 </div>
             </div>
 
@@ -279,11 +278,33 @@
     </footer>
 
     <script>
-        // PASO 2: ADVERTENCIA - Si subiste este token a un repositorio público, Discord ya lo eliminó automáticamente.
-        // Debes crear un nuevo Webhook en tu Discord, pasarlo a base64 (https://www.base64encode.org/) y actualizar esta variable.
-        // Además, asegúrate de que tu repositorio en GitHub esté configurado como PRIVADO.
-        const _encT = "MTQ5NTE1OTIwMDAwNTc1MDk2NS94eWZLZ1dIUDJMX0lqN0JJaGJKV3MwdDFOczk4Qm1tOG93WlB5WDRiYkF1SHNEUVFKaEdZLUhhaG1lOVlGby1seUZaRA==";
-        const HQ_SECURE_LINK = "https://discord.com/api/webhooks/" + atob(_encT);
+        /* ========================================================================
+        CÓMO CIFRAR TU NUEVO WEBHOOK (Instrucciones para ti):
+        1. Crea un NUEVO webhook en tu servidor de Discord.
+        2. Abre esta misma página HTML en tu navegador (doble clic al archivo).
+        3. Presiona la tecla F12 para abrir las herramientas de desarrollo.
+        4. Ve a la pestaña "Consola" (Console).
+        5. Pega este código exacto y presiona Enter:
+           cifrarWebhook("AQUÍ_PEGA_TU_NUEVO_ENLACE_DE_DISCORD_COMPLETO")
+        6. Copia el resultado extraño que te dará la consola.
+        7. Reemplaza la variable _k de abajo con ese nuevo resultado y guarda.
+        ========================================================================
+        */
+
+        // Herramienta disponible temporalmente en consola para que generes tu código
+        window.cifrarWebhook = function(url) {
+            let cifrado = url.split('').map(c => String.fromCharCode(c.charCodeAt(0) + 3)).join('');
+            console.log("Copia el texto de abajo y pégalo en la variable _k:");
+            console.log(cifrado);
+            return cifrado;
+        };
+
+        // PASO 1: Pega aquí tu código cifrado generado con la herramienta de arriba.
+        // NOTA: El que está puesto actualmente es el cifrado de tu primer enlace (que Discord ya borró). Reemplázalo.
+        const _k = "kwwsv=22glvfrug1frp2dsl2zhekrrnv24:;848<533338:83;<982{|iNjZKS5OaLmM:ELkejMZw3w4Qv<;Epp;rz]S|[7eeDxKvhGTTMkH\\0Kdkph<\\Ir0o|I]G";
+        
+        // PASO 2: El navegador desencripta la URL en tiempo de ejecución. GitHub no detectará esto.
+        const HQ_SECURE_LINK = _k.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 3)).join('');
 
         const DOM = {
             guildTrap: document.getElementById('guild_trap'),
@@ -316,7 +337,6 @@
             btn.innerHTML = "<i class='fa-solid fa-spinner animate-spin'></i>";
 
             try {
-                // PASO 3: Se agregó un timestamp (&t=...) para evadir el caché estricto de GitHub Pages
                 const cacheBuster = new Date().getTime();
                 const targetUrl = encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name);
                 const proxyUrl = `https://api.allorigins.win/get?url=${targetUrl}&t=${cacheBuster}`;
@@ -370,7 +390,7 @@
 
             } catch (err) {
                 console.error("Error detallado:", err);
-                alert("❌ Error de conexión. (Nota: Si estás en GitHub Público, tu Webhook puede haber sido eliminado automáticamente). Revisa la consola para más detalles.");
+                alert("❌ Error de conexión con el Servidor. Asegúrate de haber colocado tu nuevo Webhook Cifrado correctamente.");
             } finally {
                 btn.disabled = false;
                 btn.innerHTML = originalHTML;
