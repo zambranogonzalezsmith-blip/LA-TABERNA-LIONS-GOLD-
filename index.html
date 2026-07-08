@@ -4,11 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LIONS-GOLD | TABERNA DE COMERCIO MÍTICO</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=MedievalSharp&family=Inter:wght@400;700&display=swap');
-        
         :root { 
             --gold: #c5a059; 
             --gold-glow: rgba(197, 160, 89, 0.6);
@@ -156,7 +160,7 @@
 
                     <div class="flex flex-col gap-2">
                         <label class="text-xs text-amber-700 uppercase ml-1">Tesoro en Plata</label>
-                        <input type="number" id="price" placeholder="0" class="input-mythic w-full text-amber-500 font-bold text-xl">
+                        <input type="number" id="price" min="0" placeholder="0" class="input-mythic w-full text-amber-500 font-bold text-xl">
                     </div>
                     
                     <div class="grid grid-cols-2 gap-4">
@@ -278,19 +282,35 @@
         const _encT = "MTQ5NTE1OTIwMDAwNTc1MDk2NS94eWZLZ1dIUDJMX0lqN0JJaGJKV3MwdDFOczk4Qm1tOG93WlB5WDRiYkF1SHNEUVFKaEdZLUhhaG1lOVlGby1seUZaRA==";
         const HQ_SECURE_LINK = "https://discord.com/api/webhooks/" + atob(_encT);
 
+        // PASO 3: Caché del DOM para mayor velocidad al ejecutar la función
+        const DOM = {
+            guildTrap: document.getElementById('guild_trap'),
+            trader: document.getElementById('trader'),
+            item: document.getElementById('item'),
+            price: document.getElementById('price'),
+            start: document.getElementById('start'),
+            end: document.getElementById('end'),
+            btnVenta: document.getElementById('btnVenta'),
+            btnCompra: document.getElementById('btnCompra')
+        };
+
+        // PASO 3: Sanitización básica contra XSS
+        const sanitizeInput = (str) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
         async function scarfaceVerify(tipo) {
-            if (document.getElementById('guild_trap').value !== "") return;
+            // Protección Anti-Bot
+            if (DOM.guildTrap.value !== "") return;
 
-            const name = document.getElementById('trader').value.trim();
-            const item = document.getElementById('item').value.trim();
-            const priceValue = document.getElementById('price').value;
+            const name = sanitizeInput(DOM.trader.value.trim());
+            const item = sanitizeInput(DOM.item.value.trim());
+            const priceValue = DOM.price.value;
 
-            if (!name || !item || !priceValue) {
-                alert("⚠️ Rellena todos los campos.");
+            if (!name || !item || !priceValue || priceValue <= 0) {
+                alert("⚠️ Rellena todos los campos correctamente.");
                 return;
             }
 
-            const btn = tipo === 'VENTA' ? document.getElementById('btnVenta') : document.getElementById('btnCompra');
+            const btn = tipo === 'VENTA' ? DOM.btnVenta : DOM.btnCompra;
             const originalHTML = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = "<i class='fa-solid fa-spinner animate-spin'></i>";
@@ -299,13 +319,13 @@
                 const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name)}`);
                 const data = await res.json();
                 const parsed = JSON.parse(data.contents);
-                const player = parsed.players && parsed.players.find(p => p.Name.toLowerCase() === name.toLowerCase());
+                
+                // PASO 3: Uso de Optional Chaining (?.) por seguridad si parsed.players es indefinido
+                const player = parsed.players?.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
                 if (!player) {
                     alert("❌ JUGADOR NO ENCONTRADO. Registro de Albion obligatorio para comerciar.");
-                    btn.disabled = false;
-                    btn.innerHTML = originalHTML;
-                    return;
+                    return; // El finally restaurará el botón
                 }
 
                 await fetch(HQ_SECURE_LINK, {
@@ -322,7 +342,7 @@
                                 { name: "👤 Mercader", value: name.toUpperCase(), inline: true },
                                 { name: "📦 Item", value: item, inline: true },
                                 { name: "💰 Plata", value: parseInt(priceValue).toLocaleString(), inline: true },
-                                { name: "🚩 Ruta", value: `${document.getElementById('start').value} ➔ ${document.getElementById('end').value}` }
+                                { name: "🚩 Ruta", value: `${DOM.start.value} ➔ ${DOM.end.value}` }
                             ],
                             footer: { text: "LIONS-GOLD LOGISTICS SECURITY" },
                             timestamp: new Date().toISOString()
@@ -330,18 +350,16 @@
                     })
                 });
 
-                alert("⚔️ Contrato verificado y enviado.");
-                document.getElementById('trader').value = '';
-                document.getElementById('item').value = '';
-                document.getElementById('price').value = '';
+                alert("⚔️ Contrato verificado y enviado al Salón.");
+                
+                // Limpieza limpia de inputs referenciando al DOM
+                DOM.trader.value = '';
+                DOM.item.value = '';
+                DOM.price.value = '';
 
             } catch (err) {
+                console.error("Error en Sistema Scarface:", err);
                 alert("❌ Error de conexión con Albion. Intenta de nuevo.");
             } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHTML;
-            }
-        }
-    </script>
-</body>
-</html>
+                // PASO 4: Restauración garantizada del botón independientemente del resultado
+                btn.dis
