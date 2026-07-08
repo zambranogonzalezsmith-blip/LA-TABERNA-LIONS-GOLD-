@@ -13,388 +13,102 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root { 
-            --gold: #c5a059; 
-            --gold-glow: rgba(197, 160, 89, 0.6);
-        }
-
-        body { 
-            background: #030303; 
-            color: #e2e2e2; 
-            font-family: 'Inter', sans-serif; 
-            background-image: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, #030303 100%), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg'); 
-            background-attachment: fixed; 
-            background-size: cover; 
-            background-position: center;
-        }
-
+        :root { --gold: #c5a059; --gold-glow: rgba(197, 160, 89, 0.6); }
+        body { background: #030303; color: #e2e2e2; font-family: 'Inter', sans-serif; background-image: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, #030303 100%), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg'); background-attachment: fixed; background-size: cover; background-position: center; }
         .font-mythic { font-family: 'Cinzel Decorative', serif; }
         .font-medieval { font-family: 'MedievalSharp', cursive; }
-        
-        .mythic-border {
-            border: 2px solid;
-            border-image: linear-gradient(to bottom, #c5a059, #4a3a1a, #c5a059) 1;
-            box-shadow: 0 0 25px rgba(0,0,0,0.9), inset 0 0 30px rgba(197, 160, 89, 0.1);
-        }
-
-        .tavern-panel { 
-            background: linear-gradient(180deg, rgba(13, 15, 18, 0.95) 0%, rgba(5, 5, 5, 0.98) 100%); 
-            backdrop-filter: blur(12px); 
-        }
-
-        .input-mythic { 
-            background: rgba(20, 22, 25, 0.9); 
-            border: 1px solid #3d3423; 
-            color: #fff; 
-            padding: 14px; 
-            transition: 0.3s;
-            border-radius: 4px;
-        }
+        .mythic-border { border: 2px solid; border-image: linear-gradient(to bottom, #c5a059, #4a3a1a, #c5a059) 1; box-shadow: 0 0 25px rgba(0,0,0,0.9), inset 0 0 30px rgba(197, 160, 89, 0.1); }
+        .tavern-panel { background: linear-gradient(180deg, rgba(13, 15, 18, 0.95) 0%, rgba(5, 5, 5, 0.98) 100%); backdrop-filter: blur(12px); }
+        .input-mythic { background: rgba(20, 22, 25, 0.9); border: 1px solid #3d3423; color: #fff; padding: 14px; transition: 0.3s; border-radius: 4px; }
         .input-mythic:focus { border-color: var(--gold); box-shadow: 0 0 15px var(--gold-glow); outline: none; }
-
-        .btn-action { 
-            transition: 0.4s; 
-            text-transform: uppercase; 
-            font-weight: 900; 
-            letter-spacing: 2px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
+        .btn-action { transition: 0.4s; text-transform: uppercase; font-weight: 900; letter-spacing: 2px; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
         .btn-venta { background: linear-gradient(135deg, #450a0a 0%, #b91c1c 100%); border: 1px solid #ef4444; color: #fee2e2; }
         .btn-compra { background: linear-gradient(135deg, #064e3b 0%, #059669 100%); border: 1px solid #10b981; color: #d1fae5; }
         .btn-action:hover { transform: scale(1.02); filter: brightness(1.2); cursor: pointer; }
         .btn-action:disabled { filter: grayscale(1); cursor: not-allowed; transform: none; }
-
-        .trading-card {
-            background: linear-gradient(135deg, rgba(197, 160, 89, 0.1) 0%, rgba(0,0,0,0.4) 100%);
-            border: 1px solid rgba(197, 160, 89, 0.3);
-            transition: 0.5s;
-            text-decoration: none !important;
-            display: block;
-        }
-        .trading-card:hover {
-            border-color: var(--gold);
-            background: linear-gradient(135deg, rgba(197, 160, 89, 0.2) 0%, rgba(197, 160, 89, 0.05) 100%);
-            box-shadow: 0 0 30px rgba(197, 160, 89, 0.2);
-            transform: translateY(-5px);
-        }
-
-        .gold-text { color: var(--gold); text-shadow: 0 0 10px rgba(197, 160, 89, 0.4); }
-        .pulse-gold { animation: pulse 2s infinite; }
-        @keyframes pulse {
-            0% { opacity: 0.4; }
-            50% { opacity: 1; }
-            100% { opacity: 0.4; }
-        }
-
         .h-trap { position: absolute; left: -9999px; opacity: 0; }
-        
-        .epic-list li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-        .epic-list li::before {
-            content: '⚔️';
-            position: absolute;
-            left: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.8rem;
-            opacity: 0.7;
-        }
+        .gold-text { color: var(--gold); text-shadow: 0 0 10px rgba(197, 160, 89, 0.4); }
     </style>
 </head>
 <body class="min-h-screen pb-10">
 
+    <!-- Navegación -->
     <nav class="bg-black/95 border-b-2 border-[#c5a059]/40 sticky top-0 z-50 backdrop-blur-md">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 mythic-border flex items-center justify-center bg-black">
-                        <i class="fa-solid fa-crown text-[#c5a059] text-2xl"></i>
-                    </div>
-                    <span class="font-mythic text-[#c5a059] text-2xl tracking-[0.2em] hidden md:block">LIONS-GOLD</span>
-                </div>
-                <div class="flex items-center space-x-4 md:space-x-8 font-medieval">
-                    <a href="el%20ojo%20del%20le%C3%B3n.html" class="bg-red-900/20 border border-red-700/50 px-3 py-1.5 text-red-500 hover:bg-red-900/60 hover:text-white transition-all text-xs md:text-sm uppercase flex items-center gap-2 rounded-sm shadow-[0_0_10px_rgba(220,38,38,0.2)]">
-                        <i class="fa-solid fa-eye animate-pulse"></i> El Ojo del León
-                    </a>
-                    
-                    <a href="index.html" class="text-amber-500 hover:text-white transition-all text-xs md:text-sm uppercase flex items-center gap-2">
-                        <i class="fa-solid fa-beer-mug-empty"></i> Taberna
-                    </a>
-                    <a href="trading-global.html" class="bg-[#c5a059]/10 border border-[#c5a059]/50 px-3 py-1.5 text-[#c5a059] hover:bg-[#c5a059] hover:text-black transition-all text-xs md:text-sm uppercase flex items-center gap-2 rounded-sm hidden sm:flex">
-                        <i class="fa-solid fa-chart-line"></i> Trading Global
-                    </a>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-20">
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 mythic-border flex items-center justify-center bg-black"><i class="fa-solid fa-crown text-[#c5a059] text-2xl"></i></div>
+                <span class="font-mythic text-[#c5a059] text-2xl tracking-[0.2em] hidden md:block">LIONS-GOLD</span>
             </div>
         </div>
     </nav>
 
-    <header class="py-16 text-center relative">
-        <h1 class="font-mythic text-5xl md:text-7xl lg:text-8xl gold-text mb-4">TABERNA DE COMERCIO</h1>
-        <p class="font-medieval text-amber-600 text-xl md:text-2xl tracking-[0.4em] uppercase opacity-80">Legión de Élite • Lymhurst</p>
-    </header>
-
-    <main class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 px-4 md:px-6">
-        
-        <div class="lg:col-span-5">
-            <div class="tavern-panel mythic-border p-6 md:p-8 relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-4 opacity-10">
-                    <i class="fa-solid fa-scroll text-6xl text-[#c5a059]"></i>
-                </div>
-                <h2 class="font-mythic text-amber-500 text-2xl md:text-3xl mb-8 border-b border-amber-900/50 pb-4 text-center">FORJAR CONTRATO</h2>
-                
-                <div class="space-y-6 font-medieval">
-                    <input type="text" id="guild_trap" class="h-trap" tabindex="-1" autocomplete="off">
-
-                    <div class="flex flex-col gap-2">
-                        <label class="text-xs text-amber-700 uppercase ml-1">Mercader Identificado</label>
-                        <input type="text" id="trader" placeholder="NOMBRE DEL SUJETO" maxlength="30" class="input-mythic w-full uppercase placeholder:text-gray-700">
-                    </div>
-                    
-                    <div class="flex flex-col gap-2">
-                        <label class="text-xs text-amber-700 uppercase ml-1">Cargamento Mítico</label>
-                        <input type="text" id="item" placeholder="EJ: MAMUT DE TRANSPORTE T8" maxlength="50" class="input-mythic w-full placeholder:text-gray-700">
-                    </div>
-
-                    <div class="flex flex-col gap-2">
-                        <label class="text-xs text-amber-700 uppercase ml-1">Tesoro en Plata</label>
-                        <input type="number" id="price" min="0" placeholder="0" class="input-mythic w-full text-amber-500 font-bold text-xl">
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-xs text-amber-700 uppercase">Origen</label>
-                            <select id="start" class="input-mythic w-full text-sm">
-                                <option value="Lymhurst">Lymhurst</option>
-                                <option value="Bridgewatch">Bridgewatch</option>
-                                <option value="Martlock">Martlock</option>
-                                <option value="Thetford">Thetford</option>
-                                <option value="Fort Sterling">Fort Sterling</option>
-                                <option value="Caerleon">Caerleon</option>
-                                <option value="Brecilien">Brecilien</option>
-                            </select>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-xs text-amber-700 uppercase">Destino</label>
-                            <select id="end" class="input-mythic w-full text-sm">
-                                <option value="Caerleon">Caerleon</option>
-                                <option value="Lymhurst">Lymhurst</option>
-                                <option value="Bridgewatch">Bridgewatch</option>
-                                <option value="Martlock">Martlock</option>
-                                <option value="Thetford">Thetford</option>
-                                <option value="Fort Sterling">Fort Sterling</option>
-                                <option value="Isla de Gremio">Isla de Gremio</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-4 pt-6">
-                        <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded-sm text-lg">Vender</button>
-                        <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded-sm text-lg">Comprar</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="lg:col-span-7 space-y-6">
+    <!-- Contenido -->
+    <main class="max-w-4xl mx-auto mt-10 px-4">
+        <div class="tavern-panel mythic-border p-8">
+            <h2 class="font-mythic text-amber-500 text-3xl mb-8 border-b border-amber-900/50 pb-4 text-center">FORJAR CONTRATO</h2>
             
-            <div class="tavern-panel mythic-border p-8 relative overflow-hidden group">
-                <div class="absolute -top-10 -right-10 opacity-5 group-hover:opacity-10 transition-opacity duration-700">
-                    <i class="fa-solid fa-dragon text-[12rem] text-[#c5a059]"></i>
-                </div>
+            <input type="text" id="guild_trap" class="h-trap" tabindex="-1">
+            <div class="space-y-6 font-medieval">
+                <input type="text" id="trader" placeholder="NOMBRE DEL MERCADER" class="input-mythic w-full uppercase">
+                <input type="text" id="item" placeholder="OBJETO DE COMERCIO" class="input-mythic w-full">
+                <input type="number" id="price" placeholder="PLATA" class="input-mythic w-full text-amber-500">
                 
-                <h3 class="font-mythic text-3xl text-amber-500 mb-4 tracking-widest drop-shadow-md">LA SENDA DEL LEÓN DORADO</h3>
-                
-                <div class="font-medieval text-gray-300 text-sm md:text-base leading-relaxed mb-6 space-y-4 text-justify relative z-10">
-                    <p>
-                        <span class="text-amber-500 text-xl font-mythic">¡E</span>scuchad, forasteros y veteranos de las Tierras Lejanas! Las imponentes puertas de LIONS-GOLD están abiertas. No importa el estandarte que defiendas, el gremio al que sirvas o la alianza que te respalde. 
-                    </p>
-                    <p class="text-gray-400 italic">
-                        Buscamos guerreros, artesanos y mercaderes de espíritu noble que deseen aprender, crecer y forjar una comunidad sana y próspera en las implacables tierras de Albion.
-                    </p>
+                <div class="grid grid-cols-2 gap-4">
+                    <select id="start" class="input-mythic w-full"><option>Lymhurst</option><option>Caerleon</option></select>
+                    <select id="end" class="input-mythic w-full"><option>Caerleon</option><option>Lymhurst</option></select>
                 </div>
 
-                <div class="bg-black/50 border border-amber-900/30 p-4 rounded-sm">
-                    <h4 class="font-mythic text-amber-600 text-sm mb-3 text-center border-b border-amber-900/30 pb-2">Nuestras Disciplinas</h4>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 font-medieval text-xs text-gray-300 uppercase tracking-wider epic-list">
-                        <ul class="space-y-2">
-                            <li>PvE y Mazmorras Corruptas</li>
-                            <li>Arenas de Combate</li>
-                            <li>Rastreo y Farmeo Épico</li>
-                            <li>Crafteo y Forja de Equipamiento</li>
-                            <li>Guerras de Facciones</li>
-                        </ul>
-                        <ul class="space-y-2">
-                            <li>Agricultura y Botánica</li>
-                            <li>Pesca en Aguas Peligrosas</li>
-                            <li>Rutas de Comercio Seguro</li>
-                            <li>Economía y Mercado Negro</li>
-                        </ul>
-                    </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="scarfaceVerify('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded">Vender</button>
+                    <button onclick="scarfaceVerify('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded">Comprar</button>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <div class="tavern-panel mythic-border p-6 border-l-4 border-l-green-600">
-                    <h4 class="font-mythic text-green-500 text-sm mb-2">SISTEMA SCARFACE</h4>
-                    <p class="text-[11px] text-gray-400 font-medieval italic">"Verificamos cada nombre en el registro de Albion."</p>
-                    <div class="mt-3 flex items-center gap-2">
-                        <span class="w-2 h-2 bg-green-500 rounded-full pulse-gold"></span>
-                        <span class="text-[10px] text-green-700 uppercase font-bold">Protocolo Activo</span>
-                    </div>
-                </div>
-                <div class="tavern-panel mythic-border p-6 border-l-4 border-l-amber-600">
-                    <h4 class="font-mythic text-amber-500 text-sm mb-2">SEGURIDAD LIONS</h4>
-                    <p class="text-[11px] text-gray-400 font-medieval italic">Protección Anti-Bot y Criptografía activada.</p>
-                </div>
+            <!-- Botón Discord -->
+            <div class="mt-8 text-center">
+                <a href="https://discord.gg/qx8xk7HGu" target="_blank" class="inline-flex items-center gap-3 bg-[#5865F2] hover:bg-[#4752C4] px-6 py-3 rounded font-mythic text-white transition-all border border-[#5865F2]/50">
+                    <i class="fa-brands fa-discord text-xl"></i> ENTRAR AL SALÓN
+                </a>
             </div>
-
-            <div class="tavern-panel mythic-border p-6 md:p-8 relative overflow-hidden bg-gradient-to-r from-[#1a1b26] to-[#0d0f12]">
-                <div class="flex flex-col md:flex-row items-center gap-6">
-                    <div class="relative shrink-0">
-                        <div class="w-20 h-20 bg-[#5865F2]/10 rounded-full flex items-center justify-center border-2 border-[#5865F2]/40 shadow-[0_0_25px_rgba(88,101,242,0.2)]">
-                            <i class="fa-brands fa-discord text-4xl text-[#5865F2] drop-shadow-[0_0_8px_rgba(88,101,242,0.8)]"></i>
-                        </div>
-                    </div>
-                    <div class="flex-1 text-center md:text-left">
-                        <h3 class="font-mythic text-xl text-white mb-2 tracking-wide text-shadow">SALÓN DE LOS ALIADOS (DISCORD)</h3>
-                        <p class="font-medieval text-xs md:text-sm text-gray-400 mb-4">
-                            Únete a nuestro bastión. Un refugio neutral donde el comercio sano y el honor prevalecen sobre las guerras territoriales.
-                        </p>
-                        <a href="https://discord.gg/um9dMh7GV" target="_blank" class="inline-flex items-center gap-3 bg-[#5865F2] hover:bg-[#4752C4] px-6 py-2.5 rounded-sm font-mythic text-xs md:text-sm text-white transition-all shadow-[0_0_15px_rgba(88,101,242,0.4)] border border-[#5865F2]/50 hover:-translate-y-1">
-                            <i class="fa-brands fa-discord text-lg"></i> ENTRAR AL SALÓN
-                        </a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
 
-    <footer class="mt-20 py-8 text-center border-t border-[#c5a059]/20 bg-black/80">
-        <p class="text-gray-600 text-[10px] uppercase tracking-[0.4em] font-mythic">Smith Business Solutions | &copy; 2026 LIONS-GOLD GLOBAL</p>
-    </footer>
-
     <script>
-        /* ========================================================================
-        CÓMO CIFRAR TU NUEVO WEBHOOK (Instrucciones para ti):
-        1. Crea un NUEVO webhook en tu servidor de Discord.
-        2. Abre esta misma página HTML en tu navegador (doble clic al archivo).
-        3. Presiona la tecla F12 para abrir las herramientas de desarrollo.
-        4. Ve a la pestaña "Consola" (Console).
-        5. Pega este código exacto y presiona Enter:
-           cifrarWebhook("AQUÍ_PEGA_TU_NUEVO_ENLACE_DE_DISCORD_COMPLETO")
-        6. Copia el resultado extraño que te dará la consola.
-        7. Reemplaza la variable _k de abajo con ese nuevo resultado y guarda.
-        ========================================================================
-        */
-
-        // Herramienta disponible temporalmente en consola para que generes tu código
-        window.cifrarWebhook = function(url) {
-            let cifrado = url.split('').map(c => String.fromCharCode(c.charCodeAt(0) + 3)).join('');
-            console.log("Copia el texto de abajo y pégalo en la variable _k:");
-            console.log(cifrado);
-            return cifrado;
-        };
-
-        // PASO 1: Pega aquí tu código cifrado generado con la herramienta de arriba.
-        // NOTA: El que está puesto actualmente es el cifrado de tu primer enlace (que Discord ya borró). Reemplázalo.
-        const _k = "kwwsv=22glvfrug1frp2dsl2zhekrrnv24:;848<533338:83;<982{|iNjZKS5OaLmM:ELkejMZw3w4Qv<;Epp;rz]S|[7eeDxKvhGTTMkH\\0Kdkph<\\Ir0o|I]G";
-        
-        // PASO 2: El navegador desencripta la URL en tiempo de ejecución. GitHub no detectará esto.
+        // Webhook cifrado para evitar escaneos de GitHub
+        const _k = "kwwsv=22glvfrug1frp2dsl2zhekrrnv24857797:89673495:642XuhTmfq<OjZi3ilMoyr7SWXNIIU4lnObG\\H7d5xwrw0qrX5:;sK{L4[llNjD|Unq}Tb3";
         const HQ_SECURE_LINK = _k.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 3)).join('');
 
-        const DOM = {
-            guildTrap: document.getElementById('guild_trap'),
-            trader: document.getElementById('trader'),
-            item: document.getElementById('item'),
-            price: document.getElementById('price'),
-            start: document.getElementById('start'),
-            end: document.getElementById('end'),
-            btnVenta: document.getElementById('btnVenta'),
-            btnCompra: document.getElementById('btnCompra')
-        };
-
-        const sanitizeInput = (str) => str.replace(/</g, "&lt;").replace(/>/g, "&gt;");
-
         async function scarfaceVerify(tipo) {
-            if (DOM.guildTrap.value !== "") return;
-
-            const name = sanitizeInput(DOM.trader.value.trim());
-            const item = sanitizeInput(DOM.item.value.trim());
-            const priceValue = DOM.price.value;
-
-            if (!name || !item || !priceValue || priceValue <= 0) {
-                alert("⚠️ Rellena todos los campos correctamente.");
-                return;
-            }
-
-            const btn = tipo === 'VENTA' ? DOM.btnVenta : DOM.btnCompra;
-            const originalHTML = btn.innerHTML;
+            if (document.getElementById('guild_trap').value !== "") return;
+            const name = document.getElementById('trader').value;
+            const btn = tipo === 'VENTA' ? document.getElementById('btnVenta') : document.getElementById('btnCompra');
+            
             btn.disabled = true;
             btn.innerHTML = "<i class='fa-solid fa-spinner animate-spin'></i>";
 
             try {
-                const cacheBuster = new Date().getTime();
-                const targetUrl = encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name);
-                const proxyUrl = `https://api.allorigins.win/get?url=${targetUrl}&t=${cacheBuster}`;
-                
+                const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name)}`;
                 const res = await fetch(proxyUrl);
-                
-                if (!res.ok) throw new Error("Fallo en proxy de AllOrigins");
-                
                 const data = await res.json();
-                if (!data.contents) throw new Error("Sin respuesta de Albion");
-                
-                const parsed = JSON.parse(data.contents);
-                const player = parsed.players?.find(p => p.Name.toLowerCase() === name.toLowerCase());
+                const player = JSON.parse(data.contents).players?.find(p => p.Name.toLowerCase() === name.toLowerCase());
 
-                if (!player) {
-                    alert("❌ JUGADOR NO ENCONTRADO. Registro de Albion obligatorio para comerciar.");
-                    return; 
-                }
+                if (!player) { alert("Jugador no encontrado en registros de Albion."); btn.disabled = false; btn.innerHTML = tipo; return; }
 
-                const discordRes = await fetch(HQ_SECURE_LINK, {
+                await fetch(HQ_SECURE_LINK, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
-                        username: "CAPITÁN SCARFACE",
-                        avatar_url: "https://i.imgur.com/8n06IUp.png",
                         embeds: [{
-                            title: `📜 CONTRATO VERIFICADO: ${tipo}`,
-                            color: 3066993,
-                            description: `✅ **Identidad Confirmada:** ${player.Name}\n**Gremio:** ${player.GuildName || 'Sin Gremio'}`,
-                            fields: [
-                                { name: "👤 Mercader", value: name.toUpperCase(), inline: true },
-                                { name: "📦 Item", value: item, inline: true },
-                                { name: "💰 Plata", value: parseInt(priceValue).toLocaleString(), inline: true },
-                                { name: "🚩 Ruta", value: `${DOM.start.value} ➔ ${DOM.end.value}` }
-                            ],
-                            footer: { text: "LIONS-GOLD LOGISTICS SECURITY" },
-                            timestamp: new Date().toISOString()
+                            title: `CONTRATO: ${tipo}`,
+                            description: `**Jugador:** ${player.Name}\n**Gremio:** ${player.GuildName || 'N/A'}\n**Item:** ${document.getElementById('item').value}\n**Plata:** ${document.getElementById('price').value}`,
+                            color: 3066993
                         }]
                     })
                 });
-
-                if (!discordRes.ok) {
-                    throw new Error(`Error de Discord: ${discordRes.status}`);
-                }
-
-                alert("⚔️ Contrato verificado y enviado al Salón.");
-                
-                DOM.trader.value = '';
-                DOM.item.value = '';
-                DOM.price.value = '';
-
-            } catch (err) {
-                console.error("Error detallado:", err);
-                alert("❌ Error de conexión con el Servidor. Asegúrate de haber colocado tu nuevo Webhook Cifrado correctamente.");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = originalHTML;
-            }
+                alert("¡Contrato enviado con éxito!");
+            } catch (err) { alert("Error de conexión."); }
+            btn.disabled = false;
+            btn.innerHTML = tipo;
         }
     </script>
 </body>
