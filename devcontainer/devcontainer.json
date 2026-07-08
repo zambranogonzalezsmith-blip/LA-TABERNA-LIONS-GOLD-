@@ -1,0 +1,25 @@
+{
+    "name": "LIONS-GOLD Website",
+    "image": "mcr.microsoft.com/devcontainers/python:3.11",
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {}
+    },
+    "postCreateCommand": "pip install --upgrade pip",
+    "postStartCommand": "python main.py",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.debugpy",
+                "ritwickdey.LiveServer"
+            ]
+        }
+    },
+    "forwardPorts": [8080],
+    "portsAttributes": {
+        "8080": {
+            "label": "LIONS-GOLD Web",
+            "onAutoForward": "openPreview"
+        }
+    }
+}
