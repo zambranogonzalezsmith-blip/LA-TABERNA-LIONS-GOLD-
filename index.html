@@ -10,13 +10,26 @@
         .mythic-border { border: 2px solid transparent; border-image: linear-gradient(to bottom, #c5a059, #4a3a1a) 1; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); }
         h1, h2 { font-family: 'Cinzel Decorative', serif; color: #c5a059; }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var form = document.getElementById('joinForm');
+            form.addEventListener('submit', function (event) {
+                event.preventDefault();
+                var captcha = document.getElementById('captcha').value;
+                if (captcha !== '1234') {
+                    alert('Captcha incorrecto, inténtalo de nuevo.');
+                } else {
+                    alert('Formulario enviado correctamente.');
+                    form.reset();
+                }
+            });
+        });
+    </script>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-6 bg-[url('https://albiononline.com/assets/images/backgrounds/login-bg.jpg')] bg-cover bg-center">
-    
     <div class="mythic-border p-12 rounded-lg max-w-2xl text-center shadow-[0_0_40px_rgba(197,160,89,0.3)]">
         <h1 class="text-6xl mb-4 tracking-widest">LIONS-GOLD</h1>
         <p class="text-xl mb-8 text-gray-300 italic">"La prosperidad es el arma más afilada."</p>
-        
         <div class="grid gap-4">
             <a href="https://discord.gg/qx8xk7HGu" target="_blank" class="bg-[#5865F2] hover:bg-[#4752C4] py-4 rounded font-bold text-white transition-all uppercase tracking-widest border border-white/10">
                 Unirse al Salón de la Legión
@@ -25,6 +38,11 @@
                 Centro de Inteligencia Económica
             </a>
         </div>
+        <form id="joinForm" class="mt-8">
+            <label for="captcha" class="block text-gray-300">Ingrese el código de verificación: 1234</label>
+            <input type="text" id="captcha" class="my-2 p-2 border border-gray-500 rounded" required>
+            <button type="submit" class="bg-[#c5a059] hover:bg-[#5865F2] py-2 px-4 rounded text-white border border-white/10">Enviar</button>
+        </form>
     </div>
 </body>
 </html>
