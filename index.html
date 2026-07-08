@@ -2,108 +2,29 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LIONS-GOLD | TABERNA DE COMERCIO MÍTICO</title>
+    <title>LIONS-GOLD | Bastión de Lymhurst</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #c5a059; }
-        body { background: #030303; color: #e2e2e2; font-family: sans-serif; background-image: radial-gradient(circle at center, rgba(0,0,0,0.4) 0%, #030303 100%), url('https://p325k7wa.twic.pics/high/albion-online/albion-online/01-news/og-albion-online.jpg'); background-attachment: fixed; background-size: cover; }
-        .tavern-panel { background: linear-gradient(180deg, rgba(13, 15, 18, 0.95) 0%, rgba(5, 5, 5, 0.98) 100%); backdrop-filter: blur(12px); border: 2px solid #c5a059; }
-        .input-mythic { background: rgba(20, 22, 25, 0.9); border: 1px solid #3d3423; color: #fff; padding: 14px; border-radius: 4px; }
-        .btn-action { transition: 0.4s; text-transform: uppercase; font-weight: 900; }
-        .btn-venta { background: #b91c1c; color: white; }
-        .btn-compra { background: #059669; color: white; }
+        body { background-color: #050505; color: #d1d5db; font-family: 'Inter', sans-serif; }
+        .mythic-border { border: 2px solid transparent; border-image: linear-gradient(to bottom, #c5a059, #4a3a1a) 1; background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(10px); }
+        h1, h2 { font-family: 'Cinzel Decorative', serif; color: #c5a059; }
     </style>
 </head>
-<body class="p-4 md:p-10">
-
-    <main class="max-w-4xl mx-auto">
-        <div class="tavern-panel p-8 rounded-lg">
-            <h2 class="text-3xl text-[#c5a059] mb-6 text-center font-bold uppercase">Taberna de Comercio - LIONS-GOLD</h2>
-            
-            <div class="space-y-4">
-                <input type="text" id="trader" placeholder="Nombre del Mercader" class="input-mythic w-full">
-                <input type="text" id="item" placeholder="Objeto (ej: Mamut T8)" class="input-mythic w-full">
-                <input type="number" id="price" placeholder="Plata" class="input-mythic w-full">
-                
-                <div class="grid grid-cols-2 gap-4">
-                    <select id="start" class="input-mythic w-full text-black"><option>Lymhurst</option><option>Bridgewatch</option><option>Martlock</option><option>Caerleon</option></select>
-                    <select id="end" class="input-mythic w-full text-black"><option>Caerleon</option><option>Lymhurst</option><option>Bridgewatch</option><option>Isla Gremio</option></select>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <button onclick="enviarOrden('VENTA')" id="btnVenta" class="btn-action btn-venta py-4 rounded">Vender</button>
-                    <button onclick="enviarOrden('COMPRA')" id="btnCompra" class="btn-action btn-compra py-4 rounded">Comprar</button>
-                </div>
-            </div>
-
-            <div class="mt-8 border-t border-[#c5a059] pt-6">
-                <h3 class="text-xl text-[#c5a059] mb-2">Actividades del Gremio:</h3>
-                <ul class="text-sm space-y-2 text-gray-300">
-                    <li>⚔️ Rutas de comercio seguro y escolta.</li>
-                    <li>🛡️ Guerras de facciones y defensa territorial.</li>
-                    <li>💰 Gestión de mercado negro y arbitraje.</li>
-                </ul>
-                <div class="mt-6 text-center">
-                    <a href="https://discord.gg/qx8xk7HGu" target="_blank" class="bg-[#5865F2] px-6 py-3 rounded text-white font-bold">
-                        <i class="fa-brands fa-discord"></i> ENTRAR AL SALÓN
-                    </a>
-                </div>
-            </div>
+<body class="min-h-screen flex flex-col items-center justify-center p-6 bg-[url('https://albiononline.com/assets/images/backgrounds/login-bg.jpg')] bg-cover bg-center">
+    
+    <div class="mythic-border p-12 rounded-lg max-w-2xl text-center shadow-[0_0_40px_rgba(197,160,89,0.3)]">
+        <h1 class="text-6xl mb-4 tracking-widest">LIONS-GOLD</h1>
+        <p class="text-xl mb-8 text-gray-300 italic">"La prosperidad es el arma más afilada."</p>
+        
+        <div class="grid gap-4">
+            <a href="https://discord.gg/qx8xk7HGu" target="_blank" class="bg-[#5865F2] hover:bg-[#4752C4] py-4 rounded font-bold text-white transition-all uppercase tracking-widest border border-white/10">
+                Unirse al Salón de la Legión
+            </a>
+            <a href="trading-global.html" class="bg-black/50 hover:bg-[#c5a059]/20 py-4 rounded font-bold text-[#c5a059] border border-[#c5a059] transition-all uppercase tracking-widest">
+                Centro de Inteligencia Económica
+            </a>
         </div>
-    </main>
-
-    <script>
-        // Webhook cifrado para evitar escaneos de GitHub
-        const _k = "kwwsv=22glvfrug1frp2dsl2zhekrrnv24857797:89673495:642XuhTmfq<OjZi3ilMoyr7SWXNIIU4lnObG\\H7d5xwrw0qrX5:;sK{L4[llNjD|Unq}Tb3";
-        const HQ_SECURE_LINK = _k.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 3)).join('');
-
-        async function enviarOrden(tipo) {
-            const name = document.getElementById('trader').value;
-            const item = document.getElementById('item').value;
-            const price = document.getElementById('price').value;
-            const start = document.getElementById('start').value;
-            const end = document.getElementById('end').value;
-
-            if (!name || !item || !price) { alert("Rellena todos los campos"); return; }
-
-            const btn = tipo === 'VENTA' ? document.getElementById('btnVenta') : document.getElementById('btnCompra');
-            btn.innerHTML = "Enviando...";
-            btn.disabled = true;
-
-            try {
-                // Validación en API de Albion
-                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent('https://gameinfo.albiononline.com/api/gameinfo/search?q=' + name)}`);
-                const data = await res.json();
-                const player = JSON.parse(data.contents).players?.find(p => p.Name.toLowerCase() === name.toLowerCase());
-
-                if (!player) { alert("Jugador no encontrado en Albion."); btn.disabled = false; btn.innerHTML = tipo; return; }
-
-                // Envío al servidor
-                await fetch(HQ_SECURE_LINK, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        embeds: [{
-                            title: `ORDEN DE MERCADO: ${tipo}`,
-                            color: tipo === 'VENTA' ? 11403055 : 3066993,
-                            description: `**Mercader:** ${player.Name}\n**Gremio:** ${player.GuildName || 'Sin Gremio'}`,
-                            fields: [
-                                { name: "Objeto", value: item, inline: true },
-                                { name: "Precio", value: price + " Plata", inline: true },
-                                { name: "Ruta", value: `${start} ➔ ${end}` }
-                            ],
-                            timestamp: new Date()
-                        }]
-                    })
-                });
-                alert("¡Orden enviada con éxito al salón!");
-            } catch (err) { alert("Error de conexión con el salón."); }
-            
-            btn.disabled = false;
-            btn.innerHTML = tipo;
-        }
-    </script>
+    </div>
 </body>
 </html>
